@@ -1,0 +1,282 @@
+[
+  {
+    "id": 1,
+    "companyName": "Happy Square",
+    "documentName": "All Documents ATC Bundle",
+    "purpose": "Compiled bundle containing ATC acceptance letter, Certificate of Incorporation (conversion to Public Limited), e-PAN card, Shop & Establishment registration, Trade License, GST registration certificate with annexures, Contract Labour Registration Certificate, CLRA Labour Licence (BDL Hyderabad), TAN allotment letter, EPF registration (Form 5A), ESIC registration letter, Udyam registration certificate, DIPP Startup India recognition certificate, NSIC Government Purchase Enlistment Certificate with Store Details, Director undertaking/affidavit, Model ECS mandate with bank details, and Police character verification certificate of director.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777982658500-01All Documents ATC Happy.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:04:30.230Z"
+  },
+  {
+    "id": 2,
+    "companyName": "Happy Square",
+    "documentName": "Audited Financial Statements - Last 5 Years",
+    "purpose": "Standalone balance sheets and profit & loss statements for FY 2020-21 through FY 2024-25, audited by chartered accountants, showing company financials, net worth growth from ₹2.60 lakhs to ₹1247.81 lakhs, and revenue from operations. Also includes ITR-6 acknowledgements for AY 2021-22 through AY 2025-26.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777982761214-Audit Report Happy Last 5 Years.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:06:11.440Z"
+  },
+  {
+    "id": 3,
+    "companyName": "Happy Square",
+    "documentName": "CA Turnover Certificate",
+    "purpose": "Chartered accountant certified turnover certificate for Happy Square Outsourcing Services Limited showing gross turnover from manpower outsourcing services for FY 2020-21 to 2024-25, with total of ₹26052.51 lakhs and 5-year average of ₹5210.50 lakhs. Issued by Vishal Shrivastava & Co, CA firm, dated 18.07.2025.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777982922898-Turnover Certificate.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:08:48.975Z"
+  },
+  {
+    "id": 4,
+    "companyName": "Happy Square",
+    "documentName": "GeM Work Orders Compilation",
+    "purpose": "Compiled GeM portal work orders awarded to Happy Square Outsourcing Services Limited from various government clients across India, serving as proof of past experience and successful execution of government manpower/facility management contracts.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777983478789-All Gem Work Orders compressed Final.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:18:14.656Z"
+  },
+  {
+    "id": 5,
+    "companyName": "Happy Square",
+    "documentName": "EPF, ESIC and Labour Compliance Documents",
+    "purpose": "EPF registration certificate (Form 5A) with code MPJBP2080335000, ESIC registration letter with code 81000336150001001, GST registration certificate (23AAYCS5382C1Z1), and Contract Labour Registration Certificate (JABA240831CP000107, max 500 labourers) along with CLRA Labour Licence for BDL Hyderabad project (valid till 23-Dec-2026). Submitted as proof of statutory compliance for tendering.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777983566976-EPF ESIC Labour Happy.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:19:35.384Z"
+  },
+  {
+    "id": 6,
+    "companyName": "Happy Square",
+    "documentName": "FSSAI Food License",
+    "purpose": "FSSAI State License (Form C) issued by Government of Madhya Pradesh, Food and Drugs Administration, License No. 11422170000392, for food services as caterer, valid up to 08-07-2027. Covers beverages, ready-to-eat savouries, and prepared foods.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777983629812-Fassai License Compressed.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:20:37.097Z"
+  },
+  {
+    "id": 7,
+    "companyName": "Happy Square",
+    "documentName": "Electrical Contractor License - Class A",
+    "purpose": "M.P. Licensing Board (Electrical) Contractor License, Class A, Register No. 33/9503-A, issued to Happy Square Outsourcing Services Limited (Poonam Rajpal), valid till 31/12/2027. Authorizes electrical installation work across Madhya Pradesh including HT/LT systems above 33KV with prior permission.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777983685995-New A Class Eletrical License 2025.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:21:34.305Z"
+  },
+  {
+    "id": 8,
+    "companyName": "Happy Square",
+    "documentName": "ISO Certifications Bundle",
+    "purpose": "Combined ISO certifications issued by Global Certification Services: ISO 9001:2015 (Quality Management, valid till 11/12/2027, No. GCS/QMS/4270), ISO 10667-2:2020 (Assessment Service Delivery, valid till 06/12/2026, No. GCS/ISC/7582), ISO 14001:2015 (Environmental Management, valid till 25/06/2026, No. GCS/EMS/3594), ISO/IEC 27001:2022 (Information Security, valid till 06/12/2026, No. GCS/ISC/7581), ISO 45001:2018 (Occupational Health & Safety, valid till 25/06/2026, No. GCS/OHSAS/3595), ISO 50001:2018 (Energy Management, valid till 02/04/2026, No. GCS/EMS/6547).",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777983755034-New ISO Combined.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:22:46.024Z"
+  },
+  {
+    "id": 9,
+    "companyName": "Happy Square",
+    "documentName": "NSIC Government Purchase Enlistment Certificate",
+    "purpose": "NSIC Government Purchase Enlistment Certificate (Ref. NSIC/GP/BHO/2025/113548) valid from 05/08/2025 to 04/08/2027, monetary limit ₹3465 lakhs. Covers 6 service categories: Security Services, Manpower Supply, Facility Management/Housekeeping, Training Services, Civil/Electrical Services, and Recruitment Services. MSEs registered with NSIC are exempt from EMD deposit irrespective of monetary limit.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777983820161-New Nsic certificate Aug2025.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:23:50.473Z"
+  },
+  {
+    "id": 10,
+    "companyName": "Happy Square",
+    "documentName": "PSARA Security License - Chhattisgarh",
+    "purpose": "Private Security Agency license issued by Chhattisgarh Government Home Department (License No. 285/2024/Grih), valid from 31/07/2024 to 30/07/2029, covering entire Chhattisgarh state. Issued to Happy Square Outsourcing Services Limited (formerly Private Limited). Also includes name change amendment certificate dated 11/09/2025.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777983879158-Secirity License PSARA Chhatisgarh.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:24:49.875Z"
+  },
+  {
+    "id": 11,
+    "companyName": "Happy Square",
+    "documentName": "PSARA Security License - Madhya Pradesh",
+    "purpose": "Private Security Agency license issued by Government of Madhya Pradesh Home Department (License No. N-1116/Jabalpur), valid from 01-11-2021 to 31-10-2026, covering all of Madhya Pradesh. Issued in the name of Happy Square Outsourcing Services Private Limited with EPF No. MPJBP2080335000, ESIC No. 81000336150001001, GST No. 23AAYCS5382C1Z1.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777983934142-Security License MP.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:25:47.380Z"
+  },
+  {
+    "id": 12,
+    "companyName": "Happy Square",
+    "documentName": "Completed and Ongoing Projects List",
+    "purpose": "Spreadsheet listing Happy Square's completed, ongoing, and future projects including client names, work descriptions, contract values, manpower deployed, and project durations. Used as experience reference for tender submissions.",
+    "fileType": "xlsx",
+    "path": "/assets/tenderDocuments/1777983995974-2nd Completed, Ongoing and Future Projects (1).xlsx.xlsx",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:26:42.383Z"
+  },
+  {
+    "id": 13,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Bangalore",
+    "purpose": "Commercial Establishment registration certificate from Karnataka Labour Department under Shops and Commercial Establishments Act 1961. Registration No. 22/174/CE/0768/2021, valid till 31-12-2025. Certifies Happy Square Outsourcing Services Limited as registered commercial establishment for manpower outsourcing.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777984346796-01 Bangalore Shop & Establishment.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:32:35.305Z"
+  },
+  {
+    "id": 14,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Rajasthan (Bhilwara)",
+    "purpose": "Commercial Establishment certificate from Government of Rajasthan under Rajasthan Shops and Commercial Establishments Acts 1958. Registration No. SCA/2023/6/132587, perpetual validity. Registered as commercial establishment with 5 employees.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777984416765-01 Shop & Establishment  Rajasthan.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:33:42.590Z"
+  },
+  {
+    "id": 15,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Bhopal",
+    "purpose": "Madhya Pradesh labour registration under Shops and Commercial Establishments Act 1958. Certificate confirms Happy Square Outsourcing Services Private Limited registered as commercial establishment at Saket Nagar, Bhopal with 3 employees.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777984510230-01 Shop & Establishment Bhopal.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:35:18.345Z"
+  },
+  {
+    "id": 16,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment - Chennai Labor Registration",
+    "purpose": "Tamil Nadu Industrial Establishments registration under National, Festival and Special Holidays Act 1958. Registration No. TN/AIL31CHE/NFSH/68-25-00847 for establishment at KRM Plaza, Chennai. Specifies festival holidays and labour compliance.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985464096-01 Shop & Establishment Chennai Labor License.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:51:11.961Z"
+  },
+  {
+    "id": 17,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Damoh",
+    "purpose": "Madhya Pradesh labour registration certificate from District Labour Office, Damoh under Shops and Commercial Establishments Act 1958. Registered as commercial establishment with 3 employees at Hata Road, Damoh.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985523781-01 Shop & Establishment Damoh.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:52:11.526Z"
+  },
+  {
+    "id": 18,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Indore",
+    "purpose": "Madhya Pradesh labour registration from District Labour Office, Indore. Commercial establishment certificate with 3 employees at Orange County, Manik Bagh Road, Indore. Valid for statutory labour compliance.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985575977-01 Shop & Establishment Indore.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:53:04.588Z"
+  },
+  {
+    "id": 19,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Kerala",
+    "purpose": "Kerala Shops and Commercial Establishments Act 1960 registration certificate No. SH070220180399. Renewal issued to Poonam Rajpal for establishment at Vennala with 2 employees, valid till 31-12-2025.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985633234-01 Shop & Establishment Kerala.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:53:59.504Z"
+  },
+  {
+    "id": 20,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Punjab (Mohali)",
+    "purpose": "Punjab Shops and Commercial Establishments Act 1958 registration certificate Reg. No. SCG124042500119374 issued 08-05-2024. Outsourcing services establishment at Industrial Area Mohali with 3 employees, 9:30 AM to 6:30 PM hours.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985692065-01 Shop & Establishment Punjab.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:54:58.541Z"
+  },
+  {
+    "id": 21,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Delhi",
+    "purpose": "Delhi Shops & Establishment Act 1954 registration certificate No. 2021046182 issued 8-03-2021. Commercial establishment for manpower & labour export at Laxmi Nagar, East Delhi. Certificate based on applicant information, validity subject to renewal.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985740291-01 Shop Establishment Delhi.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:55:44.841Z"
+  },
+  {
+    "id": 22,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Kanpur",
+    "purpose": "Uttar Pradesh Dookan Aur Vanijya Adhishthan Adhiniyam 1962 registration certificate UPSA35727280 issued 01-01-2021. Registered company with 5 employees at Darshan Purwa, Kanpur. Renewed till 31-03-2025.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985816264-01 Shop Establishment Kanpur.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:57:02.577Z"
+  },
+  {
+    "id": 23,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Nagpur",
+    "purpose": "Maharashtra Dookan va Aapan Adhidhiyam 2017 registration certificate No. 2152300314878683. Outsourcing services commercial establishment at Nagpur with 10 employees, registered 07-01-2021.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985863608-01 Shop Establishment Nagpur.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:57:54.390Z"
+  },
+  {
+    "id": 24,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Raipur (Chhattisgarh)",
+    "purpose": "Chhattisgarh Dookan va Stapna Adhidhiyam 1958 registration certificate Application Ref 4622012101001122. Outsourcing office work establishment registered 08-02-2021 by Raipur Nagar Nigam with validity till establishment closure.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985926969-01 Shop Establishment Raipur CG.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T12:58:58.532Z"
+  },
+  {
+    "id": 25,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Gujarat",
+    "purpose": "Gujarat Labour Welfare Board receipt for Happy Square Outsourcing Services Private Limited. Contribution payment record issued 20-09-2021 for commercial establishment with 5 employees for labour welfare compliance.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777985997104-01 Shopnetalisbisment Gujarat.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T13:00:09.681Z"
+  },
+  {
+    "id": 26,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Jabalpur",
+    "purpose": "Madhya Pradesh labour compliance certificate from District Labour Office, Jabalpur under Shops and Commercial Establishments Act 1958. Registration C/1274237 issued 01-03-2020 at Rajpal Tower, Nagpur Road, Jabalpur.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777986053535-01 Shopnetalisbisment Jabalpur.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T13:01:00.369Z"
+  },
+  {
+    "id": 27,
+    "companyName": "Happy Square",
+    "documentName": "Shop & Establishment Registration - Telangana (Hyderabad)",
+    "purpose": "Telangana Shops & Establishments Act 1988 registration certificate Reg. No. SEA/HYD/ALO/03/0320703/2021 issued 20-06-2021. Manpower supply commercial establishment with 4 employees at BK Guda, Hyderabad.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777986111842-01Shopnetalisbisment Telangana.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T13:02:00.782Z"
+  },
+  {
+    "id": 28,
+    "companyName": "Happy Square",
+    "documentName": "Consolidated Shop & Establishment Registration Portfolio",
+    "purpose": "Master consolidated document containing shop and establishment registration details across multiple jurisdictions for Happy Square Outsourcing Services. Serves as compilation of all state-level shop act registrations and labour compliance certifications for tender submissions.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1777986163572-Shop Establishment - Consolidated.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-05T13:02:51.223Z"
+  }
+]

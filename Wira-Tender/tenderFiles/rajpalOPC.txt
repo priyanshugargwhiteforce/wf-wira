@@ -1,0 +1,310 @@
+{
+  "generatedAt": "2026-04-21T11:45:24.637Z",
+  "schemaVersion": "4.0",
+  "sourceFile": "Rajpal_Services_OPC_Eligibility_Master_Analysis.xlsx",
+  "company": {
+    "name": "M/s Rajpal Services (OPC) Private Limited",
+    "CIN": "U74999MP2020OPC054093",
+    "PAN": "AAKCR6649B",
+    "GSTIN": "23AAKCR6649B1ZE",
+    "TAN": "JBPR06529F",
+    "EPFO": "MPJBP2258903000",
+    "ESIC": "81000362740000900",
+    "MSME_UdyamNo": "UDYAM-MP-24-0033929",
+    "NSIC_RegNo": null,
+    "PT_Registration": null,
+    "labourLicenseState": "JABA250610CP001041",
+    "labourLicenseCentral": null,
+    "registeredAddress": "240, Rajpal Tower, Nagpur Road, Jabalpur Dist.-JABALPUR",
+    "headquarter": "Jabalpur, Madhya Pradesh",
+    "director": "Mr. Shailesh Rajpal (Director)",
+    "primaryServices": [
+      "Manpower Outsourcing",
+      "Facility Management Services",
+      "Security Services"
+    ],
+    "operatingStates": [
+      "Madhya Pradesh"
+    ],
+    "isMSME": true,
+    "tenderReadiness": "PARTIALLY ELIGIBLE - Financial data pending"
+  },
+  "certifications": {
+    "iso": [],
+    "psara": [],
+    "fssai": null,
+    "electricalContractor": null
+  },
+  "licenses": [
+    {
+      "db_id": 62,
+      "sno": 1,
+      "licenseType": "Permanent Account Number (PAN)",
+      "licenseNo": "AAKCR6649B",
+      "issuingAuthority": "Income Tax Department Government of India",
+      "validFrom": "2020-12-14",
+      "validTill": "lifetime",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 63,
+      "sno": 2,
+      "licenseType": "Goods and Service Tax Registration",
+      "licenseNo": "23AAKCR6649B1ZE",
+      "issuingAuthority": "Government of India",
+      "validFrom": "2023-03-31",
+      "validTill": "lifetime",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 64,
+      "sno": 3,
+      "licenseType": "Ministry of Micro Small Medium Enterprises (MSME) Udyam Certificate",
+      "licenseNo": "UDYAM-MP-24-0033929",
+      "issuingAuthority": "Ministry of Micro Small Medium Enterprises (MSME), Government of India",
+      "validFrom": "2020-12-14",
+      "validTill": "lifetime",
+      "applicableFor": "Applicable",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 65,
+      "sno": 4,
+      "licenseType": "Employee Provident Fund Organization Registration",
+      "licenseNo": "MPJBP2258903000",
+      "issuingAuthority": "Employee Provident Fund Organization Government of India",
+      "validFrom": "2020-12-14",
+      "validTill": "lifetime",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 66,
+      "sno": 5,
+      "licenseType": "Employee State Insurance Corporation Registration",
+      "licenseNo": "81000362740000900",
+      "issuingAuthority": "Employee State Insurance Corporation Government of India",
+      "validFrom": "2020-12-14",
+      "validTill": "lifetime",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 67,
+      "sno": 6,
+      "licenseType": "Tax Deduction Account Number (TAN)",
+      "licenseNo": "JBPR06529F",
+      "issuingAuthority": "Income Tax Department Government of India",
+      "validFrom": "2020-12-14",
+      "validTill": "lifetime",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 68,
+      "sno": 7,
+      "licenseType": "Labour License (State/Principal)",
+      "licenseNo": "JABA250610CP001041",
+      "issuingAuthority": "Government of Madhya Pradesh Labour Department",
+      "validFrom": "2025-06-10",
+      "validTill": "lifetime",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 69,
+      "sno": 8,
+      "licenseType": "Shops & Establishment Registration Jabalpur, Madhya Pradesh",
+      "licenseNo": "JABA230307SE002577",
+      "issuingAuthority": "Government of Madhya Pradesh",
+      "validFrom": "2020-12-14",
+      "validTill": "lifetime",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over Madhya Pradesh",
+      "status": "valid"
+    },
+    {
+      "db_id": 70,
+      "sno": 9,
+      "licenseType": "Income Tax Returns Assessment Year 2023-24",
+      "licenseNo": null,
+      "issuingAuthority": "Income Tax Department Government of India",
+      "validFrom": "2023-24",
+      "validTill": "valid",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 71,
+      "sno": 10,
+      "licenseType": "Income Tax Returns Assessment Year 2024-25",
+      "licenseNo": null,
+      "issuingAuthority": "Income Tax Department Government of India",
+      "validFrom": "2024-25",
+      "validTill": "valid",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 72,
+      "sno": 11,
+      "licenseType": "Income Tax Returns Assessment Year 2025-26",
+      "licenseNo": null,
+      "issuingAuthority": "Income Tax Department Government of India",
+      "validFrom": "2025-26",
+      "validTill": "valid",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 73,
+      "sno": 12,
+      "licenseType": "Audited Balance Sheets (Last 3 Years)",
+      "licenseNo": null,
+      "issuingAuthority": "Certified by Chartered Accountant",
+      "validFrom": null,
+      "validTill": "lifetime",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    },
+    {
+      "db_id": 74,
+      "sno": 13,
+      "licenseType": "Employee Provident Fund Organization & Employee State Insurance Corporation Challan Copies",
+      "licenseNo": null,
+      "issuingAuthority": "Generated from Government Portals",
+      "validFrom": null,
+      "validTill": "lifetime",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services",
+      "geographicScope": "Valid for all over India",
+      "status": "valid"
+    }
+  ],
+  "licenseStats": {
+    "total": 13,
+    "valid": 13,
+    "expired": 0
+  },
+  "financialDocs": [
+    {
+      "sno": 1,
+      "docType": "Income Tax Returns Assessment Year 2023-24",
+      "refNo": null,
+      "issuingAuthority": "Income Tax Department Government of India",
+      "period": "2023-24",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services"
+    },
+    {
+      "sno": 2,
+      "docType": "Income Tax Returns Assessment Year 2024-25",
+      "refNo": null,
+      "issuingAuthority": "Income Tax Department Government of India",
+      "period": "2024-25",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services"
+    },
+    {
+      "sno": 3,
+      "docType": "Income Tax Returns Assessment Year 2025-26",
+      "refNo": null,
+      "issuingAuthority": "Income Tax Department Government of India",
+      "period": "2025-26",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services"
+    },
+    {
+      "sno": 4,
+      "docType": "Audited Balance Sheet (Last 3 Years)",
+      "refNo": null,
+      "issuingAuthority": "Certified by Chartered Accountant",
+      "period": "Life Time",
+      "applicableFor": "Manpower Outsourcing Services/Security Manpower Services/Facility Management Services"
+    }
+  ],
+  "financials": {
+    "db_id": 3,
+    "annualTurnover": {
+      "fy2024_25": null,
+      "fy2023_24": null,
+      "fy2022_23": null,
+      "unit": "Lakhs INR"
+    },
+    "averageTurnover3Yr": {
+      "value": null,
+      "period": "FY2022-23 to FY2024-25",
+      "unit": "Lakhs INR"
+    },
+    "netWorth": {
+      "fy2024_25": null,
+      "fy2023_24": null,
+      "fy2022_23": null,
+      "unit": "Lakhs INR"
+    },
+    "udin": {
+      "annualTurnover": null,
+      "netWorth": null
+    },
+    "bankSolvency": {
+      "valueLakhs": null,
+      "issuingBank": null
+    },
+    "workingCapital": "Not Provided",
+    "maxManpowerDeployed": null,
+    "totalGovtProjectsExecuted": null,
+    "govtClientsServed": null,
+    "largestSingleWorkOrderValue": null,
+    "largestSimilarWorkExperience": null,
+    "currentActiveCommitments": null,
+    "ongoingCommitmentsLakhs": null
+  },
+  "projects": {
+    "source": "Experience data not yet entered in source file",
+    "note": "Single canonical list. Use status field to filter: 'completed' | 'ongoing'",
+    "stats": {
+      "totalProjects": 0,
+      "completedCount": 0,
+      "ongoingCount": 0,
+      "completedContractValueINR": 0,
+      "ongoingContractValueINR": 0,
+      "completedTotalManpower": 0,
+      "ongoingTotalManpower": 0
+    },
+    "all": []
+  },
+  "msmeAdvantages": {
+    "db_id": 3,
+    "udyamNo": "UDYAM-MP-24-0033929",
+    "nsicRegNo": null,
+    "exemptions": [
+      "EMD Exemption",
+      "Tender Fee Exemption",
+      "Turnover Relaxation (select tenders)",
+      "Prior Experience Relaxation (rare but exists in some state tenders)"
+    ]
+  },
+  "escalationMatrix": {
+    "dedicatedSupportNo": null,
+    "contactPerson": "Mr. Shailesh Rajpal (Director)",
+    "email": null,
+    "registeredOfficeAddress": "240, Rajpal Tower, Nagpur Road, Jabalpur Dist.-JABALPUR",
+    "levels": []
+  },
+  "tenderConditions": [],
+  "recommendedTenderTypes": [
+    "Government Manpower Tenders",
+    "Facility Management Services",
+    "Security Services Tenders",
+    "Data Entry & Computer Operator Contracts"
+  ]
+}

@@ -1,0 +1,192 @@
+[
+  {
+    "id": 53,
+    "companyName": "Rajpal OPC",
+    "documentName": "Shop & Establishment Registration Certificate - Rajpal Services (OPC) Private Limited",
+    "purpose": "Registration Certificate issued under the Madhya Pradesh Dukan Evam Sthapna Adhiniyam, 1958, by District Labour Office, Jabalpur (Registration No. JABA230307SE002577), certifying Rajpal Services (OPC) Private Limited, 240, Rajpal Tower, Nagpur Road, Jabalpur as a Commercial Establishment. Owner: Shailesh Rajpal, Manager: Mahesh Yadav. Business commenced 14/12/2020, registered on 10/03/2023, validity: Life Time. Total employees: 3 (2 Male, 1 Female). Supports eligibility under government procurement norms as proof of legal establishment and labour law compliance.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069437135-1Shop&Establishment.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:10:46.184Z"
+  },
+  {
+    "id": 54,
+    "companyName": "Rajpal OPC",
+    "documentName": "Certificate of Incorporation - Rajpal Services (OPC) Private Limited",
+    "purpose": "Certificate of Incorporation issued by the Ministry of Corporate Affairs, Central Registration Centre, certifying that Rajpal Services (OPC) Private Limited was incorporated on 14th December 2020 under the Companies Act, 2013, as a company limited by shares. Corporate Identity Number (CIN): U74999MP2020OPC054093. PAN: AAKCR6649B. TAN: JBPR06529F. Registered address: 240, Nagpur Road, Madan Mahal, Jabalpur, Madhya Pradesh, 482008. Signed by Deputy Registrar of Companies, Mr. Arvind Kumar Bunkar. Establishes the legal existence and incorporation date of the company for government tender eligibility.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069504709-2CIN.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:11:51.060Z"
+  },
+  {
+    "id": 55,
+    "companyName": "Rajpal OPC",
+    "documentName": "Permanent Account Number (PAN) Card - Rajpal Services (OPC) Private Limited",
+    "purpose": "PAN Card issued by the Income Tax Department, Government of India, for Rajpal Services (OPC) Private Limited. PAN: AAKCR6649B. Date of Incorporation/Formation: 14/12/2020. Required as a mandatory identity and tax registration document for participation in government tenders and procurement processes.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069547529-3PAN.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:12:30.888Z"
+  },
+  {
+    "id": 56,
+    "companyName": "Rajpal OPC",
+    "documentName": "GST Registration Certificate - Rajpal Services (OPC) Private Limited",
+    "purpose": "GST Registration Certificate (Form GST REG-06) issued by the Government of India, Goods and Services Tax Network. GSTIN: 23AAKCR6649B1ZE. Legal Name: Rajpal Services (OPC) Private Limited. Principal Place of Business: Rajpal Tower, Plot No. 261, 240, Narsingh Ward, Nagpur Road, Madan Mahal, Jabalpur, Madhya Pradesh, 482001. Period of Validity: 31/03/2023 to Not Applicable (Regular Registration). Approved by Superintendent Pushker Singh, Jurisdictional Office Jabalpur-1, on 31/03/2023. Director in charge: Shailesh Rajpal, resident of Madhya Pradesh. Demonstrates GST compliance for government procurement eligibility.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069594344-4GST.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:13:20.681Z"
+  },
+  {
+    "id": 57,
+    "companyName": "Rajpal OPC",
+    "documentName": "EPF Registration - Provident Fund Code Number Intimation - Rajpal Services (OPC) Private Limited",
+    "purpose": "Provident Fund Code Number Intimation letter issued by the Employees' Provident Fund Organisation (EPFO), Sub Regional Office, Jabalpur, dated 14/12/2020. EPF Code Number: MPJBP2258903000. Establishment: Rajpal Services (OPC) Private Limited, PAN: AAKCR6649B. Employment strength crossed 19 on 12/12/2022. Primary Activity: Others. Ownership Type: Private Limited Company. Confirms registration under the Employees' Provident Fund and Miscellaneous Provisions Act, 1952, demonstrating statutory labour law compliance required for government tender participation.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069638914-5EPF.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:14:06.761Z"
+  },
+  {
+    "id": 58,
+    "companyName": "Rajpal OPC",
+    "documentName": "ESIC Registration Letter - Rajpal Services (OPC) Private Limited",
+    "purpose": "Registration letter issued by the Employees' State Insurance Corporation, Sub-Regional Office, Panchdeep Bhawan, New Subhash Nagar, Bhopal (M.P.) 462023, dated 14/12/2020, addressed to M/s Rajpal Services (OPC) Private Limited, 240, Nagpur Road, Madan Mahal, Jabalpur - 482008. Establishes coverage of the company under Section 1(5) of the ESI Act, 1948 with effect from 14/12/2020. ESIC Employer Code allotted: 81000362740000999. Branch Office assigned: ESIC Branch Office, Poorbi Ghamapur, Kanch Ghar Colony, Jabalpur - 482001. Demonstrates statutory compliance with ESI obligations, required for government tender eligibility under labour law compliance criteria.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069696423-6ESIC.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:15:07.860Z"
+  },
+  {
+    "id": 59,
+    "companyName": "Rajpal OPC",
+    "documentName": "Memorandum of Association (MOA) - Rajpal Services (OPC) Private LIMITED",
+    "purpose": "e-Memorandum of Association (Form No. INC-33, SPICe MOA) filed under the Companies Act, 2013, for Rajpal Services (OPC) Private Limited, incorporated in the state of Madhya Pradesh. Defines the company's main objects including manpower outsourcing, contract staffing, human resource consultancy, recruitment and placement, facility management services (housekeeping, civil, electrical, plumbing, landscaping, catering, pest control, security, transportation, fleet management), IT and software services, skill development and training, and education. Liability of member is limited to shares held. Subscriber: Shailesh Rajpal, DIN 03613697, Jabalpur, signed 11/12/2020, attested by ACA Harshit Jain, Jabalpur. Establishes the legal objects and scope of business of the company, supporting eligibility for manpower and facility management government tenders.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069744701-7MOA.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:16:00.246Z"
+  },
+  {
+    "id": 60,
+    "companyName": "Rajpal OPC",
+    "documentName": "Articles of Association (AOA) - Rajpal Services (OPC) Private Limited",
+    "purpose": "e-Articles of Association (Form No. INC-34, SPICe+ AOA) filed under the Companies Act, 2013, for Rajpal Services (OPC) Private Limited, a One Person Company (OPC) limited by shares. Covers governance regulations including share capital, lien, calls on shares, transfer and transmission of shares, forfeiture, alteration of capital, capitalisation of profits, buy-back, general meetings, voting rights, Board of Directors composition (First Director: Shailesh Rajpal), proceedings, appointment of Key Managerial Personnel, dividends, accounts, winding up, and indemnity. Minimum paid-up capital: Rs. 1,00,000. Subscriber: Shailesh Rajpal, H. No. 197, Ratan Nagar, Jabalpur, DIN 03613697, DSC dated 11/12/2020. Establishes the internal governance framework of the company, required as a constitutional document in government procurement submissions.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069793591-8AOA.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:16:44.243Z"
+  },
+  {
+    "id": 61,
+    "companyName": "Rajpal OPC",
+    "documentName": "Principal Employer Labour License (Contract Labour Registration Certificate) - Rajpal Services OPC Private Limited",
+    "purpose": "Certificate of Registration issued under sub-section (2) of Section 7 of the Contract Labour (Regulation and Abolition) Act, 1970, and M.P. Rules 1973, Form-II [Rule 18(1)], by the District Labour Office, Jabalpur, Government of Madhya Pradesh Labour Department. Registration No.: JABA250610CP001041, dated 10/06/2025. Registered establishment: Rajpal Services OPC Private Limited, 240, Rajpal Tower, Madan Mahal, Jabalpur. Nature of work: Manpower Staffing. Maximum number of contract labours: 20. Contractor engaged: Whiteforce Outsourcing Services Private Limited, Madan Mahal, Jabalpur, for Manpower Staffing, commencement date 01/01/2025, contract expiry 31/12/2025. Registration fee: Rs. 60.00. Digitally signed by District Labour Office, Jabalpur. Establishes Rajpal Services as a licensed principal employer under the Contract Labour Act, supporting eligibility in government manpower procurement tenders.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069848081-9Pricncipal Labour License.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:17:34.845Z"
+  },
+  {
+    "id": 62,
+    "companyName": "Rajpal OPC",
+    "documentName": "Tax Deduction Account Number (TAN) Allotment Letter - Rajpal Services (OPC) Private Limited",
+    "purpose": "TAN Allotment Letter issued by the Income Tax Department, Government of India (Ref. No. 88305914166374/TAN/NEW), dated 14 December 2020, addressed to Rajpal Services (OPC) Private Limited, 240, Nagpur Road, Madan Mahal, Jabalpur - 482008, Madhya Pradesh (Tel: 7089227218). TAN allotted: JBPR06529F, pursuant to Form 49B application dated 14/12/2020. TAN is required to be quoted on all TDS challans, TDS certificates, TDS returns, Tax Collection at Source (TCS) returns, and other tax-related documents. Digitally signed by Income Tax Department via e-Governance Infrastructure Ltd. Serves as a mandatory tax registration document evidencing compliance with Income Tax Act, 1961, required for government tender participation.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069911861-10TAN.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:18:38.557Z"
+  },
+  {
+    "id": 63,
+    "companyName": "Rajpal OPC",
+    "documentName": "Udyam Registration Certificate - Rajpal Services (OPC) Private Limited",
+    "purpose": "Udyam Registration Certificate issued under the MSME Development Act for M/s Rajpal Services (OPC) Private Limited. Udyam Registration Number: UDYAM-MP-24-0033929. Date of Udyam Registration: 10/05/2023. Enterprise classified as Micro for FY 2023-24 (w.e.f. 10/05/2023), FY 2024-25 (w.e.f. 27/04/2024), and FY 2025-26 (w.e.f. 01/04/2025). Major Activity: Services. Social Category: General. Address: Rajpal Tower, Plot No. 261, 240, Narsingh Ward, Nagpur Road, Jabalpur, Madhya Pradesh - 482001. Date of Incorporation: 14/12/2020. NIC codes cover a broad range of activities including employment placement, temporary staffing, human resources management, security services, building cleaning and industrial cleaning, landscape maintenance, facility management, office administrative support, food and beverage services, IT/computer consultancy, education and training, civil engineering, waste management, and other business support services. Establishes MSME status of the company, qualifying it for benefits under government procurement policies reserving quotas for Micro and Small Enterprises.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778069967471-11UdyamRegistrationCertificate.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:19:34.971Z"
+  },
+  {
+    "id": 64,
+    "companyName": "Rajpal OPC",
+    "documentName": "Income Tax Return Acknowledgement - AY 2022-23 - Rajpal Services (OPC) Private Limited",
+    "purpose": "Income Tax Return Acknowledgement for Assessment Year 2022-23 filed by Rajpal Services (OPC) Private Limited (PAN: AAKCR6649B), 240, Rajpal Tower, Nagpur Road, Madan Mahal, Jabalpur, Madhya Pradesh - 482008. Form: ITR-6. Filed u/s 139(1) on or before due date, dated 18-Oct-2022. e-Filing Acknowledgement Number: 733032921181022. Total Income: Rs. 2,940. Net Tax Payable: Rs. 764. Taxes Paid: Rs. 14,782. Refundable: Rs. 14,020. Demonstrates income tax compliance for FY 2021-22, required to establish financial track record for government tender eligibility.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778070018822-12ITR22-23.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:20:26.682Z"
+  },
+  {
+    "id": 65,
+    "companyName": "Rajpal OPC",
+    "documentName": "Income Tax Return Acknowledgement - AY 2023-24 - Rajpal Services (OPC) Private Limited",
+    "purpose": "Income Tax Return Acknowledgement for Assessment Year 2023-24 filed by Rajpal Services (OPC) Private Limited (PAN: AAKCR6649B), 240, Rajpal Tower, Nagpur Road, Madan Mahal, Jabalpur, Madhya Pradesh - 482008. Form: ITR-6. Filed u/s 139(1) on or before due date, dated 16-Oct-2023. e-Filing Acknowledgement Number: 413490611161023. Total Income: Rs. 27,660. Net Tax Payable: Rs. 7,192. Taxes Paid: Rs. 69,217. Refundable: Rs. 62,030. Digitally signed by Shailesh Rajpal (Director, PAN: AEMPR8069N) at Jabalpur. Demonstrates income tax compliance for FY 2022-23, supporting financial eligibility criteria in government procurement tenders.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778070076252-13ITR23-24.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:21:24.529Z"
+  },
+  {
+    "id": 66,
+    "companyName": "Rajpal OPC",
+    "documentName": "Income Tax Return Acknowledgement - AY 2024-25 - Rajpal Services (OPC) Private Limited",
+    "purpose": "Income Tax Return Acknowledgement for Assessment Year 2024-25 filed by Rajpal Services (OPC) Private Limited (PAN: AAKCR6649B), 240, Rajpal Tower, Nagpur Road, Madan Mahal, Jabalpur, Madhya Pradesh - 482008. Form: ITR-6. Filed u/s 139(1) on or before due date, dated 14-Oct-2024. e-Filing Acknowledgement Number: 601671161141024. Total Income: Rs. 10,510. Net Tax Payable: Rs. 2,733. Taxes Paid: Rs. 2,733. Tax Payable/Refundable: Nil. Verified by Shailesh Rajpal (Director, PAN: AEMPR8069N) on 14-Oct-2024 at Jabalpur. Demonstrates income tax compliance for FY 2023-24, supporting financial eligibility criteria in government procurement tenders.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778070127170-14ITR 24-25.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:22:15.196Z"
+  },
+  {
+    "id": 67,
+    "companyName": "Rajpal OPC",
+    "documentName": "Income Tax Return Acknowledgement - AY 2025-26 - Rajpal Services (OPC) Private Limited",
+    "purpose": "Income Tax Return Acknowledgement for Assessment Year 2025-26 filed by Rajpal Services (OPC) Private Limited (PAN: AAKCR6649B), 240, Rajpal Tower, Nagpur Road, Madan Mahal, Jabalpur, Madhya Pradesh - 482008. Form: ITR-6. Filed u/s 139(1) on or before due date, dated 27-Oct-2025. e-Filing Acknowledgement Number: 286314141271025. Total Income: Rs. 20,220. Net Tax Payable: Rs. 5,257. Taxes Paid: Rs. 5,257. Tax Payable/Refundable: Nil. Digitally signed by Shailesh Rajpal (Director, PAN: AEMPR8069N) at Jabalpur on 27-Oct-2025. Demonstrates income tax compliance for FY 2024-25, supporting financial eligibility criteria in government procurement tenders.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778070182650-15ITR 25-26.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:23:11.041Z"
+  },
+  {
+    "id": 68,
+    "companyName": "Rajpal OPC",
+    "documentName": "Independent Auditor's Report - FY 2023-24 - Rajpal Services (OPC) Private Limited",
+    "purpose": "Independent Auditor's Report by CA Trishala Koshta (Membership No. 437719), Chartered Accountants, Jabalpur, for Rajpal Services (OPC) Private Limited (CIN: U74999MP2020OPC054093) for the financial year ended 31st March 2024. Auditor issued an unqualified opinion stating financial statements give a true and fair view in conformity with Indian GAAP. Key Audit Matter identified: confirmation regarding periodicity of loans and advances taken from Saisun Outsourcing Services Private Limited, classified as short-term on management's confirmation. Balance Sheet as at 31st March 2024 shows total assets/liabilities of Rs. 65,035.38 (in hundreds). Revenue from operations was Rs. 2,942.94 (hundreds) against Rs. 8,891.56 in previous year. Net profit after tax was Rs. 78.61 (hundreds) against Rs. 206.95 in previous year. Non-current investments increased to Rs. 26,000 (hundreds) from Rs. 11,000. Short-term loans and advances stood at Rs. 36,000 (hundreds). Other current liabilities (short-term advance) at Rs. 63,074.36 (hundreds). Related party transactions include loans taken from Director Shailesh Rajpal (Cl. Bl. Rs. 6 Lacs) and Saisun Outsourcing Services Pvt Ltd (Cl. Bl. Rs. 57.07 Lacs). No dividend declared. Audit signed on 04 September 2024, Place: Jabalpur. UDIN: 24437719BKAJWU7040. Establishes audited financial track record for FY 2023-24 for government tender eligibility.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778070320896-16Audit report 2023-24.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:26:03.911Z"
+  },
+  {
+    "id": 69,
+    "companyName": "Rajpal OPC",
+    "documentName": "Independent Auditor's Report - FY 2022-23 - Rajpal Services (OPC) Private Limited",
+    "purpose": "Independent Auditor's Report by CA Trishala Koshta (Membership No. 437719), Chartered Accountants, Jabalpur, for Rajpal Services (OPC) Private Limited (CIN: U74999MP2020OPC054093) for the financial year ended 31st March 2023. Auditor issued an unqualified opinion stating financial statements give a true and fair view in conformity with Indian GAAP. Key Audit Matter identified: confirmation regarding periodicity of loans and advances; management classified inter-corporate loans from Saisun Outsourcing Services Private Limited as short-term. Balance Sheet as at 31st March 2023 shows total assets/liabilities of Rs. 1,10,165.34 (in hundreds). Revenue from operations was Rs. 8,891.56 (hundreds) against Rs. 1,157.24 in previous year. Net profit after tax was Rs. 206.95 (hundreds) against Rs. 22.02 in previous year. Non-current investments stood at Rs. 11,000 (hundreds). Short-term loans and advances (others) at Rs. 89,750 (hundreds). Other current liabilities at Rs. 1,07,824.36 (hundreds) including short-term advance Rs. 1,06,324.36 and advance from customers Rs. 1,500. Notable disclosure: Company received inter-corporate loan of Rs. 1,10,00,000 from Saisun Outsourcing Services Pvt. Ltd.; later given to director Shailesh Rajpal; non-compliance with Section 185 of Companies Act 2013 noted; adjusting entry passed for Rs. 1,08,46,546 transferred back; director confirmed repayment in next financial year. Related party transaction with Saisun Outsourcing Services Private Limited: Rs. 1,53,436 Cr. No dividend declared. Audit signed on 27 September 2023, Place: Jabalpur. UDIN: 23437719BHAANH2474. Establishes audited financial track record for FY 2022-23 for government tender eligibility.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778070399672-Audit Report_FY_2022-23_Rajpal OPC.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:27:11.670Z"
+  },
+  {
+    "id": 70,
+    "companyName": "Rajpal OPC",
+    "documentName": "Independent Auditor's Report - FY 2023-24 (Copy) - Rajpal Services (OPC) Private Limited",
+    "purpose": "Duplicate copy of the Independent Auditor's Report by CA Trishala Koshta (Membership No. 437719) for Rajpal Services (OPC) Private Limited for the financial year ended 31st March 2024. Contents identical to 16Audit_report_2023-24.pdf, including unqualified audit opinion, Balance Sheet as at 31st March 2024 with total assets/liabilities of Rs. 65,035.38 (hundreds), revenue from operations Rs. 2,942.94 (hundreds), net profit after tax Rs. 78.61 (hundreds), related party loan disclosures from Shailesh Rajpal (Director, Cl. Bl. Rs. 6 Lacs) and Saisun Outsourcing Services Pvt Ltd (Cl. Bl. Rs. 57.07 Lacs), and no dividend declared. Audit signed on 04 September 2024. UDIN: 24437719BKAJWU7040. Serves as an additional copy of the audited financial statements for FY 2023-24 for submission in government procurement tenders.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778070466002-Rajpal OPC Audit report 2023-24.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:28:30.841Z"
+  },
+  {
+    "id": 71,
+    "companyName": "Rajpal OPC",
+    "documentName": "Bank Account Details - Rajpal Services OPC Private Limited - Equitas Small Finance Bank",
+    "purpose": "Bank account document for Rajpal Services OPC Private Limited, 240 Nagpur Road, Madan Mahal, Jabalpur - 482008, Madhya Pradesh. Bank: Equitas Small Finance Bank Ltd. Branch: Wright Town, No-1600, Near Chanchala Bal College, Wright Town, Jabalpur - 482001, Madhya Pradesh. Account Number: 2062320707007. Account Type: Advance Current. IFSC Code: ESFB0014011. Document dated 14-09-2022 (envelope/dispatch reference SOLO-46720-14-09-2022). Includes a blank cheque leaf issued in the name of Rajpal Services OPC Private Limited bearing account number and branch MICR details. Establishes active bank account details of the company for government tender submission, vendor registration, and payment processing purposes.",
+    "fileType": "pdf",
+    "path": "/assets/tenderDocuments/1778070554907-Rajpal_OPC_Bank Details.pdf.pdf",
+    "isActive": true,
+    "uploadedAt": "2026-05-06T12:29:21.463Z"
+  }
+]

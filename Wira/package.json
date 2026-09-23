@@ -1,0 +1,14 @@
+{
+  "name": "wira",
+  "version": "1.0.0",
+  "description": "Wira Microservice",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pm2 restart Wira_Server --update-env",
+    "logs": "pm2 logs Wira_Server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

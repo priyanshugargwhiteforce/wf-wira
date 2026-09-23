@@ -1,0 +1,1393 @@
+{
+  "version": "1.0.0",
+  "description": "Comprehensive Government Tender Eligibility Rule Set — covers financial, legal, geographic, compliance, documentation, and procedural checks",
+  "allowedRules": [],
+  "categories": [
+    {
+      "id": "financial",
+      "label": "Financial Eligibility",
+      "icon": "₹",
+      "rules": [
+        {
+          "id": "FIN-001",
+          "title": "Minimum Annual Turnover",
+          "prompt": "Avg turnover over tender-specified years must clearly exceed threshold. Same business line only.",
+          "description": "Company's average annual turnover over the specified number of years (typically 3 years) must clearly exceed the tender's minimum threshold. Turnover must be from the same or closely related business line.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "FIN-002",
+          "title": "Turnover Calculation Period",
+          "prompt": "Averaging period (years) must exactly match tender spec. Wrong period invalidates the figure.",
+          "description": "The number of financial years over which turnover is averaged must match exactly what the tender specifies. Using 5-year average when tender says 3 years, or vice versa, will invalidate the figure.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "FIN-003",
+          "title": "Turnover from Relevant Business Line Only",
+          "prompt": "Only turnover from the tendered service category counts. Unrelated income must be excluded.",
+          "description": "Only turnover from the tendered service category should be included. Inflating figures by including unrelated business income is a disqualification ground during scrutiny.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "FIN-004",
+          "title": "Net Worth Requirement",
+          "prompt": "Net worth must be positive and meet tender minimum. Accumulated losses exceeding paid-up capital = fail.",
+          "description": "Some tenders specify a minimum positive net worth. Company must not have negative net worth or accumulated losses exceeding paid-up capital.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "FIN-005",
+          "title": "Year-Specific Turnover Threshold",
+          "prompt": "If tender requires a specific year's turnover to exceed threshold, verify that year independently.",
+          "description": "Certain tenders require turnover in a specific financial year to exceed a threshold — not just the average. Both conditions must be independently verified.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "FIN-006",
+          "title": "Foreign Currency Turnover Conversion",
+          "prompt": "Foreign currency turnover must be converted to INR at RBI rate on tender-specified date.",
+          "description": "If any portion of turnover is in foreign currency, it must be converted to INR using the RBI reference rate on the specified date. Wrong conversion rates can result in shortfall.",
+          "severity": "medium",
+          "source": "general_compliance"
+        },
+        {
+          "id": "FIN-007",
+          "title": "Audited Balance Sheets",
+          "prompt": "Financials must come from CA-audited balance sheets. Must be explicitly stated as audited.",
+          "description": "Turnover and financial figures must come from CA-audited balance sheets, not management accounts or internal estimates. Must be explicitly referenced as audited in the company profile.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "FIN-008",
+          "title": "CA Turnover Certificate with UDIN",
+          "prompt": "CA certificate on letterhead with valid UDIN required. Must be explicitly present in profile.",
+          "description": "Many tenders require a separate CA certificate confirming turnover figures. Certificate must be on letterhead, signed, and carry a valid UDIN number verifiable on the ICAI portal.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "FIN-009",
+          "title": "UDIN Verification",
+          "prompt": "UDIN on CA certificate must be verifiable at udin.icai.org. Invalid UDIN = rejection.",
+          "description": "UDIN on CA certificate must be verifiable at udin.icai.org. An invalid or fake UDIN is grounds for rejection even if financials are genuine.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "FIN-010",
+          "title": "Net Worth Certificate",
+          "prompt": "Separate net worth certificate from CA required if tender specifies it. Must state figure and date.",
+          "description": "When tender requires net worth certificate separately from turnover, it must be issued by a CA or statutory auditor and must clearly state the figure as of a recent date.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "FIN-011",
+          "title": "Credit Rating",
+          "prompt": "If tender requires minimum credit rating, no rating or below-threshold rating is a hard disqualifier.",
+          "description": "Large tenders may require a minimum credit rating (e.g. CRISIL BBB or above). If company has no credit rating or rating is below threshold, this is a hard disqualifier.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "FIN-012",
+          "title": "Solvency Certificate — Scheduled Bank",
+          "prompt": "Solvency certificate must be from a scheduled commercial bank. Co-op/NBFC/payment bank = rejected.",
+          "description": "Bank solvency certificate must be issued by a scheduled commercial bank. Certificates from cooperative banks, NBFCs, or payment banks are typically not accepted.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "FIN-013",
+          "title": "Solvency Certificate — Recency",
+          "prompt": "Solvency certificate must not be older than tender-specified months from bid submission date.",
+          "description": "Many tenders specify the solvency certificate must not be older than 3 or 6 months from bid submission date. An expired solvency certificate is a document failure.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "FIN-014",
+          "title": "Solvency Amount vs EMD",
+          "prompt": "Bank solvency must clearly cover full EMD amount. Solvency < EMD = ineligible.",
+          "description": "Bank solvency figure must clearly cover the full EMD amount. If solvency is Rs 10L but EMD is Rs 15L, the company is financially ineligible for bid security.",
+          "severity": "critical",
+          "source": "derived_calculation"
+        },
+        {
+          "id": "FIN-015",
+          "title": "Solvency Amount vs PBG",
+          "prompt": "Calculate ePBG% × bid value = required PBG. Solvency must clearly exceed this amount.",
+          "description": "Bank solvency must also cover the Performance Bank Guarantee (ePBG%). Calculate: ePBG% × Bid Value = Required PBG. Solvency must clearly exceed this amount.",
+          "severity": "critical",
+          "source": "derived_calculation"
+        },
+        {
+          "id": "FIN-016",
+          "title": "Solvency Must Cover EMD + PBG Simultaneously",
+          "prompt": "Solvency must cover EMD + PBG combined, not each individually.",
+          "description": "Some tenders require EMD and PBG to be in place at the same time. Solvency must be sufficient to cover both combined, not just each individually.",
+          "severity": "high",
+          "source": "derived_calculation"
+        },
+        {
+          "id": "FIN-017",
+          "title": "Solvency from Overdraft Account",
+          "prompt": "If tender disallows overdraft/CC accounts for solvency, flag if company's account has active OD limit.",
+          "description": "Some tenders explicitly disallow solvency certificates from accounts where the company has an active overdraft or CC limit, as the 'solvency' is actually borrowed money.",
+          "severity": "medium",
+          "source": "tender_document"
+        }
+      ]
+    },
+    {
+      "id": "emd_pbg",
+      "label": "EMD & Bid Security",
+      "icon": "🔐",
+      "rules": [
+        {
+          "id": "EMD-001",
+          "title": "EMD Amount Correctness",
+          "prompt": "EMD must match exact tender amount (check latest corrigendum). Even Re 1 short = rejection.",
+          "description": "EMD must be deposited for the exact amount stated in the tender. Short payment — even by Re 1 — is grounds for rejection. Always verify the amount in the latest corrigendum, not the original notice.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "EMD-002",
+          "title": "EMD Instrument Type",
+          "prompt": "EMD instrument type must match tender spec (DD/BG/FDR/NEFT). Wrong instrument = rejection.",
+          "description": "Tender may specify instrument type: DD, BG, FDR, NEFT, or e-payment. Submitting a cheque when DD is required, or FDR when BG is required, will result in rejection.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "EMD-003",
+          "title": "EMD from Scheduled Bank",
+          "prompt": "EMD BG must be from RBI-approved scheduled bank. Co-op or private bank BGs commonly rejected.",
+          "description": "If EMD is in the form of a Bank Guarantee, it must be issued by a scheduled commercial bank on the RBI approved list. Cooperative or private bank BGs are commonly rejected.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EMD-004",
+          "title": "EMD BG Validity Period",
+          "prompt": "EMD BG validity must cover bid validity plus tender-specified buffer. Short validity = rejected.",
+          "description": "EMD Bank Guarantee validity must cover the bid validity period plus a buffer (typically 30–45 days extra). Tender will specify minimum validity. Short-validity BGs are rejected.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "EMD-005",
+          "title": "EMD BG in Prescribed Format",
+          "prompt": "EMD BG must use tender's prescribed format exactly. Any deviation in clauses = rejection.",
+          "description": "Many tenders provide a specific BG format in the annexures. The bank must issue the BG in that exact format. Deviations in clauses (especially unconditional payment language) lead to rejection.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "EMD-006",
+          "title": "MSME EMD Exemption Validity",
+          "prompt": "MSME EMD exemption requires valid active UDYAM cert with correct NIC code. Expired = no exemption.",
+          "description": "MSME (UDYAM registered) companies may be exempt from EMD. However, UDYAM certificate must be valid and active. An expired or incorrect NIC code voids the exemption.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EMD-007",
+          "title": "Startup EMD Exemption Validity",
+          "prompt": "DPIIT startup exemption requires valid recognition within 10yr limit and below revenue ceiling.",
+          "description": "DPIIT-recognized startups may claim EMD exemption. The DPIIT certificate must be valid (10-year limit from incorporation) and the company must not have crossed the revenue threshold that disqualifies startup status.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EMD-008",
+          "title": "EMD Exemption — Tender Explicitly Allows It",
+          "prompt": "Even with MSME/startup cert, if tender states no EMD exemption, full EMD is mandatory.",
+          "description": "Even if company holds MSME/Startup certificate, some tenders explicitly state 'No EMD exemption for this tender category.' The tender document takes precedence over general exemption rights.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "EMD-009",
+          "title": "PBG Percentage Matches Tender",
+          "prompt": "PBG percentage in financial bid must exactly match tender-specified percentage.",
+          "description": "Performance Bank Guarantee percentage (typically 3–10% of contract value) must match exactly what the tender specifies. Using a different percentage in the financial bid creates a discrepancy.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "EMD-010",
+          "title": "PBG Duration Matches Contract Period",
+          "prompt": "PBG validity must cover full contract period plus defect liability period.",
+          "description": "PBG must remain valid for the entire contract period plus the defect liability period. If PBG duration is shorter than contract end + DLP, it will be flagged during scrutiny.",
+          "severity": "high",
+          "source": "derived_calculation"
+        }
+      ]
+    },
+    {
+      "id": "experience",
+      "label": "Experience & Past Work",
+      "icon": "📋",
+      "rules": [
+        {
+          "id": "EXP-001",
+          "title": "Domain Experience — Exact Service Match",
+          "prompt": "Past work must operationally match tender service. Railway cleaning ≠ FM. Manpower supply ≠ FM.",
+          "description": "Past experience must match the specific operational nature of the tender, not just the broad category. Railway station cleaning ≠ hospital housekeeping. IT campus FM ≠ industrial estate maintenance. Manpower supply ≠ facility management.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-002",
+          "title": "Experience from Government/PSU Clients",
+          "prompt": "If tender requires govt/PSU experience, private sector work does not count even if same type.",
+          "description": "Many tenders require experience specifically from government, PSU, or defense clients. Private sector experience may not be counted even if the work type is identical.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "EXP-003",
+          "title": "Experience Period — Within Specified Years",
+          "prompt": "Only projects completed within tender-specified years window count. Older projects excluded.",
+          "description": "Tender typically says 'work completed within last 5/7 years from bid submission date.' Projects completed before this window cannot be counted, even if highly relevant.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "EXP-004",
+          "title": "Single Contract Value Threshold",
+          "prompt": "One single contract must meet minimum value. Multiple small contracts combined do not substitute.",
+          "description": "Many tenders require at least one single contract of a minimum value (e.g. 'one contract of at least 40% of annual threshold'). Multiple small contracts that together add up do not substitute.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "EXP-005",
+          "title": "Simultaneous Execution — No Overlap Count",
+          "prompt": "Simultaneous project periods must genuinely overlap. Consecutive projects cannot be counted.",
+          "description": "When tender asks for experience of executing two projects simultaneously, the periods must genuinely overlap. Listing consecutive projects as 'simultaneous' is a misrepresentation.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-006",
+          "title": "Experience in Bidding Entity's Name Only",
+          "prompt": "Experience must be in exact bidding entity's name. Sister/parent/subsidiary work not claimable.",
+          "description": "Experience from a sister company, subsidiary, parent company, or holding entity cannot be claimed by the bidding company unless explicitly allowed. The work must have been done by the exact legal entity submitting the bid.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-007",
+          "title": "Sub-contractor vs Prime Contractor",
+          "prompt": "Sub-contractor experience cannot be claimed as own. Must have been prime contractor.",
+          "description": "If company was a sub-contractor on a project, the experience typically cannot be claimed as own experience. Tender may require experience as prime/main contractor. Sub-contract work orders are different from client work orders.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-008",
+          "title": "Completion Certificates — All Projects",
+          "prompt": "Every claimed project needs a client completion certificate. Work order alone is insufficient.",
+          "description": "Every experience project must be backed by a completion certificate from the client. Projects with only work orders and no completion certificates are incomplete proof.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-009",
+          "title": "Completion Certificate — Authorized Signatory",
+          "prompt": "Completion certificate must be signed by authorized client officer, not junior staff.",
+          "description": "Certificate must be issued by an authorized signatory of the client organization — not a junior officer or field supervisor. Designation must be clearly stated.",
+          "severity": "medium",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-010",
+          "title": "Completion Certificate — Mentions Contract Value",
+          "prompt": "Completion certificate must state contract value explicitly. Value-less certificates don't prove threshold.",
+          "description": "Certificate must explicitly state the contract value. A certificate that says 'work done satisfactorily' without mentioning value cannot be used to prove financial experience threshold.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-011",
+          "title": "Completion Certificate — Mentions Duration",
+          "prompt": "Completion certificate must state service period/duration explicitly.",
+          "description": "Certificate must mention the period of service. Duration is needed to calculate average deployment, manpower deployed, and to verify the project falls within the eligibility window.",
+          "severity": "medium",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-012",
+          "title": "Completion Certificate on Official Letterhead",
+          "prompt": "Completion certificate must be on client's official letterhead with seal. Plain paper rejected.",
+          "description": "Certificate must be on the client's official letterhead with seal/stamp. Informal letters, emails, or plain paper certificates are typically not accepted.",
+          "severity": "medium",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-013",
+          "title": "Ongoing Projects — Completion Percentage",
+          "prompt": "Check if tender allows ongoing projects and what minimum completion % is required.",
+          "description": "Some tenders accept ongoing projects if a minimum percentage (e.g. 80%) is complete. Others require 100% completion. Verify what the tender allows before including ongoing work.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "EXP-014",
+          "title": "JV Experience — Own Share Documentation",
+          "prompt": "JV experience: only company's proportionate share of value/scope is claimable. JV agreement required.",
+          "description": "If experience was gained through a Joint Venture, only the company's proportionate share of the contract value and scope can be claimed. JV agreement must be submitted to prove share percentage.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-015",
+          "title": "Acquired Company Experience",
+          "prompt": "Acquired entity experience needs merger/acquisition docs to trace lineage documentarily.",
+          "description": "If claiming experience from an acquired or merged company, the merger/acquisition order and certificate of incorporation of the merged entity must be submitted. The lineage must be documentarily traceable.",
+          "severity": "medium",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-016",
+          "title": "Letter of Intent vs Work Order",
+          "prompt": "LoI is not proof of experience unless tender explicitly allows it. Only executed work orders count.",
+          "description": "Some tenders do not accept LoI (Letter of Intent) as proof of experience. Only executed work orders or contracts count. If LoI was submitted, verify if tender explicitly allows it.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "EXP-017",
+          "title": "Minimum Headcount in Past Projects",
+          "prompt": "Past project headcount must be comparable to tender's required deployment size.",
+          "description": "If tender requires deployment of X manpower, past projects should demonstrate the company has managed at least that headcount. A company whose largest project was 50 people cannot credibly bid for 500-person deployment.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "EXP-018",
+          "title": "Railway-Specific Experience",
+          "prompt": "Railway OEA/PFTR/station cleaning needs prior railway station/coach cleaning contracts. FM/manpower supply does NOT qualify.",
+          "description": "Railway cleaning, OEA, PFTR, and station housekeeping tenders specifically require prior railway station or coach cleaning contracts. Defence facility management, IT campus FM, or generic housekeeping does NOT qualify.",
+          "severity": "critical",
+          "source": "domain_specific"
+        }
+      ]
+    },
+    {
+      "id": "geographic",
+      "label": "Geographic & Jurisdictional",
+      "icon": "📍",
+      "rules": [
+        {
+          "id": "GEO-001",
+          "title": "State Labour Licence — Exact State Match",
+          "prompt": "State labour licence must be for exact tender state. Different state licence does not cover.",
+          "description": "State labour licence must be issued for the same state as the tender location. A licence for Maharashtra does NOT cover a tender in Karnataka, even if the work type is identical.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "GEO-002",
+          "title": "State Labour Licence — Exact District Match",
+          "prompt": "District-specific licence does not cover other districts even in same state.",
+          "description": "Within the same state, a district-specific labour licence does NOT automatically cover another district. A licence issued for Jabalpur does not cover Singrauli, both in Madhya Pradesh.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "GEO-003",
+          "title": "Central Labour Licence — Scope Limitation",
+          "prompt": "Central labour licence covers only central govt establishments. Cannot substitute state licence.",
+          "description": "A central government contract labour licence covers only central government establishments. It CANNOT substitute for a state labour licence when the tender is for a state government, PSU, or railway contract.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "GEO-004",
+          "title": "EPF Registration — State Code Match",
+          "prompt": "EPF code prefix must match tender state. Different prefix = no coverage in tender state.",
+          "description": "EPF regional code prefix must match the tender state. MPJBP = Madhya Pradesh Jabalpur. If tender is in a different state, company must demonstrate multi-state EPF coverage or a separate sub-code in the tender state.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "GEO-005",
+          "title": "ESIC Registration — Tender State Sub-code",
+          "prompt": "ESIC sub-code must be active in tender state. Head office code from another state insufficient.",
+          "description": "ESIC sub-code must be active in the tender state for wage disbursement to workers. A head office ESIC code from a different state may not be sufficient for compliance in the tender location.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "GEO-006",
+          "title": "GST Registration — Tender State",
+          "prompt": "Home state GST does not equal tender state presence. Inter-state needs tender state GST.",
+          "description": "GST registration in the home state does not constitute presence in the tender state. For inter-state contracts, the company should have or be able to obtain GST registration in the tender state.",
+          "severity": "medium",
+          "source": "general_compliance"
+        },
+        {
+          "id": "GEO-007",
+          "title": "Past Projects in Tender State",
+          "prompt": "No past projects in tender state is a geographic readiness flag. Flag if absent.",
+          "description": "Previous work completed in the tender state is a positive indicator of geographic capability. Absence of any past project in the tender state raises a flag for operational readiness.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "GEO-008",
+          "title": "Physical Office / Branch in Tender Location",
+          "prompt": "If tender requires local office, head office or nearby city does not substitute.",
+          "description": "Some tenders require a local office in the tender city or state. Central office or nearby city presence does not substitute. Post-award condition to open office should be noted separately.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "GEO-009",
+          "title": "Minimum Wages — Tender State Rates",
+          "prompt": "Company must comply with tender state minimum wages, not home state rates.",
+          "description": "Company must be paying or capable of paying minimum wages as notified by the tender state, not the home state. Wage structures must be recalculated for the tender location.",
+          "severity": "medium",
+          "source": "general_compliance"
+        },
+        {
+          "id": "GEO-010",
+          "title": "Professional Tax Registration — Tender State",
+          "prompt": "PT registration required in MH/KA/WB/TG. Flag if deploying staff there without it.",
+          "description": "States like Maharashtra, Karnataka, West Bengal, and Telangana require Professional Tax registration for employers. Deploying staff in these states without PT registration is non-compliant.",
+          "severity": "medium",
+          "source": "state_specific"
+        },
+        {
+          "id": "GEO-011",
+          "title": "Shop & Establishment Act — Tender City",
+          "prompt": "S&E Act registration must be in tender city if required. City-specific, not state-wide.",
+          "description": "Certain tenders require the company to hold a valid Shops & Establishment registration in the tender city. This is a municipal/state-level registration and is city-specific.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "GEO-012",
+          "title": "Employment Exchange Registration — Tender State",
+          "prompt": "Some states require employment exchange registration for employers. Check if tender state mandates it.",
+          "description": "Some state governments require employers deploying manpower to be registered with the local employment exchange. This is a state-specific requirement and varies by notification.",
+          "severity": "low",
+          "source": "state_specific"
+        },
+        {
+          "id": "GEO-013",
+          "title": "Contract Labour Licence — Headcount Coverage",
+          "prompt": "Labour licence worker limit must cover tender's required deployment headcount.",
+          "description": "Contract Labour Act licence specifies a maximum number of workers. If the tender requires deploying 300 workers but the licence allows only 100, the licence is insufficient.",
+          "severity": "critical",
+          "source": "general_compliance"
+        }
+      ]
+    },
+    {
+      "id": "registrations",
+      "label": "Registrations & Certifications",
+      "icon": "📜",
+      "rules": [
+        {
+          "id": "REG-001",
+          "title": "PAN — Valid and Active",
+          "prompt": "PAN must be in exact bidding entity's name. Director or related entity PAN not acceptable.",
+          "description": "Company must hold a valid PAN issued to the exact legal entity bidding. PAN of a director, individual, or related entity is not acceptable.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "REG-002",
+          "title": "GST — Valid and Active",
+          "prompt": "GST must be active, not suspended, in bidding entity's exact legal name.",
+          "description": "GST registration must be active and not suspended. GST number must match the legal name of the bidding entity. Suspended GST is a disqualifier.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "REG-003",
+          "title": "EPF — Valid Registration",
+          "prompt": "EPF code must be active and belong to exact bidding entity, not parent or group.",
+          "description": "EPF registration code must be active and belong to the bidding entity. EPF code of a group company or parent is not acceptable as the bidder's own registration.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "REG-004",
+          "title": "ESIC — Valid Registration",
+          "prompt": "ESIC registration must be active. Mandatory if any deployed staff wages are below ESIC threshold.",
+          "description": "ESIC registration must be active. For tenders involving any deployment of staff eligible for ESIC coverage (wages below threshold), this is mandatory.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "REG-005",
+          "title": "ISO 9001 — Valid and Scope-Matched",
+          "prompt": "ISO 9001 must be current and scope must cover the tendered service category explicitly.",
+          "description": "ISO 9001 certificate must be current and its scope must explicitly cover the tendered service category. A certificate scoped for 'IT Services' is not valid for 'Facility Management' tenders.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "REG-006",
+          "title": "ISO 9001 — Valid Through Contract End Date",
+          "prompt": "ISO 9001 expiry must be after contract end date (submission date + contract months). If not: Unsure.",
+          "description": "ISO 9001 must not expire before the contract end date (submission date + contract duration in months). Mid-contract expiry is a contractual compliance risk and often flagged.",
+          "severity": "medium",
+          "source": "derived_calculation"
+        },
+        {
+          "id": "REG-007",
+          "title": "ISO 45001 — Valid and Through Contract End",
+          "prompt": "ISO 45001 expiry must be after contract end date. If expires before contract end: Unsure.",
+          "description": "ISO 45001 (Occupational Health & Safety) must be current and its validity must extend through the full contract period. Expiry before contract end is flagged as Unsure.",
+          "severity": "medium",
+          "source": "derived_calculation"
+        },
+        {
+          "id": "REG-008",
+          "title": "ISO 14001 — Valid and Through Contract End",
+          "prompt": "ISO 14001 expiry must be after contract end date. If expires before contract end: Unsure.",
+          "description": "ISO 14001 (Environmental Management) must be valid through the contract end date. Required for tenders involving waste management, outdoor services, or environmentally sensitive sites.",
+          "severity": "medium",
+          "source": "derived_calculation"
+        },
+        {
+          "id": "REG-009",
+          "title": "ISO 27001 — Valid and Through Contract End",
+          "prompt": "ISO 27001 expiry must be after contract end date. If expires before contract end: Unsure.",
+          "description": "ISO 27001 (Information Security) required for tenders involving data centres, IT campuses, or sensitive installations. Must remain valid through contract end.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "REG-010",
+          "title": "ISO Issued by NABCB-Accredited Body",
+          "prompt": "If tender requires NABCB/IAF accreditation, verify issuing body is accredited. Unaccredited = risk.",
+          "description": "Some tenders require ISO certificates to be issued by certification bodies accredited under NABCB (National Accreditation Board for Certification Bodies) or IAF-recognized bodies. Certificates from non-accredited bodies may be rejected.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "REG-011",
+          "title": "ISO Issued to Bidding Entity — Not Parent",
+          "prompt": "ISO cert must be in exact bidding entity's name. Parent or subsidiary cert not acceptable.",
+          "description": "ISO certificate must be in the name of the exact legal entity submitting the bid, not a parent company, subsidiary, or group entity.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "REG-012",
+          "title": "UDYAM / MSME Registration",
+          "prompt": "Valid UDYAM number required for MSE preference/EMD exemption. Old NSIC/MSME cert may not suffice.",
+          "description": "For MSE bid preferences and EMD exemptions, company must hold a valid UDYAM registration. Old MSME/NSIC certificates that have not been migrated to UDYAM portal may not be accepted.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "REG-013",
+          "title": "UDYAM NIC Code Matches Tender Category",
+          "prompt": "UDYAM NIC code must align with tender service category. Mismatch voids MSE preference.",
+          "description": "The NIC (business activity) code on the UDYAM certificate must align with the service category of the tender. A mismatched NIC code can void the MSE purchase preference claim.",
+          "severity": "medium",
+          "source": "general_compliance"
+        },
+        {
+          "id": "REG-014",
+          "title": "UDYAM Turnover within MSME Limits",
+          "prompt": "If turnover exceeds ₹250Cr (services), MSME status is void even if old cert exists.",
+          "description": "If company's turnover has grown beyond the MSME threshold (₹250 Cr for services), it no longer qualifies as MSME even if old certificate exists. UDYAM status auto-revises based on ITR.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "REG-015",
+          "title": "DPIIT Startup Recognition",
+          "prompt": "Startup exemptions need valid DPIIT cert within 10yr from incorporation and below revenue ceiling.",
+          "description": "Startup exemptions (EMD, turnover) require valid DPIIT recognition. Recognition is valid for 10 years from incorporation. Company must not have exceeded the startup revenue ceiling.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "REG-016",
+          "title": "Company Registration — Correct Legal Form",
+          "prompt": "If tender restricts legal form (Pvt Ltd only), proprietorship/LLP/partnership may be ineligible.",
+          "description": "Some tenders restrict bidding to specific legal forms (e.g. 'only companies registered under Companies Act 2013'). Proprietorships, partnerships, or LLPs may be ineligible.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "REG-017",
+          "title": "Company Incorporation Date vs Experience Period",
+          "prompt": "Incorporation date must pre-date all claimed experience. Cannot claim work before company existed.",
+          "description": "If company was incorporated after the start of the claimed experience period, it cannot logically have performed that work. Incorporation date must pre-date all claimed experience.",
+          "severity": "critical",
+          "source": "general_compliance"
+        }
+      ]
+    },
+    {
+      "id": "legal",
+      "label": "Legal Standing & Compliance",
+      "icon": "⚖️",
+      "rules": [
+        {
+          "id": "LEG-001",
+          "title": "Not Blacklisted — Any Government Department",
+          "prompt": "Company must not be blacklisted/debarred by any govt dept or PSU. Unsure if not confirmed.",
+          "description": "Company must not be blacklisted, debarred, or suspended by any government department, PSU, ministry, or authority in India. Blacklisting by one body is often treated as grounds for rejection across others.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "LEG-002",
+          "title": "Not Under Insolvency (NCLT)",
+          "prompt": "Active NCLT insolvency = absolute disqualifier. Unsure if profile does not confirm.",
+          "description": "Company must not be undergoing NCLT insolvency resolution proceedings. An active insolvency case is an absolute disqualifier for government contracts.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "LEG-003",
+          "title": "Not Under Liquidation or Winding Up",
+          "prompt": "Company must not be under liquidation or winding up. Unsure if profile does not confirm.",
+          "description": "Company must not be under voluntary or court-ordered liquidation or winding up proceedings.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "LEG-004",
+          "title": "Director Not on Blacklist",
+          "prompt": "Key directors must not be individually blacklisted. Unsure if profile does not confirm.",
+          "description": "Key directors or promoters of the company must not be individually blacklisted or debarred. Director-level debarment can extend disqualification to the company.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "LEG-005",
+          "title": "No Pending Litigation with Tendering Authority",
+          "prompt": "Active litigation with specific tendering authority is a rejection risk. Flag if present.",
+          "description": "Active litigation, arbitration, or dispute between the company and the specific tendering authority can be used as a ground for rejection at their discretion.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "LEG-006",
+          "title": "RBI Defaulter List",
+          "prompt": "Company or promoters on RBI willful defaulter list blocks bid securities. Flag if present.",
+          "description": "If company or its promoters appear on RBI's willful defaulter list or CIBIL CMR is critically low, some PSUs and banks will refuse to process their bid securities or solvency certificates.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "LEG-007",
+          "title": "Integrity Pact Signed",
+          "prompt": "Signed Integrity Pact required if tender mandates it. Missing = document failure.",
+          "description": "Many tenders require submission of a signed Integrity Pact between bidder and the Independent External Monitor. Missing or unsigned Integrity Pact is a document failure.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "LEG-008",
+          "title": "Self-Declaration — No Conflict of Interest",
+          "prompt": "Self-declaration of no conflict of interest required if tender mandates it.",
+          "description": "Some tenders require a self-declaration that the bidder has no conflict of interest with other bidders or with the tendering department's employees.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "LEG-009",
+          "title": "Undertaking of Non-Conviction",
+          "prompt": "Non-conviction undertaking for company and directors required if tender mandates it.",
+          "description": "Tender may require a declaration that neither the company nor its directors have been convicted of any criminal offense involving fraud, corruption, or moral turpitude.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "LEG-010",
+          "title": "Labour Law Compliance History",
+          "prompt": "PF/ESIC returns, min wage history, bonus/gratuity compliance must be evidenced. Pending notices = risk.",
+          "description": "PF returns, ESIC returns, minimum wage payment history, and bonus/gratuity compliance must be evidenced. Pending challans, notices, or violations in the company's compliance history can affect scoring.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "LEG-011",
+          "title": "New Labour Codes Compliance",
+          "prompt": "Confirm readiness for 4 new Labour Codes if tender asks. Unsure if not explicitly confirmed.",
+          "description": "Four new Labour Codes (Code on Wages, Industrial Relations Code, Social Security Code, Occupational Safety Code) — readiness to comply with these is increasingly asked in tenders.",
+          "severity": "low",
+          "source": "general_compliance"
+        }
+      ]
+    },
+    {
+      "id": "documentation",
+      "label": "Document Quality & Format",
+      "icon": "📄",
+      "rules": [
+        {
+          "id": "DOC-001",
+          "title": "All Mandatory Annexures Submitted",
+          "prompt": "Every mandatory annexure must be submitted. Missing even one = rejection.",
+          "description": "Every annexure listed in the tender document as 'mandatory' must be submitted, even if it's a blank or N/A declaration. A missing mandatory form is grounds for rejection regardless of other merits.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "DOC-002",
+          "title": "Authorized Signatory — Correct Name and Role",
+          "prompt": "Signatory on all documents must match Board Resolution or PoA exactly.",
+          "description": "The person signing all bid documents must match the Board Resolution or Power of Attorney. Name mismatch between signatory on documents and authorization letters is a document failure.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "DOC-003",
+          "title": "Board Resolution — Tender-Specific Authorization",
+          "prompt": "Board Resolution should authorize signatory for this specific tender or govt submissions.",
+          "description": "Board Resolution should ideally authorize the signatory for 'government tender submissions' or 'this specific tender.' A generic old resolution may be challenged.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "DOC-004",
+          "title": "Power of Attorney — Notarized",
+          "prompt": "PoA must be notarized on stamp paper. Unnotarized PoA frequently rejected.",
+          "description": "If PoA is used instead of Board Resolution, it must typically be notarized and may need to be on stamp paper. Unnotarized PoA is frequently rejected.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "DOC-005",
+          "title": "DSC — Correct Class and Active",
+          "prompt": "DSC must be Class 3, in authorized signatory's name, and not expired at submission.",
+          "description": "Digital Signature Certificate must be of the correct class (Class 3 for most government portals), in the name of the authorized signatory, and must not be expired at the time of bid submission.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "DOC-006",
+          "title": "DSC — Registered to Authorized Signatory",
+          "prompt": "DSC used for upload must be registered to authorized signatory, not IT staff or others.",
+          "description": "DSC used to upload the bid must be registered to the authorized signatory's name, not an employee, IT staff, or third party. Using another person's DSC is a misrepresentation.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "DOC-007",
+          "title": "Documents on Official Letterhead",
+          "prompt": "Undertakings and declarations must be on company letterhead with address, CIN, signatory.",
+          "description": "Undertakings, declarations, and certificates must be on company's official letterhead with registered address, CIN, and authorized signatory details. Plain paper submissions are rejected.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "DOC-008",
+          "title": "Self-Attestation on Every Page",
+          "prompt": "Each page must be self-attested if required. Cover page only attestation may not suffice.",
+          "description": "Where required, each page of submitted documents must be self-attested by the authorized signatory. Bulk self-attestation on cover page only may not be accepted.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "DOC-009",
+          "title": "Notarized Copies When Required",
+          "prompt": "Affidavits/stamp paper docs need notarization. Self-attestation cannot substitute.",
+          "description": "Some documents (affidavits, declarations on stamp paper) require notarization. Self-attested copies cannot substitute for notarized ones.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "DOC-010",
+          "title": "Documents in Correct File Format",
+          "prompt": "All uploads must be in portal-required format (usually PDF). Wrong format = rejected.",
+          "description": "Portal may require documents in specific formats (PDF only, not Word/Excel). Uploading in wrong format may cause system rejection or evaluator rejection.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "DOC-011",
+          "title": "File Size Within Portal Limits",
+          "prompt": "Each file must be within portal size limits. Oversized files fail to upload.",
+          "description": "Government portals often have per-file and total upload size limits. Oversized files may fail to upload or be rejected by the system, resulting in incomplete submission.",
+          "severity": "medium",
+          "source": "procedural"
+        },
+        {
+          "id": "DOC-012",
+          "title": "Document Scan Quality — Minimum DPI",
+          "prompt": "Scanned docs must be legible at minimum 200 DPI. Illegible scans rejected.",
+          "description": "Scanned documents must be legible. Extremely low DPI scans may be rejected as unreadable during evaluation. Standard requirement is typically 200 DPI or higher.",
+          "severity": "medium",
+          "source": "procedural"
+        },
+        {
+          "id": "DOC-013",
+          "title": "Sequential Page Numbering",
+          "prompt": "If tender requires sequential page numbers, missing or wrong numbering = rejection.",
+          "description": "Some tenders require the entire bid submission to have sequential page numbers. Missing or non-sequential page numbers can result in rejection.",
+          "severity": "low",
+          "source": "tender_document"
+        },
+        {
+          "id": "DOC-014",
+          "title": "Index / Table of Contents",
+          "prompt": "ToC with exact titles and page refs required if tender mandates it.",
+          "description": "Larger tenders may mandate a table of contents with exact document titles and page references. Missing ToC when mandated is a document failure.",
+          "severity": "low",
+          "source": "tender_document"
+        },
+        {
+          "id": "DOC-015",
+          "title": "Foreign Documents — Apostille",
+          "prompt": "Foreign-origin documents must be apostilled under Hague Convention for India use.",
+          "description": "Documents originating from foreign countries (certificates, registrations) must be apostilled under the Hague Convention for use in Indian government tenders.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "DOC-016",
+          "title": "Conditional Bid — Not Allowed",
+          "prompt": "Any bid imposing conditions is non-responsive and must be rejected.",
+          "description": "A bid that imposes conditions ('our price is valid only if X') is a 'conditional bid' and is non-responsive. Indian courts have consistently held that conditional bids must be rejected.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "DOC-017",
+          "title": "Alternate Bid — Only If Permitted",
+          "prompt": "Alternate bid only allowed if tender explicitly permits it. Otherwise both bids risk rejection.",
+          "description": "If the tender does not permit alternate bids, submitting one is grounds for rejection of both the alternate and sometimes the original bid.",
+          "severity": "high",
+          "source": "tender_document"
+        }
+      ]
+    },
+    {
+      "id": "procedural",
+      "label": "Procedural & Portal Compliance",
+      "icon": "🖥️",
+      "rules": [
+        {
+          "id": "PROC-001",
+          "title": "Bid Submitted Before Deadline",
+          "prompt": "Bid must be portal-submitted before exact deadline. 1 minute late = auto-rejection.",
+          "description": "Bid must be submitted on the e-portal before the exact submission deadline. Even 1 minute late results in automatic portal rejection with no exceptions. Always allow buffer time for upload.",
+          "severity": "critical",
+          "source": "procedural"
+        },
+        {
+          "id": "PROC-002",
+          "title": "Corrigendum — Latest Version Used",
+          "prompt": "If corrigendum issued, bid must use corrected terms. Original terms after corrigendum = non-responsive.",
+          "description": "If a corrigendum was issued after the original tender, the bid must be based on the corrected terms, price schedule, and documents. Bidding on original terms after a corrigendum is non-responsive.",
+          "severity": "critical",
+          "source": "procedural"
+        },
+        {
+          "id": "PROC-003",
+          "title": "Revised Price Schedule Downloaded",
+          "prompt": "After corrigendum, updated BoQ/price schedule must be re-downloaded and used.",
+          "description": "After any amendment or corrigendum affecting the price schedule, the company must re-download and fill the updated BoQ/price schedule. Using the old schedule leads to discrepancy.",
+          "severity": "critical",
+          "source": "procedural"
+        },
+        {
+          "id": "PROC-004",
+          "title": "Pre-Bid Meeting Attendance",
+          "prompt": "If pre-bid attendance is mandatory, non-attendance = rejection risk.",
+          "description": "If pre-bid meeting attendance is mandatory, the company must have attended or sent an authorized representative. Non-attendance when mandatory can lead to rejection.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "PROC-005",
+          "title": "Queries Submitted Within Cut-off Time",
+          "prompt": "Pre-bid queries after cut-off may be ignored. Confirm key concerns addressed.",
+          "description": "Pre-bid queries submitted after the specified cut-off time may be ignored. Company must ensure responses to their key concerns were received before bidding.",
+          "severity": "medium",
+          "source": "procedural"
+        },
+        {
+          "id": "PROC-006",
+          "title": "Bid Validity Period — Minimum Stated",
+          "prompt": "Stated bid validity must meet or exceed tender minimum. Shorter validity = non-compliance.",
+          "description": "Financial bid validity stated by the company must meet or exceed the tender's requirement (typically 90, 120, or 180 days). Shorter validity is a non-compliance.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "PROC-007",
+          "title": "Price Quoted in Correct Currency",
+          "prompt": "Price must be in INR unless tender explicitly allows foreign currency.",
+          "description": "Bid must be quoted in INR unless the tender explicitly allows foreign currency bids. Quoting in USD or other currency when INR is required is a rejection ground.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "PROC-008",
+          "title": "Tax Treatment Consistent with Tender Instructions",
+          "prompt": "Tax must be inclusive or exclusive per tender instruction. Wrong treatment = non-responsive.",
+          "description": "If tender says 'quote inclusive of taxes,' then tax cannot be added separately. If it says 'quote exclusive,' then taxes must be shown separately. Wrong treatment creates non-responsive pricing.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "PROC-009",
+          "title": "Rate Quoted for Correct Unit of Measure",
+          "prompt": "Rate must be for exact unit specified (per month / per person / per sqft). Wrong unit = discrepancy.",
+          "description": "Price must be quoted for the exact unit specified — per month, per person per month, per sq. ft per month. A rate per person when per month was asked creates irreconcilable discrepancy.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "PROC-010",
+          "title": "Price Bid Arithmetic — Totals Match Line Items",
+          "prompt": "All line item totals must arithmetically match stated sum. Typos are legally binding.",
+          "description": "All line item amounts in the price bid must correctly total to the stated sum. Arithmetic errors, even if clearly typos, can result in the stated total being legally binding at the wrong figure.",
+          "severity": "high",
+          "source": "procedural"
+        },
+        {
+          "id": "PROC-011",
+          "title": "Performance Security Percentage Quoted Correctly",
+          "prompt": "PBG % in financial bid must exactly match tender requirement.",
+          "description": "The performance security / PBG percentage stated in the financial bid must exactly match what the tender requires. A mismatch between quoted and required PBG % creates a contractual discrepancy.",
+          "severity": "high",
+          "source": "tender_document"
+        }
+      ]
+    },
+    {
+      "id": "manpower",
+      "label": "Manpower & HR Capability",
+      "icon": "👷",
+      "rules": [
+        {
+          "id": "MAN-001",
+          "title": "Maximum Headcount Deployment History",
+          "prompt": "Past max deployment must be comparable to tender headcount. Never managed 50 can't deploy 500.",
+          "description": "Company's historical maximum simultaneous deployment should be close to or exceed the tender's required manpower count. A company that has never managed more than 50 people cannot credibly deploy 500.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "MAN-002",
+          "title": "Supervisor-to-Worker Ratio",
+          "prompt": "If tender mandates supervisor ratio, company must demonstrate capacity to meet it.",
+          "description": "Some tenders specify a mandatory supervisor-to-worker ratio (e.g. 1:20). Company must demonstrate capacity to provide supervisors at this ratio and past projects should reflect similar ratios.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "MAN-003",
+          "title": "Specialized / Certified Staff Requirements",
+          "prompt": "If tender requires ITI/fire/Ex-SM/security-cleared staff, company must prove sourcing capability.",
+          "description": "Certain tenders require specialized staff — Fire Safety trained, Ex-Servicemen, ITI certified, DNIT certified, security-cleared personnel. Company must prove it can source and deploy such profiles.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "MAN-004",
+          "title": "Ex-Servicemen Quota",
+          "prompt": "If Ex-SM quota mandated, company must have documented process to recruit and verify Ex-SM.",
+          "description": "Some security and essential services tenders mandate a minimum percentage of Ex-Servicemen in the deployment. Company must have an established process to recruit, verify, and deploy Ex-SM.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "MAN-005",
+          "title": "Police Verification Process",
+          "prompt": "Documented police verification process for all deployed staff required for sensitive sites.",
+          "description": "Documented process for obtaining police verification certificates for all deployed staff — particularly in defence, railway, airport, and government building tenders.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "MAN-006",
+          "title": "Medical Fitness Certification Process",
+          "prompt": "Documented medical fitness cert process required for food/healthcare/sanitation tenders.",
+          "description": "Process for obtaining medical fitness certificates for deployed workers before their joining. Required for food handling, healthcare, and sanitation tenders especially.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "MAN-007",
+          "title": "Background Verification Process",
+          "prompt": "Formal BGV process (criminal/reference/identity) required. Some PSUs need third-party BGV.",
+          "description": "Formal background check process (criminal, reference, identity) for all staff. Some PSU tenders require third-party BGV. Company must document how this is done.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "MAN-008",
+          "title": "Uniform and Grooming Standards",
+          "prompt": "Company must confirm uniforms, ID cards, and grooming standards are part of deployment.",
+          "description": "Many tenders require the contractor to provide uniforms, ID cards, and enforced grooming standards. Company must confirm this is part of its deployment process.",
+          "severity": "low",
+          "source": "tender_document"
+        },
+        {
+          "id": "MAN-009",
+          "title": "Salary Payment Before Client Claim",
+          "prompt": "Company must pay staff salaries before claiming from client. Must be documented process.",
+          "description": "Government tenders typically require the contractor to pay staff salaries first, then submit salary disbursement proof to the client before claiming monthly payment. Company must have this cash flow documented.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "MAN-010",
+          "title": "Interstate Migrant Workers Act Compliance",
+          "prompt": "Deploying inter-state migrant workers requires ISMW Act registration and compliance.",
+          "description": "If deploying workers who are migrants from another state, the company must register under the Inter-State Migrant Workmen Act and comply with its requirements for travel, displacement allowance, etc.",
+          "severity": "medium",
+          "source": "general_compliance"
+        }
+      ]
+    },
+    {
+      "id": "equipment",
+      "label": "Equipment & Infrastructure",
+      "icon": "🔧",
+      "rules": [
+        {
+          "id": "EQP-001",
+          "title": "Mechanized Equipment Ownership",
+          "prompt": "If tender requires mechanized equipment, company must own it (not rent). Asset proof needed.",
+          "description": "Tenders requiring mechanized cleaning, security scanning, or other equipment typically require company to own (not rent) the machinery. Asset schedule, invoices, or depreciation statements may be required.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "EQP-002",
+          "title": "Equipment Minimum Value Threshold",
+          "prompt": "If tender specifies minimum equipment value, fixed asset schedule must reflect it.",
+          "description": "Some tenders require the company's total machinery and equipment value to exceed a minimum figure. Company's fixed asset schedule must reflect this.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "EQP-003",
+          "title": "Equipment Age Restriction",
+          "prompt": "If tender restricts equipment age (e.g. max 3/5 years old), older machinery fails.",
+          "description": "Certain tenders (airport, railways) require that operational equipment is not older than 3 or 5 years. Old machinery even if working may fail this criterion.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "EQP-004",
+          "title": "Owned vs Rented Equipment",
+          "prompt": "If tender prohibits rented equipment, all operational equipment must be company-owned.",
+          "description": "Some tenders explicitly prohibit use of rented or leased equipment for contract execution. Company must confirm all required equipment is owned outright.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "EQP-005",
+          "title": "Vehicle Fleet",
+          "prompt": "If tender requires vehicle fleet, registered vehicles in company's name must be proven.",
+          "description": "Logistics-intensive tenders may require a company-owned vehicle fleet for material transport, supervisory rounds, or emergency response. Registered vehicles in company name must be demonstrated.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "EQP-006",
+          "title": "GPS Tracking on Vehicles",
+          "prompt": "If tender requires GPS on vehicles, company must confirm GPS is installed and operational.",
+          "description": "Some tenders require GPS tracking on all operational vehicles for real-time monitoring by the client. Company must confirm GPS systems are installed and operational.",
+          "severity": "low",
+          "source": "tender_document"
+        },
+        {
+          "id": "EQP-007",
+          "title": "Dedicated Control Room / Command Center",
+          "prompt": "If tender requires 24/7 control room, company must confirm it exists or detail setup plan.",
+          "description": "Certain large-scale facility management or security tenders require a 24/7 control room. Company must demonstrate this infrastructure exists or describe how it will be set up.",
+          "severity": "medium",
+          "source": "tender_document"
+        }
+      ]
+    },
+    {
+      "id": "it_systems",
+      "label": "IT Systems & Reporting",
+      "icon": "💻",
+      "rules": [
+        {
+          "id": "IT-001",
+          "title": "Biometric / App-Based Attendance System",
+          "prompt": "Real-time digital attendance (biometric or geo-tagged app) required. Manual registers not accepted.",
+          "description": "Most government and PSU tenders now require real-time digital attendance — biometric devices at site or mobile-app based geo-tagged attendance. Manual registers are no longer accepted.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "IT-002",
+          "title": "MIS Reporting Capability",
+          "prompt": "Company must demonstrate MIS reporting capability (daily/weekly/monthly) covering attendance and compliance.",
+          "description": "Company must demonstrate ability to provide regular Management Information System reports — daily/weekly/monthly — covering attendance, performance, incidents, and compliance data.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "IT-003",
+          "title": "Client Portal Access for Monitoring",
+          "prompt": "If tender requires client portal, company must confirm web/app portal exists for real-time monitoring.",
+          "description": "Some tenders require the company to provide a web/app portal where the client can view attendance, payroll compliance, and SLA performance in real time.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "IT-004",
+          "title": "ERP / HRMS System",
+          "prompt": "ERP/HRMS for payroll, leave, compliance demonstrates process maturity if required.",
+          "description": "An Enterprise Resource Planning or HRMS platform for managing payroll, leave, compliance, and reporting demonstrates scalability and process maturity.",
+          "severity": "low",
+          "source": "tender_document"
+        },
+        {
+          "id": "IT-005",
+          "title": "Payslip Generation System",
+          "prompt": "Company must generate and distribute payslips to all deployed workers.",
+          "description": "Company must generate and distribute payslips to all deployed workers. Digital payslip delivery via SMS/email confirms statutory wage transparency.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "IT-006",
+          "title": "Dedicated Support / Helpdesk Telephone Line",
+          "prompt": "Dedicated toll-free/direct-dial support line required if tender specifies it. General number insufficient.",
+          "description": "Some tenders require a dedicated toll-free or direct-dial support number for the client to contact the contractor. A general company number is not sufficient if a dedicated line is specified.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "IT-007",
+          "title": "Escalation Matrix",
+          "prompt": "Formal documented escalation matrix with contacts and response times required if tender specifies.",
+          "description": "Formal escalation matrix showing contact details of supervisors, managers, and senior leadership with response time commitments. Must be a documented structure, not a verbal commitment.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "IT-008",
+          "title": "Incident Reporting System",
+          "prompt": "Formal incident reporting/tracking/closure system required if tender mandates it.",
+          "description": "Process and system for reporting, tracking, and closing incidents (accidents, complaints, violations) at the service site. Some tenders require this to be documented and submitted.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "IT-009",
+          "title": "SLA / KPI Measurement System",
+          "prompt": "Formal SLA/KPI measurement and reporting system required for FM/security/housekeeping tenders.",
+          "description": "Company must demonstrate a formal system for measuring and reporting SLA/KPI compliance — typically required in facility management, security, and housekeeping contracts.",
+          "severity": "medium",
+          "source": "tender_document"
+        }
+      ]
+    },
+    {
+      "id": "policies",
+      "label": "Policies & Internal Governance",
+      "icon": "📑",
+      "rules": [
+        {
+          "id": "POL-001",
+          "title": "Quality Policy Document",
+          "prompt": "Signed Quality Policy document required alongside ISO 9001 if tender asks for it.",
+          "description": "Formal Quality Policy document signed by top management. Required for ISO 9001 compliance demonstration and often asked in tender technical bid.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "POL-002",
+          "title": "Health & Safety Policy",
+          "prompt": "Signed H&S Policy covering PPE, hazards, incident response required alongside ISO 45001.",
+          "description": "Formal H&S Policy document, signed and dated, covering occupational hazards, PPE, incident response. Often mandated alongside ISO 45001.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "POL-003",
+          "title": "Environmental Policy",
+          "prompt": "Environmental Policy required for tenders with chemical/waste/outdoor/sensitive area scope.",
+          "description": "Environmental Management Policy document required for tenders involving chemical handling, waste disposal, outdoor services, or environmentally sensitive areas.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "POL-004",
+          "title": "POSH — Anti Sexual Harassment Policy",
+          "prompt": "POSH policy and ICC committee required for any deployment including women workers.",
+          "description": "Prevention of Sexual Harassment (POSH) Act compliance — company must have a formal policy and an Internal Complaints Committee (ICC). Required for any deployment including women workers.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "POL-005",
+          "title": "Anti-Bribery / Anti-Corruption Policy",
+          "prompt": "Anti-bribery policy required if tender mandates it as part of Integrity Pact framework.",
+          "description": "Some PSU tenders require submission of company's anti-bribery policy as part of the Integrity Pact framework.",
+          "severity": "low",
+          "source": "tender_document"
+        },
+        {
+          "id": "POL-006",
+          "title": "Whistleblower Policy",
+          "prompt": "Documented whistleblower/vigil mechanism policy required if large PSU tender mandates it.",
+          "description": "Increasingly, large PSU tenders require bidders to have a documented whistleblower / vigil mechanism policy.",
+          "severity": "low",
+          "source": "tender_document"
+        },
+        {
+          "id": "POL-007",
+          "title": "Data Protection / IT Security Policy",
+          "prompt": "Data protection policy aligned with IT Act required for IT/data centre/govt records tenders.",
+          "description": "Required for tenders involving IT campuses, data centers, government records handling. Company must have a formal data protection policy aligned with IT Act / PDPB.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "POL-008",
+          "title": "Business Continuity Plan",
+          "prompt": "BCP detailing emergency/staff shortage/disaster continuity required for critical service tenders.",
+          "description": "Required for critical infrastructure, essential services, and defense tenders. Must detail how services will continue during emergencies, staff shortages, or natural disasters.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "POL-009",
+          "title": "Code of Conduct for Deployed Staff",
+          "prompt": "Formal staff code of conduct (confidentiality, prohibited actions, discipline) required if tender asks.",
+          "description": "Formal code of conduct governing behavior of deployed workers at client premises — confidentiality, prohibited actions, disciplinary process. Some tenders require submission of this document.",
+          "severity": "low",
+          "source": "tender_document"
+        }
+      ]
+    },
+    {
+      "id": "mii",
+      "label": "Make in India (MII) Compliance",
+      "icon": "🇮🇳",
+      "rules": [
+        {
+          "id": "MII-001",
+          "title": "Local Content Percentage — Goods",
+          "prompt": "LCP must meet Class I/II thresholds for tenders involving goods supply alongside services.",
+          "description": "For tenders involving supply of goods or equipment alongside services, Local Content Percentage (LCP) must meet Class I or Class II supplier thresholds as notified by DPIIT.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "MII-002",
+          "title": "LCP Certification from Prescribed Authority",
+          "prompt": "LCP % must be certified by statutory auditor. Self-declaration alone not accepted.",
+          "description": "Local Content % must be certified by a statutory auditor or authorized body. Self-declaration without a CA certification may not be accepted.",
+          "severity": "medium",
+          "source": "tender_document"
+        },
+        {
+          "id": "MII-003",
+          "title": "Restricted / Banned Import List",
+          "prompt": "No equipment or materials used can fall under DPIIT restricted import list.",
+          "description": "DPIIT publishes lists of goods that cannot be imported for use in government contracts. Company must ensure none of the equipment or materials used falls under the restricted import list.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "MII-004",
+          "title": "MII Purchase Preference — Central Government Only",
+          "prompt": "MSE purchase preference applies to central govt/CPSEs only. State tenders have separate policies.",
+          "description": "MSE purchase preference under Public Procurement Policy applies only to central government and CPSEs. State government tenders operate under separate state policies which may differ.",
+          "severity": "medium",
+          "source": "general_compliance"
+        }
+      ]
+    },
+    {
+      "id": "consortium",
+      "label": "Consortium / JV Rules",
+      "icon": "🤝",
+      "rules": [
+        {
+          "id": "JV-001",
+          "title": "Lead Member Share — Minimum Threshold",
+          "prompt": "Lead member must hold minimum share (usually 51%+). JV agreement must state shares explicitly.",
+          "description": "The lead member of a JV/consortium must typically hold a minimum share (often 51% or more) of the contract. JV agreement must explicitly state each member's share.",
+          "severity": "critical",
+          "source": "tender_document"
+        },
+        {
+          "id": "JV-002",
+          "title": "JV Agreement Registered / Notarized",
+          "prompt": "JV agreement must be formally executed and notarized. MoU or email agreement not sufficient.",
+          "description": "The Joint Venture agreement must be formally executed, notarized, and submitted with the bid. An informal MoU or email agreement is not sufficient.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "JV-003",
+          "title": "JV Agreement References This Specific Tender",
+          "prompt": "JV agreement must reference this specific tender or project. Generic JV may not be accepted.",
+          "description": "JV agreement must be specifically formed for this tender or must explicitly cover the scope of this specific project. Generic JV agreements may not be accepted.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "JV-004",
+          "title": "JV Formation Date — Pre-Bid Requirement",
+          "prompt": "JV must be formed before bid submission date. Post-submission JV to cure deficiency is invalid.",
+          "description": "Some tenders require the JV to be formed and registered before the bid submission date. A JV formed after bid submission (to cure a deficiency) is not valid.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "JV-005",
+          "title": "Individual JV Member Eligibility",
+          "prompt": "Each JV member must independently meet proportionate eligibility. Strong lead cannot carry ineligible member.",
+          "description": "Each JV member must independently meet their proportionate eligibility criteria. A strong lead member cannot carry an ineligible minor member.",
+          "severity": "high",
+          "source": "general_compliance"
+        },
+        {
+          "id": "JV-006",
+          "title": "Related Party JV — Prohibited",
+          "prompt": "JV between related parties (same group/common directors) may be disqualified if tender prohibits it.",
+          "description": "Some tenders prohibit JVs where both members belong to the same group, holding company, or have common directors. Related party JVs can be challenged and disqualified.",
+          "severity": "high",
+          "source": "tender_document"
+        },
+        {
+          "id": "JV-007",
+          "title": "Power of Attorney Between JV Members",
+          "prompt": "Lead member needs PoA from all other JV members to represent the full JV legally.",
+          "description": "Lead member must have PoA from all other members authorizing it to act on behalf of the JV. Missing PoA means the lead cannot legally represent the full JV.",
+          "severity": "critical",
+          "source": "general_compliance"
+        },
+        {
+          "id": "JV-008",
+          "title": "Combined Financials Calculation",
+          "prompt": "JV combined turnover must be calculated correctly per each member's declared share percentage.",
+          "description": "In a JV, combined turnover must be calculated correctly per each member's share. Inflating a partner's contribution beyond their declared share is a misrepresentation.",
+          "severity": "high",
+          "source": "general_compliance"
+        }
+      ]
+    }
+  ]
+}

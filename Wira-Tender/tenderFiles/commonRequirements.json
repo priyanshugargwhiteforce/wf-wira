@@ -1,0 +1,266 @@
+[
+  {
+    "requirement": "GST Registration Certificate",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "PAN Card in the name of the bidder/firm",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "EPF/PF Code issued by Regional Provident Fund Commissioner (EPFO)",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "ESIC Registration Certificate",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Audited Balance Sheets for the previous 3 financial years certified by a Chartered Accountant with UDIN",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Minimum average annual contractual/financial turnover certified by CA over the last 3 years",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Certificate of Incorporation / Company Registration Certificate",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Memorandum of Association (MOA) and Articles of Association (AOA)",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Valid Labour License under the Contract Labour (Regulation & Abolition) Act 1970",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "MSME/UDYAM Registration Certificate for EMD exemption",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Class III Digital Signature Certificate (DSC) for online bid signing",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Power of Attorney in favour of the person authorized to sign the tender on behalf of the firm",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Earnest Money Deposit (EMD) via online transfer, demand draft, or bank guarantee as specified",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "EMD Exemption Certificate (MSME/NSIC) in lieu of EMD payment",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Bank details for ECS/NEFT/RTGS payment: bank name, branch, account number, IFSC, MICR, cancelled cheque",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Self-certification/undertaking regarding land border restriction (procurement from countries sharing land border with India)",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Undertaking that the firm has not been blacklisted or debarred by any Government department, PSU, or Ministry",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Similar past work experience: one or more completed/ongoing contracts of a specified minimum value or percentage of estimated cost",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Experience of minimum 3 years in providing similar services to Central/State Government organizations or PSUs",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Work completion certificates / work order copies from previous clients as proof of similar experience",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Performance Bank Guarantee (PBG) or Execution Performance Bank Guarantee (ePBG) as a percentage of contract value post-award",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Security Deposit (typically 3–10% of contract value) via deduction from bills or upfront deposit post-award",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Compliance with EPF Act 1952 and payment of minimum wages as per applicable Minimum Wages Act",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Compliance with all applicable labour laws including Code on Wages, Contract Labour Act, and Bonus Act",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Monthly submission of UAN, ESIC number, PF contribution challans, and wage payment statements before raising bills",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Labour insurance: Pradhan Mantri Suraksha Bima Yojana, Pradhan Mantri Jeevan Jyoti Bima Yojana, and Workmen Compensation/ESIC",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Safety compliance, accident prevention measures, and acceptance of liability for accidents involving deployed labour",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Compliance with MII (Make in India) declaration — local content percentage in supplied goods or services",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Submission of MSE Purchase Preference documents and declaration for 15% price preference eligibility",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Compliance with GeM portal terms and conditions including Reverse Auction (RA) process participation",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Avoidance of sharing common IP address with the buyer or other bidders (anti-cartelization compliance)",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Site inspection declaration — tenderer must physically visit the site before submitting the bid",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Affidavit on stamp paper (typically Rs. 100 non-judicial stamp paper) for various declarations as required by the tender",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Acceptance letter on company letterhead for timely payment of minimum wages, bonus, and statutory charges to deployed labour",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Bid offer validity of 90/120/180 days from the bid submission date as specified in the tender",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Techno-commercial bid (Cover-1/Cover-2) and financial/price bid (Cover-2/Cover-3) submitted separately online as per tender structure",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Online payment of non-refundable tender document fee / processing fee via NEFT/RTGS/online portal",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Registration on the Shramik Kalyan portal and monthly uploading of deployed labour details",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Registration on the e-procurement portal of the tendering authority (IREPS, GePNIC, MPTET, etc.)",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Regular monitoring of the e-procurement portal for corrigendums, addendums, or clarifications before bid opening",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Geographic presence / registered or operational office in the state/region where services are to be rendered",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Deployment of minimum specified number of manpower (unskilled/semi-skilled/skilled) as per tender scope",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Submission of details of ongoing work orders to assess current commitments and capacity",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Declaration of local content percentage in offered goods/services (0% for imported, 100% for indigenous)",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Input Tax Credit (ITC) consideration — bidder must factor full ITC benefit while quoting rates",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Rates quoted exclusive of GST — GST to be charged separately as applicable",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Quotation/bid validity for a minimum period of 4 months from the date of submission",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Penalty clause acceptance — typically 0.5% per week for delay up to a maximum of 10% of contract value",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "2% Income Tax (TDS) deduction from each payment bill as per applicable Income Tax provisions",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Indemnity bond submission for on-account payments, advance payments, or asset repair/replacement",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "One-year defect liability / guarantee period post work completion — rectification at contractor's cost",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Submission of hard copy of EMD bank guarantee to the tendering authority one day before bid opening",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Valid Electrical License (Class A / Supervisory) issued by State/Central Government licensing authority for the required voltage level (Madhya Pradesh)",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "CA Certified financial details in prescribed format (Schedule/Annexure) — turnover, net worth, solvency",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Submission of Annexures, Appendix, Declarations, and Proformas as prescribed in the tender document",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Authorization letter for company representative to be present at the time of bid/tender opening",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Schedule of Qualifying Requirements filled and submitted as per tender format",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Schedule of Deviations / Departures from tender specifications filled and submitted",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Contractor's details and questionnaire (Annexure/Schedule on firm background, directors, registration details)",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Provision of tools, plants, instruments, and equipment (T&P) required for execution at contractor's own cost",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Inspection of materials by the client's designated authority prior to use or execution",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Submission of inspection results / test reports in both soft copy and hard copy post-execution",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Valid 'A' Class or equivalent electrical contractor license as required by the tendering authority (Madhya Pradesh)",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "NSIC Registration in lieu of EMD and tender fee for eligible small-scale industries",
+    "canBeProvided": true
+  },
+  {
+    "requirement": "Training completion on the e-Procurement system of the tendering portal before bid submission",
+    "canBeProvided": false
+  },
+  {
+    "requirement": "Board of Resolution",
+    "canBeProvided": true
+  }
+]

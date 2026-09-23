@@ -1,0 +1,14 @@
+{
+  "name": "wira-chatbot",
+  "version": "1.0.0",
+  "description": "WIRA Chatbot Microservice",
+  "main": "index.js",
+  "scripts": 
+  {
+    "dev": "pm2 restart wira-chatbot --update-env",
+    "logs": "pm2 logs wira-chatbot"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
