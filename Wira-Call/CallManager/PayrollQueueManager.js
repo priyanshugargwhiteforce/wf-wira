@@ -113,7 +113,11 @@ class PayrollQueueManager
                         this.perNumberConcurrency,
                         fromPhone,
                     );
-                    throw new Error(
+                    await this.database.db.updateWiraCalls(
+                        { status: "failed" },
+                        { id: wiraCallId }
+                    );
+                    throw new bull.UnrecoverableError(
                         JSON.stringify({
                             statusCode: 502,
                             success: false,
@@ -133,7 +137,11 @@ class PayrollQueueManager
                         this.perNumberConcurrency,
                         fromPhone,
                     );
-                    throw new Error(
+                    await this.database.db.updateWiraCalls(
+                        { status: "failed" },
+                        { id: wiraCallId }
+                    );
+                    throw new bull.UnrecoverableError(
                         JSON.stringify({
                             statusCode: 502,
                             success: false,

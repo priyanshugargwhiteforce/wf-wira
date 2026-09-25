@@ -72,7 +72,7 @@ class PayrollManager {
   async handleIntroAudio(data, subType) {
     try {
       const textsWithLanguages = [];
-      const ttsSpeaker = "neha";
+      const ttsSpeaker = "shreya";
       const languageCode = "en-IN";
 
       data.forEach((item) => {
@@ -239,7 +239,7 @@ class PayrollManager {
         const callConfig = item.callConfig
           ? this.deepMerge(this.defaultVad, item.callConfig)
           : this.deepMerge({}, this.defaultVad);
-        callConfig.tts = { speaker: "neha", languageCode: "en-IN" };
+        callConfig.tts = { speaker: "shreya", languageCode: "en-IN" };
         callConfig.stt = { languageCode: "en-IN", sampleRate: 16000 };
         callConfig.language = "en";
 

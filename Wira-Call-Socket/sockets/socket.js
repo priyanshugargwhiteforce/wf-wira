@@ -57,7 +57,8 @@ const acceptedPaths = [
             socket.callId = queryParams.CallUUID;
             await outboundPayrollSocket(socket); 
         }
-    },
+    }
+    /*
     {
         pathname: "/inbound-call",
         handler: async (socket, request, queryParams) => 
@@ -75,6 +76,7 @@ const acceptedPaths = [
             await inboundCallSocket(socket); 
         }
     }
+    */
 ];
 
 function initializeUpgradeGatekeeper(server)

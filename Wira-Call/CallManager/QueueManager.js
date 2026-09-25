@@ -156,7 +156,10 @@ class QueueManager {
           this.redisManager.perNumberConcurrency,
           session.fromPhone ?? null,
         );
-        console.log("[Screening] allocationResult : ", JSON.stringify(allocationResult));
+        console.log(
+          "[Screening] allocationResult : ",
+          JSON.stringify(allocationResult),
+        );
         if (!allocationResult.success) {
           throw new Error(
             JSON.stringify({
@@ -183,7 +186,11 @@ class QueueManager {
             this.redisManager.perNumberConcurrency,
             fromPhone,
           );
-          throw new Error(
+          await this.database.db.updateWiraCalls(
+            { status: "failed" },
+            { id: wiraCallId }
+          );
+          throw new bull.UnrecoverableError(
             JSON.stringify({
               statusCode: 502,
               success: false,
@@ -201,7 +208,11 @@ class QueueManager {
             this.redisManager.perNumberConcurrency,
             fromPhone,
           );
-          throw new Error(
+          await this.database.db.updateWiraCalls(
+            { status: "failed" },
+            { id: wiraCallId }
+          );
+          throw new bull.UnrecoverableError(
             JSON.stringify({
               statusCode: 502,
               success: false,
@@ -287,7 +298,6 @@ class QueueManager {
     });
     //------------------------------------------------------------
   }
-
 
   async pushToQuestionsQueue(
     jobDescription,

@@ -42,8 +42,8 @@ class PayrollCallManager {
 
   async init() {
     this.sarvam = new SarvamManager(
-      { languageCode: "en-IN", sampleRate: 22000 },
-      { speaker: "neha", language: "en" },
+      { languageCode: "en-IN", sampleRate: 16000 },
+      { speaker: "shreya", language: "en" },
       redis,
     );
     this.sarvam.language = "en";
@@ -52,7 +52,7 @@ class PayrollCallManager {
     this.plivo = new PlivoManager(redis);
     this.plivo.attachSocket(this.socket);
 
-    this.db = new DatabaseManager({ speaker: "neha", languageCode: "en-IN" });
+    this.db = new DatabaseManager({ speaker: "shreya", languageCode: "en-IN" });
     this.db.updateCallStatus(this.session.wiraCallId, "in_progress");
 
     this.vam = new VoiceActivityManager({
