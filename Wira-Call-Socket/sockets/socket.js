@@ -3,6 +3,7 @@ const url = require('url');
 const outboundScreeningSocket = require("./outboundScreening.js");
 const inboundCallSocket = require("./inboundCall.js");
 const outboundPayrollSocket = require("./outboundPayroll.js");
+const outboundInterviewReminderSocket = require("./outboundInterviewReminder.js");
 
 let globalWss = null;
 
@@ -56,6 +57,23 @@ const acceptedPaths = [
             socket.table = "wira_payroll_call";
             socket.callId = queryParams.CallUUID;
             await outboundPayrollSocket(socket); 
+        }
+    },
+    {
+        pathname: "/outbound-interview-reminder",
+        handler: async (socket, request, queryParams) => 
+        {   
+            if(!queryParams.CallUUID)
+            {
+                console.error("❌ [outbound-interview-reminder] No CallUUID in queryParams — closing socket");
+                socket.close();
+                return;
+            }
+
+            socket.type = "outbound-interview-reminder";
+            socket.table = "wira_call";
+            socket.callId = queryParams.CallUUID;
+            await outboundInterviewReminderSocket(socket); 
         }
     }
     /*

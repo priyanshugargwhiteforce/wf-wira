@@ -22,6 +22,7 @@ class QueueManager {
         removeOnFail: true,
       },
     });
+    this.questionsQueue.setMaxListeners(100);
 
     this.callQueue = new bull.Queue("call-queue", {
       connection: this.connection,
@@ -35,6 +36,7 @@ class QueueManager {
         removeOnFail: true,
       },
     });
+    this.callQueue.setMaxListeners(100);
 
     this.initWorker();
   }
@@ -258,7 +260,7 @@ class QueueManager {
       },
       {
         connection: this.connection,
-        concurrency: 30,
+        concurrency: 70,
         lockDuration: 180000,
         lockRenewTime: 30000,
         limiter: {
@@ -271,6 +273,9 @@ class QueueManager {
     );
 
     //LISTENERS---------------------------------------------------
+    this.questionsWorker.setMaxListeners(100);
+    this.callWorker.setMaxListeners(100);
+
     this.questionsWorker.on("completed", (job, returnValue) => {
       console.log("Job completed with return value:", returnValue);
     });

@@ -107,7 +107,7 @@ class DatabaseManager
     constructor(ttsConfig = {})
     {
         this.language = ttsConfig.languageCode ?? "hi-IN";
-        this.speaker = ttsConfig.speaker ?? "anushka";
+        this.speaker = ttsConfig.speaker ?? "neha";
     }
 
     async getIdleAudio(text)

@@ -38,6 +38,7 @@ class PayrollQueueManager
                 removeOnFail: true,
             },
         });
+        this.payrollCallQueue.setMaxListeners(100);
     }
 
     // Called by PayrollManager after payrollPhonePool and perNumberConcurrency are set.
@@ -192,6 +193,7 @@ class PayrollQueueManager
                 maxStalledCount: 2,
             },
         );
+        this.payrollCallWorker.setMaxListeners(100);
 
         this.payrollCallWorker.on("completed", (job, returnValue) =>
         {

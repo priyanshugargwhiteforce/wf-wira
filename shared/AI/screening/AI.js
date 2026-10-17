@@ -1139,7 +1139,7 @@ async function screeningCall({ candidateName, jobTitle, companyName, jobDescript
 
             const response = await AI.runGemini2({
                 messages: promptMessages,
-                modelName: "gemini-2.5-flash-lite",
+                modelName: "gemini-3.1-flash-lite",
                 streaming: false,
                 temperature: 0.0,
                 apiKey: process.env.GEMINI_KEY
@@ -1175,7 +1175,7 @@ async function screeningCall({ candidateName, jobTitle, companyName, jobDescript
     }
 }
 
-async function screeningCall2({ candidateName, jobTitle, companyName, jobDescription, messages, language = "hindi", screeningQuestions, modelName = "gemini-2.5-flash-lite", onChunk = null, cacheId = null, expiryMinutes = 20, signal = null })
+async function screeningCall2({ candidateName, jobTitle, companyName, jobDescription, messages, language = "hindi", screeningQuestions, modelName = "gemini-3.1-flash-lite", onChunk = null, cacheId = null, expiryMinutes = 20, signal = null })
 {
     if(cacheId)
     {
@@ -1237,7 +1237,7 @@ async function screeningCall2({ candidateName, jobTitle, companyName, jobDescrip
     };
 }
 
-async function initializeCacheForScreening({ candidateName, jobTitle, companyName, jobDescription, language = "hindi-start", screeningQuestions, modelName = "gemini-2.5-flash-lite", expiryMinutes = 20 })
+async function initializeCacheForScreening({ candidateName, jobTitle, companyName, jobDescription, language = "hindi-start", screeningQuestions, modelName = "gemini-3.1-flash-lite", expiryMinutes = 20 })
 {
     const promptMessages = prompter.getPromptForScreeningCall({
         candidateName,
@@ -1351,7 +1351,7 @@ async function generateScreeningQuestions({ jobTitle, jobDescription, companyNam
 
 async function getOrCreateContextCache(cacheId, text, expiryMinutes = 20, modelName)
 {
-    modelName = modelName || "gemini-2.5-flash-lite";
+    modelName = modelName || "gemini-3.1-flash-lite";
     
     if (!cacheId)
     {

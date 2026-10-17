@@ -43,7 +43,7 @@ class PayrollCallManager {
   async init() {
     this.sarvam = new SarvamManager(
       { languageCode: "en-IN", sampleRate: 16000 },
-      { speaker: "shreya", language: "en" },
+      { speaker: "neha", language: "en" },
       redis,
     );
     this.sarvam.language = "en";
@@ -52,7 +52,7 @@ class PayrollCallManager {
     this.plivo = new PlivoManager(redis);
     this.plivo.attachSocket(this.socket);
 
-    this.db = new DatabaseManager({ speaker: "shreya", languageCode: "en-IN" });
+    this.db = new DatabaseManager({ speaker: "neha", languageCode: "en-IN" });
     this.db.updateCallStatus(this.session.wiraCallId, "in_progress");
 
     this.vam = new VoiceActivityManager({
@@ -255,18 +255,20 @@ Context:
 - Today's Date: ${today}
 
 Your goals (in strict priority order):
-1. SPECIFIC DATE (e.g., "15th October", "by this Friday") → Accept. Confirm the date warmly, use <commit_date:DD Month YYYY> tag, thank them, end with <kill>.
-2. RELATIVE TIMEFRAME (e.g., "next week", "within 2 days", "by end of month") → Accept. Calculate the approximate date from today (${today}), acknowledge it, use <commit_date:DD Month YYYY>, thank them, end with <kill>.
+1. SPECIFIC DATE (e.g., "15th October", "by this Friday", "25th") → Accept. Explicitly state and confirm the exact date back to the client in your spoken reply (e.g., "Thank you, I have noted that you will complete the payment by 15th October."), include <commit_date:DD Month YYYY> at the end, and end with <kill>.
+2. RELATIVE TIMEFRAME (e.g., "next week", "next month", "after 2 weeks", "in 3 days", "by month end") → Accept. Calculate the exact calendar date from Today's Date (${today}). You MUST state the calculated date out loud to the client in your spoken reply (e.g., "Thank you, I have noted that you will make the payment by [Calculated Date]."), include <commit_date:DD Month YYYY> at the end, and end with <kill>.
 3. VAGUE / NON-COMMITTAL (e.g., "soon", "bahut jaldi", "kuch dino mein", "shortly", "ASAP", "very soon") → DO NOT accept. Politely but firmly ask: "Could you please confirm a specific date or at least the week by when you can make this payment?"
 4. QUESTIONS (who are you, amount details, company name) → Answer clearly and briefly, then redirect to payment commitment.
 5. UPSET / EXCUSES → Acknowledge empathetically, stay professional, redirect to commitment.
-6. Conversation naturally closing (e.g., user says goodbye or thanks) → Thank them and end with <kill>.
+6. Conversation naturally closing (e.g., user says goodbye or thanks) → Thank them, wish them a good day, and end with <kill>.
 
 Rules:
-- Always respond in English, professionally and concisely (under 40 words).
+- Always respond in English, professionally and concisely (under 35 words).
+- When confirming payment (specific date or relative timeframe), you MUST speak the confirmed/calculated calendar date out loud to the client so they hear the exact date clearly.
 - NEVER end with <kill> unless a date/timeframe has been confirmed OR the conversation is naturally complete.
-- Date capture format (mandatory): <commit_date:DD Month YYYY> — example: <commit_date:28 September 2026>
-- For relative timeframes, calculate from today (${today}) and use that approximate date in <commit_date:...>.
+- Date capture format (mandatory): <commit_date:DD Month YYYY> — example: <commit_date:24 October 2026>
+- For relative timeframes, calculate from Today (${today}) and use that calendar date both in your spoken sentence and in <commit_date:...>.
+- Control tags (<commit_date:...> and <kill>) are system metadata ONLY. NEVER speak, pronounce, or read them aloud in speech. Place them strictly at the very end of your response.
 - Do NOT repeat the overdue notice. You are mid-conversation — respond naturally to what the client just said.`;
         }
       } else {
@@ -305,26 +307,59 @@ Rules:
             }))
           : [{ role: "user", content: userTranscript }];
 
+      let tagBuffer = "";
+
       const { text: rawText } = await runGeminiCall({
         conversation: messages,
         prompt: systemPrompt,
-        modelName: "gemini-2.5-flash-lite",
+        modelName: "gemini-3.1-flash-lite",
         temperature: 0.6,
         streaming: true,
         onChunk: (chunk) => {
-          if (!this.isUserSpeaking) {
-            // Strip all control tags before sending to TTS
-            const clean = chunk
+          if (!this.isUserSpeaking && chunk) {
+            tagBuffer += chunk;
+
+            // Strip any fully completed control tags from the buffer
+            tagBuffer = tagBuffer
               .replace(/<kill>/gi, "")
               .replace(/<\/kill>/gi, "")
               .replace(/<commit_date:[^>]*>/gi, "");
-            if (clean) {
-              this.sarvam.sendTTSChunk(clean);
+
+            // If there is an unclosed tag starting with '<', hold back until closing '>' arrives
+            const unclosedIndex = tagBuffer.lastIndexOf("<");
+            let textToSend = "";
+
+            if (unclosedIndex !== -1 && tagBuffer.indexOf(">", unclosedIndex) === -1) {
+              textToSend = tagBuffer.substring(0, unclosedIndex);
+              tagBuffer = tagBuffer.substring(unclosedIndex);
+            } else {
+              textToSend = tagBuffer;
+              tagBuffer = "";
+            }
+
+            // Remove any stray < or > symbols so Sarvam never speaks "less than" or "greater than"
+            textToSend = textToSend.replace(/[<>]/g, "");
+
+            if (textToSend.trim().length > 0) {
+              this.sarvam.sendTTSChunk(textToSend);
             }
           }
         },
         signal: this.gemini?.abortController?.signal ?? null,
       });
+
+      // Flush any non-tag text remaining in tagBuffer
+      if (tagBuffer.length > 0 && !this.isUserSpeaking) {
+        const remainingClean = tagBuffer
+          .replace(/<kill>/gi, "")
+          .replace(/<\/kill>/gi, "")
+          .replace(/<commit_date:[^>]*>/gi, "")
+          .replace(/[<>]/g, "")
+          .trim();
+        if (remainingClean.length > 0) {
+          this.sarvam.sendTTSChunk(remainingClean);
+        }
+      }
 
       const killTag = /<kill>/i.test(rawText);
       const cleanText = rawText

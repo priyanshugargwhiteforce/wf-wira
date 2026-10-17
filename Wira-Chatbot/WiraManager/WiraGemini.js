@@ -91,7 +91,7 @@ class WiraGemini
                         output: (1.50  / 1_000_000) * USD_TO_INR,
                         cached: (0.025 / 1_000_000) * USD_TO_INR
                     },
-                    "gemini-2.5-flash-lite": {
+                    "gemini-3.1-flash-lite": {
                         input: (0.10  / 1_000_000) * USD_TO_INR,
                         output: (0.40  / 1_000_000) * USD_TO_INR,
                         cached: (0.01  / 1_000_000) * USD_TO_INR

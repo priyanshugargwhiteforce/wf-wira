@@ -279,7 +279,7 @@ class PayrollCallManager
             const { text: rawText } = await runGeminiCall({
                 conversation: messages,
                 prompt: systemPrompt,
-                modelName: "gemini-2.5-flash-lite",
+                modelName: "gemini-3.1-flash-lite",
                 temperature: 0.6,
                 streaming: true,
                 onChunk: (chunk) =>

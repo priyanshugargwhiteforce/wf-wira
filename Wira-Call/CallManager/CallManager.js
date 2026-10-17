@@ -2,6 +2,7 @@ const Redis = require("ioredis");
 const OutboundScreeningManager = require("./OutboundScreeningManager");
 const InboundManager = require("./InboundManager");
 const PayrollManager = require("./PayrollManager");
+const InterviewReminderManager = require("./InterviewReminderManager");
 const WiraDatabase = require("../../Wira-Chatbot/WiraManager/WiraDatabase");
 
 class CallManager {
@@ -13,8 +14,10 @@ class CallManager {
 
     this.database = new WiraDatabase();
 
-    this.phonePool = ["+918031903192", "+918031320770"];
-    this.perNumberConcurrency = 9;
+    // this.phonePool = ["+918031903192", "+918031320770"];
+    this.phonePool = ["+918031903192", "+918065539995"];
+
+    this.perNumberConcurrency = 35;
 
     this.languageToSarvamCodes = {
       hi: "hi-IN",
@@ -42,7 +45,7 @@ class CallManager {
         disconnectAfterMs: 30000,
       },
       tts: {
-        speaker: "shreya",
+        speaker: "neha",
         languageCode: "hi-IN",
       },
       stt: {
@@ -85,6 +88,7 @@ class CallManager {
       "outbound-screening",
       "outbound-payroll-reminder",
       "outbound-payroll-overdue",
+      "outbound-interview-reminder",
     ];
 
     this.handlers = [
@@ -112,6 +116,12 @@ class CallManager {
         flush: (callUUID, hangupBy, callStatus, session) =>
           this.payroll.flushCallEnd(callUUID, hangupBy, callStatus, session),
       },
+      {
+        type: "outbound-interview-reminder",
+        resolve: (items) => this.interviewReminder.handleInterviewReminderCall(items),
+        flush: (callUUID, hangupBy, callStatus, session) =>
+          this.interviewReminder.flushCallEnd(callUUID, hangupBy, callStatus, session),
+      },
     ];
 
     this.outboundScreening = new OutboundScreeningManager(
@@ -133,6 +143,15 @@ class CallManager {
       this.availableCallTypes,
     );
     this.payroll = new PayrollManager(
+      this.redis,
+      this.database,
+      this.phonePool,
+      this.perNumberConcurrency,
+      this.languageToSarvamCodes,
+      this.defaultVad,
+      this.availableCallTypes,
+    );
+    this.interviewReminder = new InterviewReminderManager(
       this.redis,
       this.database,
       this.phonePool,
@@ -463,6 +482,43 @@ class CallManager {
 
     response.set("Content-Type", "text/xml");
     return response.status(200).send(xml);
+  }
+
+  async handleCheckEligibility(request, response) {
+    try {
+      const { phone, candidateId, jobId } = request.body || {};
+
+      if (!phone && !candidateId) {
+        return response.status(400).json({
+          statusCode: 400,
+          success: false,
+          message: "Phone number or candidateId is required.",
+          data: null,
+        });
+      }
+
+      const result = await this.interviewReminder.checkEligibility({
+        phone,
+        candidateId,
+        jobId,
+      });
+
+      return response.status(200).json({
+        statusCode: 200,
+        success: true,
+        message: "Candidate screening eligibility checked successfully.",
+        data: result,
+      });
+    } catch (error) {
+      console.error("Error in handleCheckEligibility:", error);
+
+      return response.status(500).json({
+        statusCode: 500,
+        success: false,
+        message: "Internal server error.",
+        data: null,
+      });
+    }
   }
 }
 

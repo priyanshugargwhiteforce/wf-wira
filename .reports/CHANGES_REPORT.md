@@ -231,3 +231,52 @@ When the agent makes changes, it appends a new section in this format:
 ```
 
 ---
+
+### [2026-10-01] — Session: Concurrency Upgrade — 18 → 70 Concurrent Calls
+
+**Summary**: Plivo per-number concurrency limit 50 hai aur Sarvam Pro upgrade ke baad Sarvam concurrency 100 ho gayi. Purana `perNumberConcurrency = 9` (total 18 calls) ko badhaa ke `35` kar diya (total 70 calls = 2 numbers × 35). BullMQ worker `concurrency` bhi 30 → 70 update kiya taaki worker bottleneck na bane.
+
+---
+
+#### File 1: `Wira-Call/CallManager/CallManager.js` — MODIFIED
+
+**Line 17**: `this.perNumberConcurrency = 9` → `this.perNumberConcurrency = 35`
+
+- 2 phone numbers × 35 = **70 total concurrent outbound calls**
+- Yeh value `OutboundScreeningManager`, `InboundManager`, aur `PayrollManager` sab mein DI se pass hoti hai
+- Redis Lua `ALLOCATE_SCRIPT` is value ko runtime pe use karta hai — koi aur change nahi zaroori
+
+#### File 2: `Wira-Call/CallManager/QueueManager.js` — MODIFIED
+
+**Line 261**: `concurrency: 30` → `concurrency: 70` (BullMQ callWorker)
+
+- BullMQ worker ka `concurrency` upar uthaaya taaki woh 70 jobs parallel process kar sake
+- Purana 30 bottleneck ban jaata — Redis 70 slots allow karta lekin worker 30 se zyada jobs uthata hi nahi
+
+**Total Files Changed**: 2
+**Files Modified**: `Wira-Call/CallManager/CallManager.js`, `Wira-Call/CallManager/QueueManager.js`
+**Files Created**: 0
+
+---
+
+### [2026-10-01] — Session: Fix MaxListenersExceededWarning — BullMQ High Concurrency
+
+**Summary**: Server console pe `MaxListenersExceededWarning: 11 closing listeners added to [Queue]` aa raha tha. Root cause: BullMQ internally har active job ke liye Queue/Worker EventEmitter pe `closing` listener add karta hai. Default Node.js limit 10 hai. 70 concurrency ke saath yeh limit exceed ho rahi thi. Fix: `.setMaxListeners(100)` har Queue aur Worker instance pe add kiya.
+
+---
+
+#### File 1: `Wira-Call/CallManager/QueueManager.js` — MODIFIED
+- `this.questionsQueue.setMaxListeners(100)` added after questionsQueue creation
+- `this.callQueue.setMaxListeners(100)` added after callQueue creation
+- `this.questionsWorker.setMaxListeners(100)` added before event listeners
+- `this.callWorker.setMaxListeners(100)` added before event listeners
+
+#### File 2: `Wira-Call/CallManager/PayrollQueueManager.js` — MODIFIED
+- `this.payrollCallQueue.setMaxListeners(100)` added after payrollCallQueue creation
+- `this.payrollCallWorker.setMaxListeners(100)` added after worker creation
+
+**Total Files Changed**: 2
+**Files Modified**: `Wira-Call/CallManager/QueueManager.js`, `Wira-Call/CallManager/PayrollQueueManager.js`
+**Files Created**: 0
+
+---

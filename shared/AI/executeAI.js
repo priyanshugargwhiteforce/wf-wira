@@ -595,7 +595,7 @@ async function runGemini2({
 
 async function runGemini3({
   messages,
-  modelName = "gemini-2.5-flash-lite",
+  modelName = "gemini-3.1-flash-lite",
   systemPrompt = null,
   streaming = false,
   temperature = 0.0,
@@ -619,7 +619,7 @@ async function runGemini3({
   const lastMessage = builtMessages.at(-1)?.content ?? "";
 
   const chat = genAI.chats.create({
-    model: modelName ? modelName : "gemini-2.5-flash-lite",
+    model: modelName ? modelName : "gemini-3.1-flash-lite",
     history,
     config: {
       temperature,
@@ -1302,7 +1302,7 @@ async function runGeminiCall({
   conversation,
   prompt = null,
   cacheId = null,
-  modelName = "gemini-2.5-flash-lite",
+  modelName = "gemini-3.1-flash-lite",
   temperature = 0.6,
   thinkingBudget = null,
   streaming = true,
@@ -1407,7 +1407,7 @@ async function runGeminiCall({
 
 async function runGeminiCacheOnly({
   prompt,
-  modelName = "gemini-2.5-flash-lite",
+  modelName = "gemini-3.1-flash-lite",
   temperature = 0.0,
   expiryMinutes = 2,
   apiKey = null,
@@ -1465,7 +1465,7 @@ async function runGeminiCacheOnly({
 async function runGeminiAnalysis({
   systemPrompt,
   userMessage,
-  modelName = "gemini-2.5-flash-lite",
+  modelName = "gemini-3.1-flash-lite",
   temperature = 0.0,
   apiKey = null,
   signal = null,
@@ -1479,7 +1479,7 @@ async function runGeminiAnalysis({
   const USD_TO_INR = 94.5;
 
   const MODEL_RATES_PER_MILLION = {
-    "gemini-2.5-flash-lite": { input: 0.1, output: 0.4 },
+    "gemini-3.1-flash-lite": { input: 0.1, output: 0.4 },
     "gemini-3.1-flash-lite": { input: 0.25, output: 1.5 },
   };
 
@@ -1537,7 +1537,7 @@ async function runWiraGeminiCall({
   prompt = null,
   cacheId = null,
   files = [],
-  modelName = "gemini-2.5-flash-lite",
+  modelName = "gemini-3.1-flash-lite",
   temperature = 0.6,
   thinkingBudget = null,
   streaming = true,

@@ -3,7 +3,7 @@ const AI = require("@wira/shared/AI/screening/AI.js");
 const USD_TO_INR_FALLBACK = 94.5;
 
 const GEMINI_USD_RATES = {
-  "gemini-2.5-flash-lite": {
+  "gemini-3.1-flash-lite": {
     inputPerToken: 0.1 / 1_000_000,
     cachedInputPerToken: 0.01 / 1_000_000,
     outputPerToken: 0.4 / 1_000_000,
@@ -14,7 +14,7 @@ const GEMINI_USD_RATES = {
     outputPerToken: 1.5 / 1_000_000,
   },
 };
-const DEFAULT_RATES = GEMINI_USD_RATES["gemini-2.5-flash-lite"];
+const DEFAULT_RATES = GEMINI_USD_RATES["gemini-3.1-flash-lite"];
 
 const SWITCH_TAG_TO_LANGUAGE = {
   switch_to_hindi: "hi",
@@ -179,7 +179,7 @@ class GeminiManager {
       messages,
       language,
       screeningQuestions,
-      modelName = "gemini-2.5-flash-lite",
+      modelName = "gemini-3.1-flash-lite",
       expiryMinutes = 20,
       onChunk = null,
     },

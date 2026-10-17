@@ -361,7 +361,7 @@ async function analyzeTenderPDF(tenderPdfPaths, tenderRules, maxRetries = 3, onC
                 }],
                 files:        filesArray,
                 systemPrompt: SYSTEM_MESSAGE + "\n\n" + systemPrompt,
-                modelName:    "gemini-2.5-flash-lite",
+                modelName:    "gemini-3.1-flash-lite",
                 streaming:    true,
                 jsonMode:     false,
                 temperature:  0,

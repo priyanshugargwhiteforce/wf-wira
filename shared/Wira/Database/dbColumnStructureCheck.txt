@@ -1,0 +1,538 @@
+whiteforce_ats=# \pset pager off
+\pset footer off
+Pager usage is off.
+whiteforce_ats=# psql "postgresql://USER:PASSWORD@HOST:5432/whiteforce_ats" -P pager=off -P footer=off > wira_schema_present.txt 2>&1 <<'EOF'
+
+SELECT '================ 1. COLUMNS ================' AS section;
+
+SELECT
+    c.relname                                                  AS table_name,
+    a.attnum                                                   AS pos,
+    a.attname                                                  AS column_name,
+    format_type(a.atttypid, a.atttypmod)                       AS data_type,
+    CASE WHEN a.attnotnull THEN 'NOT NULL' ELSE 'nullable' END AS nullability,
+    pg_get_expr(d.adbin, d.adrelid)                            AS default_value
+FROM pg_attribute a
+JOIN pg_class c       ON c.oid = a.attrelid
+JOIN pg_namespace n   ON n.oid = c.relnamespace
+LEFT JOIN pg_attrdef d ON d.adrelid = a.attrelid AND d.adnum = a.attnum
+WHERE n.nspname NOT IN ('pg_catalog', 'information_schema')
+  AND c.relkind = 'r'
+  AND (c.relname LIKE 'wira!_%' ESCAPE '!' OR c.relname = 'intro_audio_template')
+  AND a.attnum > 0
+  AND NOT a.attisdropped
+EOFER BY event_object_table, trigger_name; action_timing, action_statementllss,ame,
+ERROR:  syntax error at or near "psql"
+LINE 1: psql "postgresql://USER:PASSWORD@HOST:5432/whiteforce_ats" -...
+        ^
+       table_name        | pos |       column_name       |        data_type         | nullability |                    default_value                    
+-------------------------+-----+-------------------------+--------------------------+-------------+-----------------------------------------------------
+ intro_audio_template    |   1 | id                      | bigint                   | NOT NULL    | nextval('intro_audio_template_id_seq'::regclass)
+ intro_audio_template    |   2 | text                    | text                     | NOT NULL    | 
+ intro_audio_template    |   3 | language                | character varying(10)    | NOT NULL    | 'hi-IN'::character varying
+ intro_audio_template    |   4 | speaker                 | character varying(50)    | NOT NULL    | 'anushka'::character varying
+ intro_audio_template    |   5 | segments                | jsonb                    | NOT NULL    | 
+ intro_audio_template    |   6 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ intro_audio_template    |   7 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_app                |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_app_id_seq'::regclass)
+ wira_app                |   2 | wiraCandidateId         | bigint                   | NOT NULL    | 
+ wira_app                |   3 | webName                 | character varying(255)   | NOT NULL    | 'White Force'::character varying
+ wira_app                |   4 | overallGeminiCost       | numeric(12,6)            | NOT NULL    | 0
+ wira_app                |   5 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_app                |   6 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_app_message        |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_app_message_id_seq'::regclass)
+ wira_app_message        |   2 | wiraAppId               | bigint                   | NOT NULL    | 
+ wira_app_message        |   3 | role                    | character varying(20)    | NOT NULL    | 
+ wira_app_message        |   4 | content                 | text                     | nullable    | 
+ wira_app_message        |   5 | urls                    | jsonb                    | NOT NULL    | '[]'::jsonb
+ wira_app_message        |   6 | jobIds                  | jsonb                    | NOT NULL    | '[]'::jsonb
+ wira_app_message        |   7 | queueIds                | jsonb                    | NOT NULL    | '[]'::jsonb
+ wira_app_message        |   8 | files                   | jsonb                    | nullable    | 
+ wira_app_message        |   9 | instructionData         | jsonb                    | nullable    | 
+ wira_app_message        |  10 | platform                | character varying(10)    | nullable    | 
+ wira_app_message        |  11 | isServer                | boolean                  | NOT NULL    | false
+ wira_app_message        |  12 | metadata                | jsonb                    | nullable    | 
+ wira_app_message        |  13 | promptCosts             | jsonb                    | nullable    | 
+ wira_app_message        |  14 | cancelled               | boolean                  | NOT NULL    | false
+ wira_app_message        |  15 | cleanContent            | text                     | nullable    | 
+ wira_app_message        |  16 | embedding               | vector(1024)             | nullable    | 
+ wira_app_message        |  17 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_cache_costs        |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_cache_costs_id_seq'::regclass)
+ wira_cache_costs        |   2 | cacheId                 | character varying(255)   | NOT NULL    | 
+ wira_cache_costs        |   3 | promptName              | character varying(255)   | NOT NULL    | 
+ wira_cache_costs        |   4 | modelName               | character varying(255)   | NOT NULL    | 
+ wira_cache_costs        |   5 | cachedTokens            | integer                  | NOT NULL    | 
+ wira_cache_costs        |   6 | cost                    | numeric(12,6)            | NOT NULL    | 0
+ wira_cache_costs        |   7 | createdAt               | timestamp with time zone | NOT NULL    | 
+ wira_cache_costs        |   8 | deletedAt               | timestamp with time zone | nullable    | 
+ wira_call               |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_call_id_seq'::regclass)
+ wira_call               |   2 | wiraCandidateId         | bigint                   | NOT NULL    | 
+ wira_call               |   3 | callId                  | character varying(255)   | nullable    | 
+ wira_call               |   4 | fromPhone               | character varying(20)    | NOT NULL    | 
+ wira_call               |   5 | bound                   | character varying(10)    | NOT NULL    | 
+ wira_call               |   6 | type                    | character varying(100)   | NOT NULL    | 
+ wira_call               |   7 | status                  | character varying(20)    | NOT NULL    | 'initiated'::character varying
+ wira_call               |   8 | webName                 | character varying(255)   | NOT NULL    | 'White Force'::character varying
+ wira_call               |   9 | intro                   | text                     | nullable    | 
+ wira_call               |  10 | language                | character varying(20)    | nullable    | 'hi'::character varying
+ wira_call               |  11 | transcript              | jsonb                    | nullable    | 
+ wira_call               |  12 | cleanTranscript         | jsonb                    | nullable    | 
+ wira_call               |  13 | duration                | integer                  | nullable    | 
+ wira_call               |  14 | recordingUrl            | character varying(500)   | nullable    | 
+ wira_call               |  15 | hangupBy                | character varying(50)    | nullable    | 
+ wira_call               |  16 | hangupReason            | character varying(255)   | nullable    | 
+ wira_call               |  17 | hangupCause             | character varying(50)    | nullable    | 
+ wira_call               |  18 | interest                | character varying(20)    | nullable    | 
+ wira_call               |  19 | startedAt               | timestamp with time zone | nullable    | 
+ wira_call               |  20 | endedAt                 | timestamp with time zone | nullable    | 
+ wira_call               |  21 | preCost                 | numeric(12,6)            | NOT NULL    | 0
+ wira_call               |  22 | sarvamTotalCost         | numeric(12,6)            | NOT NULL    | 0
+ wira_call               |  23 | plivoTotalCost          | numeric(12,6)            | NOT NULL    | 0
+ wira_call               |  24 | geminiTotalCost         | numeric(12,6)            | NOT NULL    | 0
+ wira_call               |  25 | geminiPostCost          | numeric(12,6)            | NOT NULL    | 0
+ wira_call               |  26 | totalCost               | numeric(12,6)            | NOT NULL    | 0
+ wira_call               |  27 | summary                 | text                     | nullable    | 
+ wira_call               |  28 | embedding               | vector(1024)             | nullable    | 
+ wira_call               |  29 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_call               |  30 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_call_costs         |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_call_costs_id_seq'::regclass)
+ wira_call_costs         |   2 | wiraOutboundScreeningId | bigint                   | NOT NULL    | 
+ wira_call_costs         |   3 | bucketIndex             | smallint                 | NOT NULL    | 
+ wira_call_costs         |   4 | startTime               | timestamp with time zone | NOT NULL    | 
+ wira_call_costs         |   5 | endTime                 | timestamp with time zone | NOT NULL    | 
+ wira_call_costs         |   6 | ttsChars                | integer                  | NOT NULL    | 0
+ wira_call_costs         |   7 | ttsCost                 | numeric(12,6)            | NOT NULL    | 0
+ wira_call_costs         |   8 | sttSeconds              | numeric(10,4)            | NOT NULL    | 0
+ wira_call_costs         |   9 | sttCost                 | numeric(12,6)            | NOT NULL    | 0
+ wira_call_costs         |  10 | plivoSeconds            | numeric(10,4)            | NOT NULL    | 0
+ wira_call_costs         |  11 | plivoCost               | numeric(12,6)            | NOT NULL    | 0
+ wira_call_costs         |  12 | geminiInputTokens       | integer                  | NOT NULL    | 0
+ wira_call_costs         |  13 | geminiCachedTokens      | integer                  | NOT NULL    | 0
+ wira_call_costs         |  14 | geminiOutputTokens      | integer                  | NOT NULL    | 0
+ wira_call_costs         |  15 | geminiCost              | numeric(12,6)            | NOT NULL    | 0
+ wira_call_costs         |  16 | bucketTotal             | numeric(12,6)            | NOT NULL    | 0
+ wira_call_costs         |  17 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_candidate          |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_candidate_id_seq'::regclass)
+ wira_candidate          |   2 | phone                   | character varying(20)    | NOT NULL    | 
+ wira_candidate          |   3 | candidateId             | bigint                   | nullable    | 
+ wira_candidate          |   4 | candidateData           | jsonb                    | nullable    | 
+ wira_candidate          |   5 | name                    | character varying(255)   | nullable    | 
+ wira_candidate          |   6 | email                   | character varying(255)   | nullable    | 
+ wira_candidate          |   7 | hasCall                 | boolean                  | NOT NULL    | false
+ wira_candidate          |   8 | hasWhatsapp             | boolean                  | NOT NULL    | false
+ wira_candidate          |   9 | hasApp                  | boolean                  | NOT NULL    | false
+ wira_candidate          |  10 | insights                | text                     | nullable    | 
+ wira_candidate          |  11 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_candidate          |  12 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_candidate          |  13 | atsResume               | character varying(1000)  | nullable    | 
+ wira_candidate          |  14 | session                 | jsonb                    | nullable    | 
+ wira_file_chunks        |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_file_chunks_id_seq'::regclass)
+ wira_file_chunks        |   2 | wiraFileId              | bigint                   | NOT NULL    | 
+ wira_file_chunks        |   3 | chunkIndex              | integer                  | NOT NULL    | 
+ wira_file_chunks        |   4 | content                 | text                     | NOT NULL    | 
+ wira_file_chunks        |   5 | wordCount               | smallint                 | NOT NULL    | 0
+ wira_file_chunks        |   6 | embedding               | vector(1536)             | nullable    | 
+ wira_file_chunks        |   7 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_files              |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_files_id_seq'::regclass)
+ wira_files              |   2 | wireCandidateId         | bigint                   | nullable    | 
+ wira_files              |   3 | fileName                | character varying(500)   | NOT NULL    | 
+ wira_files              |   4 | fileType                | character varying(100)   | NOT NULL    | 
+ wira_files              |   5 | sizeKb                  | numeric(12,2)            | NOT NULL    | 0
+ wira_files              |   6 | mimeType                | character varying(255)   | nullable    | 
+ wira_files              |   7 | extracted               | boolean                  | NOT NULL    | false
+ wira_files              |   8 | extractedAt             | timestamp with time zone | nullable    | 
+ wira_files              |   9 | chunkCount              | integer                  | NOT NULL    | 0
+ wira_files              |  10 | embeddingCostInr        | numeric(12,6)            | NOT NULL    | 0
+ wira_files              |  11 | storagePath             | character varying(1000)  | nullable    | 
+ wira_files              |  12 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_files              |  13 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_instruction        |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_instruction_id_seq'::regclass)
+ wira_instruction        |   2 | wiraCandidateId         | bigint                   | NOT NULL    | 
+ wira_instruction        |   3 | label                   | character varying(255)   | nullable    | 
+ wira_instruction        |   4 | description             | text                     | nullable    | 
+ wira_instruction        |   5 | status                  | character varying(20)    | NOT NULL    | 'pending'::character varying
+ wira_instruction        |   6 | behaviour               | character varying(10)    | NOT NULL    | 'async'::character varying
+ wira_instruction        |   7 | iterationData           | jsonb                    | nullable    | 
+ wira_instruction        |   8 | platform                | character varying(10)    | nullable    | 
+ wira_instruction        |   9 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_instruction        |  10 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_instruction        |  11 | finishedAt              | timestamp with time zone | nullable    | 
+ wira_instruction        |  12 | cost                    | jsonb                    | nullable    | 
+ wira_notebook           |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_notebook_id_seq'::regclass)
+ wira_notebook           |   2 | wiraCandidateId         | bigint                   | NOT NULL    | 
+ wira_notebook           |   3 | category                | character varying(100)   | NOT NULL    | 
+ wira_notebook           |   4 | fields                  | jsonb                    | NOT NULL    | '{}'::jsonb
+ wira_notebook           |   5 | label                   | character varying(255)   | nullable    | 
+ wira_notebook           |   6 | description             | text                     | nullable    | 
+ wira_notebook           |   7 | data                    | jsonb                    | nullable    | 
+ wira_notebook           |   8 | platform                | character varying(10)    | nullable    | 
+ wira_notebook           |   9 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_notebook           |  10 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_notebooks          |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_notebooks_id_seq'::regclass)
+ wira_notebooks          |   2 | wireCandidateId         | bigint                   | NOT NULL    | 
+ wira_notebooks          |   3 | label                   | text                     | NOT NULL    | 
+ wira_notebooks          |   4 | additionalInfo          | jsonb                    | nullable    | 
+ wira_notebooks          |   5 | data                    | jsonb                    | NOT NULL    | '{}'::jsonb
+ wira_notebooks          |   6 | platform                | text                     | nullable    | 
+ wira_notebooks          |   7 | status                  | text                     | NOT NULL    | 'in_progress'::text
+ wira_notebooks          |   8 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_notebooks          |   9 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_outbound_screening |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_outbound_screening_id_seq'::regclass)
+ wira_outbound_screening |   2 | wiraCallId              | bigint                   | NOT NULL    | 
+ wira_outbound_screening |   3 | jobId                   | bigint                   | nullable    | 
+ wira_outbound_screening |   4 | jobTitle                | character varying(255)   | nullable    | 
+ wira_outbound_screening |   5 | jobDescription          | text                     | nullable    | 
+ wira_outbound_screening |   6 | companyName             | character varying(255)   | nullable    | 
+ wira_outbound_screening |   7 | screeningQuestions      | jsonb                    | nullable    | 
+ wira_outbound_screening |   8 | screeningQA             | jsonb                    | nullable    | 
+ wira_outbound_screening |   9 | score                   | smallint                 | NOT NULL    | 0
+ wira_outbound_screening |  10 | scoreReason             | text                     | nullable    | 
+ wira_outbound_screening |  11 | jobInterest             | character varying(20)    | nullable    | 
+ wira_outbound_screening |  12 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_outbound_screening |  13 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_queue              |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_queue_id_seq'::regclass)
+ wira_queue              |   2 | queueName               | character varying(255)   | NOT NULL    | 
+ wira_queue              |   3 | promptName              | character varying(255)   | nullable    | 
+ wira_queue              |   4 | triggerAt               | timestamp with time zone | NOT NULL    | 
+ wira_queue              |   5 | data                    | jsonb                    | NOT NULL    | 
+ wira_queue              |   6 | platform                | character varying(20)    | nullable    | 
+ wira_queue              |   7 | setBy                   | character varying(20)    | NOT NULL    | 
+ wira_queue              |   8 | referenceTable          | character varying(255)   | nullable    | 
+ wira_queue              |   9 | referenceId             | bigint                   | nullable    | 
+ wira_queue              |  10 | executed                | boolean                  | NOT NULL    | false
+ wira_queue              |  11 | status                  | character varying(20)    | NOT NULL    | 'pending'::character varying
+ wira_queue              |  12 | message                 | text                     | nullable    | 
+ wira_queue              |  13 | promptCosts             | jsonb                    | nullable    | 
+ wira_queue              |  14 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_queue              |  15 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_task               |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_task_id_seq'::regclass)
+ wira_task               |   2 | command                 | character varying(100)   | NOT NULL    | 
+ wira_task               |   3 | label                   | character varying(255)   | nullable    | 
+ wira_task               |   4 | instructionData         | jsonb                    | nullable    | 
+ wira_task               |   5 | status                  | character varying(20)    | NOT NULL    | 'pending'::character varying
+ wira_task               |   6 | statusCode              | integer                  | nullable    | 
+ wira_task               |   7 | success                 | boolean                  | nullable    | 
+ wira_task               |   8 | message                 | text                     | nullable    | 
+ wira_task               |   9 | cost                    | jsonb                    | nullable    | 
+ wira_task               |  10 | platform                | character varying(10)    | nullable    | 
+ wira_task               |  11 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_task               |  12 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_task               |  13 | finishedAt              | timestamp with time zone | nullable    | 
+ wira_tasks              |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_tasks_id_seq'::regclass)
+ wira_tasks              |   2 | wireCandidateId         | bigint                   | NOT NULL    | 
+ wira_tasks              |   3 | label                   | text                     | NOT NULL    | 
+ wira_tasks              |   4 | description             | text                     | nullable    | 
+ wira_tasks              |   5 | status                  | text                     | NOT NULL    | 'in_progress'::text
+ wira_tasks              |   6 | statusMessage           | text                     | nullable    | 
+ wira_tasks              |   7 | data                    | jsonb                    | nullable    | 
+ wira_tasks              |   8 | startedAt               | timestamp with time zone | nullable    | 
+ wira_tasks              |   9 | completedAt             | timestamp with time zone | nullable    | 
+ wira_tasks              |  10 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_tasks              |  11 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_tasks              |  12 | deleteAt                | timestamp with time zone | NOT NULL    | (now() + '24:00:00'::interval)
+ wira_whatsapp           |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_whatsapp_id_seq'::regclass)
+ wira_whatsapp           |   2 | wiraCandidateId         | bigint                   | NOT NULL    | 
+ wira_whatsapp           |   3 | webName                 | character varying(255)   | NOT NULL    | 'White Force'::character varying
+ wira_whatsapp           |   4 | overallGeminiCost       | numeric(12,6)            | NOT NULL    | 0
+ wira_whatsapp           |   5 | overallWhatsappCost     | numeric(12,6)            | NOT NULL    | 0
+ wira_whatsapp           |   6 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_whatsapp           |   7 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+ wira_whatsapp_message   |   1 | id                      | bigint                   | NOT NULL    | nextval('wira_whatsapp_message_id_seq'::regclass)
+ wira_whatsapp_message   |   2 | wiraWhatsappId          | bigint                   | NOT NULL    | 
+ wira_whatsapp_message   |   3 | role                    | character varying(20)    | NOT NULL    | 
+ wira_whatsapp_message   |   4 | content                 | text                     | nullable    | 
+ wira_whatsapp_message   |   5 | urls                    | jsonb                    | NOT NULL    | '[]'::jsonb
+ wira_whatsapp_message   |   6 | jobIds                  | jsonb                    | NOT NULL    | '[]'::jsonb
+ wira_whatsapp_message   |   7 | queueIds                | jsonb                    | NOT NULL    | '[]'::jsonb
+ wira_whatsapp_message   |   8 | files                   | jsonb                    | nullable    | 
+ wira_whatsapp_message   |   9 | instructionData         | jsonb                    | nullable    | 
+ wira_whatsapp_message   |  10 | isServer                | boolean                  | NOT NULL    | false
+ wira_whatsapp_message   |  11 | metadata                | jsonb                    | nullable    | 
+ wira_whatsapp_message   |  12 | promptCosts             | jsonb                    | nullable    | 
+ wira_whatsapp_message   |  13 | cancelled               | boolean                  | NOT NULL    | false
+ wira_whatsapp_message   |  14 | whatsappMessageId       | character varying(255)   | nullable    | 
+ wira_whatsapp_message   |  15 | whatsappRawPayload      | jsonb                    | nullable    | 
+ wira_whatsapp_message   |  16 | cleanContent            | text                     | nullable    | 
+ wira_whatsapp_message   |  17 | embedding               | vector(1024)             | nullable    | 
+ wira_whatsapp_message   |  18 | createdAt               | timestamp with time zone | NOT NULL    | now()
+ wira_whatsapp_message   |  19 | updatedAt               | timestamp with time zone | NOT NULL    | now()
+
+                     section                      
+--------------------------------------------------
+ ================ 2. CONSTRAINTS ================
+
+       table_name        |               constraint_name                | constraint_type |                                                                                                                                                 definition                                                                                                                                                 
+-------------------------+----------------------------------------------+-----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ intro_audio_template    | intro_audio_template_pkey                    | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_app                | wira_app_wiraCandidateId_fkey                | FOREIGN KEY     | FOREIGN KEY ("wiraCandidateId") REFERENCES wira_candidate(id) ON DELETE CASCADE
+ wira_app                | wira_app_pkey                                | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_app                | uq_wiraApp_candidateId_webName               | UNIQUE          | UNIQUE ("wiraCandidateId", "webName")
+ wira_app                | wira_app_candidate_webname_unique            | UNIQUE          | UNIQUE ("wiraCandidateId", "webName")
+ wira_app_message        | chk_wiraAppMessage_content_or_file           | CHECK           | CHECK (((content IS NOT NULL) OR (files IS NOT NULL)))
+ wira_app_message        | wira_app_message_platform_check              | CHECK           | CHECK (((platform)::text = ANY ((ARRAY['App'::character varying, 'Web'::character varying])::text[])))
+ wira_app_message        | wira_app_message_role_check                  | CHECK           | CHECK (((role)::text = ANY ((ARRAY['assistant'::character varying, 'user'::character varying])::text[])))
+ wira_app_message        | wira_app_message_wiraAppId_fkey              | FOREIGN KEY     | FOREIGN KEY ("wiraAppId") REFERENCES wira_app(id) ON DELETE CASCADE
+ wira_app_message        | wira_app_message_pkey                        | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_cache_costs        | wira_cache_costs_pkey                        | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_call               | chk_wiraCall_duration                        | CHECK           | CHECK (((duration IS NULL) OR (duration >= 0)))
+ wira_call               | chk_wiraCall_endedAt                         | CHECK           | CHECK ((("endedAt" IS NULL) OR ("startedAt" IS NULL) OR ("endedAt" >= "startedAt")))
+ wira_call               | wira_call_bound_check                        | CHECK           | CHECK (((bound)::text = ANY ((ARRAY['inbound'::character varying, 'outbound'::character varying])::text[])))
+ wira_call               | wira_call_interest_check                     | CHECK           | CHECK (((interest IS NULL) OR ((interest)::text = ANY ((ARRAY['LOW'::character varying, 'MEDIUM'::character varying, 'HIGH'::character varying, 'UNKNOWN'::character varying])::text[]))))
+ wira_call               | wira_call_status_check                       | CHECK           | CHECK (((status)::text = ANY ((ARRAY['initiated'::character varying, 'in_progress'::character varying, 'finalizing'::character varying, 'completed'::character varying, 'failed'::character varying, 'no_answer'::character varying, 'busy'::character varying, 'canceled'::character varying])::text[])))
+ wira_call               | wira_call_wiraCandidateId_fkey               | FOREIGN KEY     | FOREIGN KEY ("wiraCandidateId") REFERENCES wira_candidate(id) ON DELETE CASCADE
+ wira_call               | wira_call_pkey                               | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_call_costs         | wira_call_costs_wiraOutboundScreeningId_fkey | FOREIGN KEY     | FOREIGN KEY ("wiraOutboundScreeningId") REFERENCES wira_outbound_screening(id) ON DELETE CASCADE
+ wira_call_costs         | wira_call_costs_pkey                         | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_candidate          | wira_candidate_pkey                          | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_candidate          | uq_wiraCandidate_candidateId                 | UNIQUE          | UNIQUE ("candidateId")
+ wira_candidate          | uq_wiraCandidate_email                       | UNIQUE          | UNIQUE (email)
+ wira_candidate          | uq_wiraCandidate_phone                       | UNIQUE          | UNIQUE (phone)
+ wira_candidate          | wira_candidate_phone_unique                  | UNIQUE          | UNIQUE (phone)
+ wira_file_chunks        | chk_wiraFileChunks_wordCount                 | CHECK           | CHECK (("wordCount" >= 0))
+ wira_file_chunks        | wira_file_chunks_wiraFileId_fkey             | FOREIGN KEY     | FOREIGN KEY ("wiraFileId") REFERENCES wira_files(id) ON DELETE CASCADE
+ wira_file_chunks        | wira_file_chunks_pkey                        | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_file_chunks        | uq_wiraFileChunks_fileId_chunkIndex          | UNIQUE          | UNIQUE ("wiraFileId", "chunkIndex")
+ wira_files              | chk_wiraFiles_chunkCount                     | CHECK           | CHECK (("chunkCount" >= 0))
+ wira_files              | chk_wiraFiles_sizeKb                         | CHECK           | CHECK (("sizeKb" >= (0)::numeric))
+ wira_files              | wira_files_wireCandidateId_fkey              | FOREIGN KEY     | FOREIGN KEY ("wireCandidateId") REFERENCES wira_candidate(id) ON DELETE SET NULL
+ wira_files              | wira_files_pkey                              | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_instruction        | wira_instruction_behaviour_check             | CHECK           | CHECK (((behaviour)::text = ANY ((ARRAY['sync'::character varying, 'async'::character varying])::text[])))
+ wira_instruction        | wira_instruction_platform_check              | CHECK           | CHECK (((platform)::text = ANY ((ARRAY['App'::character varying, 'Web'::character varying, 'Whatsapp'::character varying, 'Server'::character varying, 'Call'::character varying])::text[])))
+ wira_instruction        | wira_instruction_status_check                | CHECK           | CHECK (((status)::text = ANY ((ARRAY['pending'::character varying, 'processing'::character varying, 'completed'::character varying, 'failed'::character varying])::text[])))
+ wira_instruction        | wira_instruction_wiraCandidateId_fkey        | FOREIGN KEY     | FOREIGN KEY ("wiraCandidateId") REFERENCES wira_candidate(id) ON DELETE CASCADE
+ wira_instruction        | wira_instruction_pkey                        | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_notebook           | wira_notebook_platform_check                 | CHECK           | CHECK (((platform)::text = ANY ((ARRAY['App'::character varying, 'Web'::character varying, 'Whatsapp'::character varying, 'Server'::character varying, 'Call'::character varying])::text[])))
+ wira_notebook           | wira_notebook_wireCandidateId_fkey           | FOREIGN KEY     | FOREIGN KEY ("wiraCandidateId") REFERENCES wira_candidate(id) ON DELETE CASCADE
+ wira_notebook           | wira_notebook_pkey                           | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_notebooks          | wira_notebooks_status_check                  | CHECK           | CHECK ((status = ANY (ARRAY['in_progress'::text, 'failed'::text, 'cancelled'::text, 'completed'::text])))
+ wira_notebooks          | wira_notebooks_wireCandidateId_fkey          | FOREIGN KEY     | FOREIGN KEY ("wireCandidateId") REFERENCES wira_candidate(id) ON DELETE CASCADE
+ wira_notebooks          | wira_notebooks_pkey                          | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_outbound_screening | chk_wiraOutboundScreening_jobReference       | CHECK           | CHECK ((("jobId" IS NOT NULL) OR ("jobDescription" IS NOT NULL)))
+ wira_outbound_screening | wira_outbound_screening_jobInterest_check    | CHECK           | CHECK ((("jobInterest" IS NULL) OR (("jobInterest")::text = ANY ((ARRAY['LOW'::character varying, 'MEDIUM'::character varying, 'HIGH'::character varying, 'UNKNOWN'::character varying])::text[]))))
+ wira_outbound_screening | wira_outbound_screening_wiraCallId_fkey      | FOREIGN KEY     | FOREIGN KEY ("wiraCallId") REFERENCES wira_call(id) ON DELETE CASCADE
+ wira_outbound_screening | wira_outbound_screening_pkey                 | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_queue              | wira_queue_platform_check                    | CHECK           | CHECK (((platform)::text = ANY ((ARRAY['App'::character varying, 'Web'::character varying, 'Whatsapp'::character varying, 'Call'::character varying])::text[])))
+ wira_queue              | wira_queue_setBy_check                       | CHECK           | CHECK ((("setBy")::text = ANY ((ARRAY['system'::character varying, 'assistant'::character varying, 'server'::character varying])::text[])))
+ wira_queue              | wira_queue_status_check                      | CHECK           | CHECK (((status)::text = ANY ((ARRAY['pending'::character varying, 'success'::character varying, 'failed'::character varying])::text[])))
+ wira_queue              | wira_queue_pkey                              | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_task               | wira_task_platform_check                     | CHECK           | CHECK (((platform)::text = ANY ((ARRAY['App'::character varying, 'Web'::character varying, 'Whatsapp'::character varying, 'Server'::character varying, 'Call'::character varying])::text[])))
+ wira_task               | wira_task_status_check                       | CHECK           | CHECK (((status)::text = ANY ((ARRAY['pending'::character varying, 'processing'::character varying, 'completed'::character varying, 'failed'::character varying])::text[])))
+ wira_task               | wira_task_pkey                               | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_tasks              | wira_tasks_status_check                      | CHECK           | CHECK ((status = ANY (ARRAY['in_progress'::text, 'failed'::text, 'completed'::text, 'cancelled'::text])))
+ wira_tasks              | wira_tasks_wireCandidateId_fkey              | FOREIGN KEY     | FOREIGN KEY ("wireCandidateId") REFERENCES wira_candidate(id) ON DELETE CASCADE
+ wira_tasks              | wira_tasks_pkey                              | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_whatsapp           | wira_whatsapp_wiraCandidateId_fkey           | FOREIGN KEY     | FOREIGN KEY ("wiraCandidateId") REFERENCES wira_candidate(id) ON DELETE CASCADE
+ wira_whatsapp           | wira_whatsapp_pkey                           | PRIMARY KEY     | PRIMARY KEY (id)
+ wira_whatsapp           | uq_wiraWhatsapp_candidateId_webName          | UNIQUE          | UNIQUE ("wiraCandidateId", "webName")
+ wira_whatsapp_message   | chk_wiraWhatsappMessage_content_or_file      | CHECK           | CHECK (((content IS NOT NULL) OR (files IS NOT NULL)))
+ wira_whatsapp_message   | wira_whatsapp_message_role_check             | CHECK           | CHECK (((role)::text = ANY ((ARRAY['assistant'::character varying, 'user'::character varying])::text[])))
+ wira_whatsapp_message   | wira_whatsapp_message_wiraWhatsappId_fkey    | FOREIGN KEY     | FOREIGN KEY ("wiraWhatsappId") REFERENCES wira_whatsapp(id) ON DELETE CASCADE
+ wira_whatsapp_message   | wira_whatsapp_message_pkey                   | PRIMARY KEY     | PRIMARY KEY (id)
+
+                   section                    
+----------------------------------------------
+ ================ 3. INDEXES ================
+
+       table_name        |                index_name                |                                                                              definition                                                                               
+-------------------------+------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ intro_audio_template    | intro_audio_template_pkey                | CREATE UNIQUE INDEX intro_audio_template_pkey ON public.intro_audio_template USING btree (id)
+ intro_audio_template    | uq_introAudioTemplate_text_lang_speaker  | CREATE UNIQUE INDEX "uq_introAudioTemplate_text_lang_speaker" ON public.intro_audio_template USING btree (text, language, speaker)
+ wira_app                | idx_wiraApp_createdAt                    | CREATE INDEX "idx_wiraApp_createdAt" ON public.wira_app USING btree ("createdAt" DESC)
+ wira_app                | idx_wiraApp_overallGeminiCost            | CREATE INDEX "idx_wiraApp_overallGeminiCost" ON public.wira_app USING btree ("overallGeminiCost")
+ wira_app                | idx_wiraApp_updatedAt                    | CREATE INDEX "idx_wiraApp_updatedAt" ON public.wira_app USING btree ("updatedAt" DESC)
+ wira_app                | idx_wiraApp_webName                      | CREATE INDEX "idx_wiraApp_webName" ON public.wira_app USING btree ("webName")
+ wira_app                | idx_wiraApp_wiraCandidateId              | CREATE INDEX "idx_wiraApp_wiraCandidateId" ON public.wira_app USING btree ("wiraCandidateId")
+ wira_app                | uq_wiraApp_candidateId_webName           | CREATE UNIQUE INDEX "uq_wiraApp_candidateId_webName" ON public.wira_app USING btree ("wiraCandidateId", "webName")
+ wira_app                | wira_app_candidate_webname_unique        | CREATE UNIQUE INDEX wira_app_candidate_webname_unique ON public.wira_app USING btree ("wiraCandidateId", "webName")
+ wira_app                | wira_app_pkey                            | CREATE UNIQUE INDEX wira_app_pkey ON public.wira_app USING btree (id)
+ wira_app_message        | idx_wiraAppMessage_cancelled             | CREATE INDEX "idx_wiraAppMessage_cancelled" ON public.wira_app_message USING btree (cancelled) WHERE (cancelled = true)
+ wira_app_message        | idx_wiraAppMessage_createdAt             | CREATE INDEX "idx_wiraAppMessage_createdAt" ON public.wira_app_message USING btree ("createdAt" DESC)
+ wira_app_message        | idx_wiraAppMessage_embedding             | CREATE INDEX "idx_wiraAppMessage_embedding" ON public.wira_app_message USING ivfflat (embedding vector_cosine_ops) WITH (lists='100')
+ wira_app_message        | idx_wiraAppMessage_instructionData       | CREATE INDEX "idx_wiraAppMessage_instructionData" ON public.wira_app_message USING gin ("instructionData" jsonb_path_ops) WHERE ("instructionData" IS NOT NULL)
+ wira_app_message        | idx_wiraAppMessage_isServer              | CREATE INDEX "idx_wiraAppMessage_isServer" ON public.wira_app_message USING btree ("isServer") WHERE ("isServer" = true)
+ wira_app_message        | idx_wiraAppMessage_jobIds                | CREATE INDEX "idx_wiraAppMessage_jobIds" ON public.wira_app_message USING gin ("jobIds")
+ wira_app_message        | idx_wiraAppMessage_platform              | CREATE INDEX "idx_wiraAppMessage_platform" ON public.wira_app_message USING btree (platform) WHERE (platform IS NOT NULL)
+ wira_app_message        | idx_wiraAppMessage_queueIds              | CREATE INDEX "idx_wiraAppMessage_queueIds" ON public.wira_app_message USING gin ("queueIds")
+ wira_app_message        | idx_wiraAppMessage_role                  | CREATE INDEX "idx_wiraAppMessage_role" ON public.wira_app_message USING btree (role)
+ wira_app_message        | idx_wiraAppMessage_wiraAppId             | CREATE INDEX "idx_wiraAppMessage_wiraAppId" ON public.wira_app_message USING btree ("wiraAppId")
+ wira_app_message        | idx_wiraAppMessage_wiraAppId_createdAt   | CREATE INDEX "idx_wiraAppMessage_wiraAppId_createdAt" ON public.wira_app_message USING btree ("wiraAppId", "createdAt" DESC)
+ wira_app_message        | wira_app_message_pkey                    | CREATE UNIQUE INDEX wira_app_message_pkey ON public.wira_app_message USING btree (id)
+ wira_cache_costs        | idx_wiraCacheCosts_createdAt             | CREATE INDEX "idx_wiraCacheCosts_createdAt" ON public.wira_cache_costs USING btree ("createdAt" DESC)
+ wira_cache_costs        | idx_wiraCacheCosts_deletedAt             | CREATE INDEX "idx_wiraCacheCosts_deletedAt" ON public.wira_cache_costs USING btree ("deletedAt" DESC) WHERE ("deletedAt" IS NOT NULL)
+ wira_cache_costs        | idx_wiraCacheCosts_lifetime              | CREATE INDEX "idx_wiraCacheCosts_lifetime" ON public.wira_cache_costs USING btree ("createdAt", "deletedAt")
+ wira_cache_costs        | idx_wiraCacheCosts_modelName             | CREATE INDEX "idx_wiraCacheCosts_modelName" ON public.wira_cache_costs USING btree ("modelName")
+ wira_cache_costs        | idx_wiraCacheCosts_modelName_cost        | CREATE INDEX "idx_wiraCacheCosts_modelName_cost" ON public.wira_cache_costs USING btree ("modelName", cost)
+ wira_cache_costs        | idx_wiraCacheCosts_promptName            | CREATE INDEX "idx_wiraCacheCosts_promptName" ON public.wira_cache_costs USING btree ("promptName")
+ wira_cache_costs        | idx_wiraCacheCosts_promptName_cost       | CREATE INDEX "idx_wiraCacheCosts_promptName_cost" ON public.wira_cache_costs USING btree ("promptName", cost)
+ wira_cache_costs        | uq_wiraCacheCosts_cacheId                | CREATE UNIQUE INDEX "uq_wiraCacheCosts_cacheId" ON public.wira_cache_costs USING btree ("cacheId")
+ wira_cache_costs        | wira_cache_costs_pkey                    | CREATE UNIQUE INDEX wira_cache_costs_pkey ON public.wira_cache_costs USING btree (id)
+ wira_call               | idx_wiraCall_bound                       | CREATE INDEX "idx_wiraCall_bound" ON public.wira_call USING btree (bound)
+ wira_call               | idx_wiraCall_candidateId_status          | CREATE INDEX "idx_wiraCall_candidateId_status" ON public.wira_call USING btree ("wiraCandidateId", status)
+ wira_call               | idx_wiraCall_createdAt                   | CREATE INDEX "idx_wiraCall_createdAt" ON public.wira_call USING btree ("createdAt" DESC)
+ wira_call               | idx_wiraCall_embedding                   | CREATE INDEX "idx_wiraCall_embedding" ON public.wira_call USING ivfflat (embedding vector_cosine_ops) WITH (lists='100')
+ wira_call               | idx_wiraCall_endedAt                     | CREATE INDEX "idx_wiraCall_endedAt" ON public.wira_call USING btree ("endedAt" DESC) WHERE ("endedAt" IS NOT NULL)
+ wira_call               | idx_wiraCall_fromPhone                   | CREATE INDEX "idx_wiraCall_fromPhone" ON public.wira_call USING btree ("fromPhone")
+ wira_call               | idx_wiraCall_hangupCause                 | CREATE INDEX "idx_wiraCall_hangupCause" ON public.wira_call USING btree ("hangupCause") WHERE ("hangupCause" IS NOT NULL)
+ wira_call               | idx_wiraCall_interest                    | CREATE INDEX "idx_wiraCall_interest" ON public.wira_call USING btree (interest) WHERE (interest IS NOT NULL)
+ wira_call               | idx_wiraCall_language                    | CREATE INDEX "idx_wiraCall_language" ON public.wira_call USING btree (language)
+ wira_call               | idx_wiraCall_startedAt                   | CREATE INDEX "idx_wiraCall_startedAt" ON public.wira_call USING btree ("startedAt" DESC) WHERE ("startedAt" IS NOT NULL)
+ wira_call               | idx_wiraCall_status                      | CREATE INDEX "idx_wiraCall_status" ON public.wira_call USING btree (status)
+ wira_call               | idx_wiraCall_totalCost                   | CREATE INDEX "idx_wiraCall_totalCost" ON public.wira_call USING btree ("totalCost")
+ wira_call               | idx_wiraCall_type                        | CREATE INDEX "idx_wiraCall_type" ON public.wira_call USING btree (type)
+ wira_call               | idx_wiraCall_updatedAt                   | CREATE INDEX "idx_wiraCall_updatedAt" ON public.wira_call USING btree ("updatedAt" DESC)
+ wira_call               | idx_wiraCall_webName                     | CREATE INDEX "idx_wiraCall_webName" ON public.wira_call USING btree ("webName")
+ wira_call               | idx_wiraCall_wiraCandidateId             | CREATE INDEX "idx_wiraCall_wiraCandidateId" ON public.wira_call USING btree ("wiraCandidateId")
+ wira_call               | uq_wiraCall_callId                       | CREATE UNIQUE INDEX "uq_wiraCall_callId" ON public.wira_call USING btree ("callId") WHERE ("callId" IS NOT NULL)
+ wira_call               | wira_call_pkey                           | CREATE UNIQUE INDEX wira_call_pkey ON public.wira_call USING btree (id)
+ wira_call_costs         | idx_wiraCallCosts_bucketTotal            | CREATE INDEX "idx_wiraCallCosts_bucketTotal" ON public.wira_call_costs USING btree ("bucketTotal")
+ wira_call_costs         | idx_wiraCallCosts_createdAt              | CREATE INDEX "idx_wiraCallCosts_createdAt" ON public.wira_call_costs USING btree ("createdAt" DESC)
+ wira_call_costs         | idx_wiraCallCosts_endTime                | CREATE INDEX "idx_wiraCallCosts_endTime" ON public.wira_call_costs USING btree ("endTime" DESC)
+ wira_call_costs         | idx_wiraCallCosts_geminiCost             | CREATE INDEX "idx_wiraCallCosts_geminiCost" ON public.wira_call_costs USING btree ("geminiCost")
+ wira_call_costs         | idx_wiraCallCosts_plivoCost              | CREATE INDEX "idx_wiraCallCosts_plivoCost" ON public.wira_call_costs USING btree ("plivoCost")
+ wira_call_costs         | idx_wiraCallCosts_screeningId            | CREATE INDEX "idx_wiraCallCosts_screeningId" ON public.wira_call_costs USING btree ("wiraOutboundScreeningId")
+ wira_call_costs         | idx_wiraCallCosts_startTime              | CREATE INDEX "idx_wiraCallCosts_startTime" ON public.wira_call_costs USING btree ("startTime" DESC)
+ wira_call_costs         | uq_wiraCallCosts_screening_bucket        | CREATE UNIQUE INDEX "uq_wiraCallCosts_screening_bucket" ON public.wira_call_costs USING btree ("wiraOutboundScreeningId", "bucketIndex")
+ wira_call_costs         | wira_call_costs_pkey                     | CREATE UNIQUE INDEX wira_call_costs_pkey ON public.wira_call_costs USING btree (id)
+ wira_candidate          | idx_wiraCandidate_atsResume              | CREATE INDEX "idx_wiraCandidate_atsResume" ON public.wira_candidate USING btree ("atsResume") WHERE ("atsResume" IS NOT NULL)
+ wira_candidate          | idx_wiraCandidate_candidateId            | CREATE INDEX "idx_wiraCandidate_candidateId" ON public.wira_candidate USING btree ("candidateId") WHERE ("candidateId" IS NOT NULL)
+ wira_candidate          | idx_wiraCandidate_createdAt              | CREATE INDEX "idx_wiraCandidate_createdAt" ON public.wira_candidate USING btree ("createdAt" DESC)
+ wira_candidate          | idx_wiraCandidate_email                  | CREATE INDEX "idx_wiraCandidate_email" ON public.wira_candidate USING btree (email) WHERE (email IS NOT NULL)
+ wira_candidate          | idx_wiraCandidate_hasApp                 | CREATE INDEX "idx_wiraCandidate_hasApp" ON public.wira_candidate USING btree ("hasApp") WHERE ("hasApp" = true)
+ wira_candidate          | idx_wiraCandidate_hasCall                | CREATE INDEX "idx_wiraCandidate_hasCall" ON public.wira_candidate USING btree ("hasCall") WHERE ("hasCall" = true)
+ wira_candidate          | idx_wiraCandidate_hasWhatsapp            | CREATE INDEX "idx_wiraCandidate_hasWhatsapp" ON public.wira_candidate USING btree ("hasWhatsapp") WHERE ("hasWhatsapp" = true)
+ wira_candidate          | idx_wiraCandidate_name                   | CREATE INDEX "idx_wiraCandidate_name" ON public.wira_candidate USING btree (name) WHERE (name IS NOT NULL)
+ wira_candidate          | idx_wiraCandidate_phone                  | CREATE INDEX "idx_wiraCandidate_phone" ON public.wira_candidate USING btree (phone)
+ wira_candidate          | idx_wiraCandidate_updatedAt              | CREATE INDEX "idx_wiraCandidate_updatedAt" ON public.wira_candidate USING btree ("updatedAt" DESC)
+ wira_candidate          | uq_wiraCandidate_candidateId             | CREATE UNIQUE INDEX "uq_wiraCandidate_candidateId" ON public.wira_candidate USING btree ("candidateId")
+ wira_candidate          | uq_wiraCandidate_email                   | CREATE UNIQUE INDEX "uq_wiraCandidate_email" ON public.wira_candidate USING btree (email)
+ wira_candidate          | uq_wiraCandidate_phone                   | CREATE UNIQUE INDEX "uq_wiraCandidate_phone" ON public.wira_candidate USING btree (phone)
+ wira_candidate          | wira_candidate_phone_unique              | CREATE UNIQUE INDEX wira_candidate_phone_unique ON public.wira_candidate USING btree (phone)
+ wira_candidate          | wira_candidate_pkey                      | CREATE UNIQUE INDEX wira_candidate_pkey ON public.wira_candidate USING btree (id)
+ wira_file_chunks        | idx_wiraFileChunks_createdAt             | CREATE INDEX "idx_wiraFileChunks_createdAt" ON public.wira_file_chunks USING btree ("createdAt" DESC)
+ wira_file_chunks        | idx_wiraFileChunks_embedding             | CREATE INDEX "idx_wiraFileChunks_embedding" ON public.wira_file_chunks USING ivfflat (embedding vector_cosine_ops) WITH (lists='100')
+ wira_file_chunks        | idx_wiraFileChunks_wiraFileId            | CREATE INDEX "idx_wiraFileChunks_wiraFileId" ON public.wira_file_chunks USING btree ("wiraFileId")
+ wira_file_chunks        | idx_wiraFileChunks_wiraFileId_chunkIndex | CREATE INDEX "idx_wiraFileChunks_wiraFileId_chunkIndex" ON public.wira_file_chunks USING btree ("wiraFileId", "chunkIndex")
+ wira_file_chunks        | uq_wiraFileChunks_fileId_chunkIndex      | CREATE UNIQUE INDEX "uq_wiraFileChunks_fileId_chunkIndex" ON public.wira_file_chunks USING btree ("wiraFileId", "chunkIndex")
+ wira_file_chunks        | wira_file_chunks_pkey                    | CREATE UNIQUE INDEX wira_file_chunks_pkey ON public.wira_file_chunks USING btree (id)
+ wira_files              | idx_wiraFiles_createdAt                  | CREATE INDEX "idx_wiraFiles_createdAt" ON public.wira_files USING btree ("createdAt" DESC)
+ wira_files              | idx_wiraFiles_extracted                  | CREATE INDEX "idx_wiraFiles_extracted" ON public.wira_files USING btree (extracted)
+ wira_files              | idx_wiraFiles_extracted_false            | CREATE INDEX "idx_wiraFiles_extracted_false" ON public.wira_files USING btree (id) WHERE (extracted = false)
+ wira_files              | idx_wiraFiles_fileName                   | CREATE INDEX "idx_wiraFiles_fileName" ON public.wira_files USING btree ("fileName")
+ wira_files              | idx_wiraFiles_fileType                   | CREATE INDEX "idx_wiraFiles_fileType" ON public.wira_files USING btree ("fileType")
+ wira_files              | idx_wiraFiles_updatedAt                  | CREATE INDEX "idx_wiraFiles_updatedAt" ON public.wira_files USING btree ("updatedAt" DESC)
+ wira_files              | idx_wiraFiles_wireCandidateId            | CREATE INDEX "idx_wiraFiles_wireCandidateId" ON public.wira_files USING btree ("wireCandidateId") WHERE ("wireCandidateId" IS NOT NULL)
+ wira_files              | wira_files_pkey                          | CREATE UNIQUE INDEX wira_files_pkey ON public.wira_files USING btree (id)
+ wira_instruction        | idx_wiraInstruction_behaviour            | CREATE INDEX "idx_wiraInstruction_behaviour" ON public.wira_instruction USING btree (behaviour)
+ wira_instruction        | idx_wiraInstruction_createdAt            | CREATE INDEX "idx_wiraInstruction_createdAt" ON public.wira_instruction USING btree ("createdAt" DESC)
+ wira_instruction        | idx_wiraInstruction_label                | CREATE INDEX "idx_wiraInstruction_label" ON public.wira_instruction USING btree (label) WHERE (label IS NOT NULL)
+ wira_instruction        | idx_wiraInstruction_platform             | CREATE INDEX "idx_wiraInstruction_platform" ON public.wira_instruction USING btree (platform) WHERE (platform IS NOT NULL)
+ wira_instruction        | idx_wiraInstruction_status               | CREATE INDEX "idx_wiraInstruction_status" ON public.wira_instruction USING btree (status)
+ wira_instruction        | idx_wiraInstruction_updatedAt            | CREATE INDEX "idx_wiraInstruction_updatedAt" ON public.wira_instruction USING btree ("updatedAt" DESC)
+ wira_instruction        | idx_wiraInstruction_wiraCandidateId      | CREATE INDEX "idx_wiraInstruction_wiraCandidateId" ON public.wira_instruction USING btree ("wiraCandidateId")
+ wira_instruction        | wira_instruction_pkey                    | CREATE UNIQUE INDEX wira_instruction_pkey ON public.wira_instruction USING btree (id)
+ wira_notebook           | idx_wiraNotebook_category                | CREATE INDEX "idx_wiraNotebook_category" ON public.wira_notebook USING btree (category)
+ wira_notebook           | idx_wiraNotebook_fields_gin              | CREATE INDEX "idx_wiraNotebook_fields_gin" ON public.wira_notebook USING gin (fields)
+ wira_notebook           | idx_wiraNotebook_platform                | CREATE INDEX "idx_wiraNotebook_platform" ON public.wira_notebook USING btree (platform) WHERE (platform IS NOT NULL)
+ wira_notebook           | idx_wiraNotebook_updatedAt               | CREATE INDEX "idx_wiraNotebook_updatedAt" ON public.wira_notebook USING btree ("updatedAt" DESC)
+ wira_notebook           | idx_wiraNotebook_wireCandidateId         | CREATE INDEX "idx_wiraNotebook_wireCandidateId" ON public.wira_notebook USING btree ("wiraCandidateId")
+ wira_notebook           | wira_notebook_pkey                       | CREATE UNIQUE INDEX wira_notebook_pkey ON public.wira_notebook USING btree (id)
+ wira_notebooks          | wira_notebooks_pkey                      | CREATE UNIQUE INDEX wira_notebooks_pkey ON public.wira_notebooks USING btree (id)
+ wira_outbound_screening | idx_wiraOutboundScreening_companyName    | CREATE INDEX "idx_wiraOutboundScreening_companyName" ON public.wira_outbound_screening USING btree ("companyName") WHERE ("companyName" IS NOT NULL)
+ wira_outbound_screening | idx_wiraOutboundScreening_createdAt      | CREATE INDEX "idx_wiraOutboundScreening_createdAt" ON public.wira_outbound_screening USING btree ("createdAt" DESC)
+ wira_outbound_screening | idx_wiraOutboundScreening_jobId          | CREATE INDEX "idx_wiraOutboundScreening_jobId" ON public.wira_outbound_screening USING btree ("jobId") WHERE ("jobId" IS NOT NULL)
+ wira_outbound_screening | idx_wiraOutboundScreening_jobId_score    | CREATE INDEX "idx_wiraOutboundScreening_jobId_score" ON public.wira_outbound_screening USING btree ("jobId", score) WHERE ("jobId" IS NOT NULL)
+ wira_outbound_screening | idx_wiraOutboundScreening_jobInterest    | CREATE INDEX "idx_wiraOutboundScreening_jobInterest" ON public.wira_outbound_screening USING btree ("jobInterest") WHERE ("jobInterest" IS NOT NULL)
+ wira_outbound_screening | idx_wiraOutboundScreening_score          | CREATE INDEX "idx_wiraOutboundScreening_score" ON public.wira_outbound_screening USING btree (score)
+ wira_outbound_screening | idx_wiraOutboundScreening_updatedAt      | CREATE INDEX "idx_wiraOutboundScreening_updatedAt" ON public.wira_outbound_screening USING btree ("updatedAt" DESC)
+ wira_outbound_screening | idx_wiraOutboundScreening_wiraCallId     | CREATE INDEX "idx_wiraOutboundScreening_wiraCallId" ON public.wira_outbound_screening USING btree ("wiraCallId")
+ wira_outbound_screening | wira_outbound_screening_pkey             | CREATE UNIQUE INDEX wira_outbound_screening_pkey ON public.wira_outbound_screening USING btree (id)
+ wira_queue              | idx_wiraQueue_createdAt                  | CREATE INDEX "idx_wiraQueue_createdAt" ON public.wira_queue USING btree ("createdAt" DESC)
+ wira_queue              | idx_wiraQueue_executed                   | CREATE INDEX "idx_wiraQueue_executed" ON public.wira_queue USING btree (executed)
+ wira_queue              | idx_wiraQueue_pending_triggerAt          | CREATE INDEX "idx_wiraQueue_pending_triggerAt" ON public.wira_queue USING btree ("triggerAt") WHERE ((executed = false) AND ((status)::text = 'pending'::text))
+ wira_queue              | idx_wiraQueue_platform                   | CREATE INDEX "idx_wiraQueue_platform" ON public.wira_queue USING btree (platform) WHERE (platform IS NOT NULL)
+ wira_queue              | idx_wiraQueue_promptName                 | CREATE INDEX "idx_wiraQueue_promptName" ON public.wira_queue USING btree ("promptName") WHERE ("promptName" IS NOT NULL)
+ wira_queue              | idx_wiraQueue_queueName                  | CREATE INDEX "idx_wiraQueue_queueName" ON public.wira_queue USING btree ("queueName")
+ wira_queue              | idx_wiraQueue_queueName_status           | CREATE INDEX "idx_wiraQueue_queueName_status" ON public.wira_queue USING btree ("queueName", status)
+ wira_queue              | idx_wiraQueue_refTable_refId             | CREATE INDEX "idx_wiraQueue_refTable_refId" ON public.wira_queue USING btree ("referenceTable", "referenceId") WHERE ("referenceTable" IS NOT NULL)
+ wira_queue              | idx_wiraQueue_referenceTable             | CREATE INDEX "idx_wiraQueue_referenceTable" ON public.wira_queue USING btree ("referenceTable") WHERE ("referenceTable" IS NOT NULL)
+ wira_queue              | idx_wiraQueue_setBy                      | CREATE INDEX "idx_wiraQueue_setBy" ON public.wira_queue USING btree ("setBy")
+ wira_queue              | idx_wiraQueue_status                     | CREATE INDEX "idx_wiraQueue_status" ON public.wira_queue USING btree (status)
+ wira_queue              | idx_wiraQueue_triggerAt                  | CREATE INDEX "idx_wiraQueue_triggerAt" ON public.wira_queue USING btree ("triggerAt")
+ wira_queue              | idx_wiraQueue_updatedAt                  | CREATE INDEX "idx_wiraQueue_updatedAt" ON public.wira_queue USING btree ("updatedAt" DESC)
+ wira_queue              | wira_queue_pkey                          | CREATE UNIQUE INDEX wira_queue_pkey ON public.wira_queue USING btree (id)
+ wira_task               | idx_wiraTask_command                     | CREATE INDEX "idx_wiraTask_command" ON public.wira_task USING btree (command)
+ wira_task               | idx_wiraTask_createdAt                   | CREATE INDEX "idx_wiraTask_createdAt" ON public.wira_task USING btree ("createdAt" DESC)
+ wira_task               | idx_wiraTask_label                       | CREATE INDEX "idx_wiraTask_label" ON public.wira_task USING btree (label) WHERE (label IS NOT NULL)
+ wira_task               | idx_wiraTask_platform                    | CREATE INDEX "idx_wiraTask_platform" ON public.wira_task USING btree (platform) WHERE (platform IS NOT NULL)
+ wira_task               | idx_wiraTask_status                      | CREATE INDEX "idx_wiraTask_status" ON public.wira_task USING btree (status)
+ wira_task               | idx_wiraTask_updatedAt                   | CREATE INDEX "idx_wiraTask_updatedAt" ON public.wira_task USING btree ("updatedAt" DESC)
+ wira_task               | wira_task_pkey                           | CREATE UNIQUE INDEX wira_task_pkey ON public.wira_task USING btree (id)
+ wira_tasks              | idx_wira_tasks_delete_at                 | CREATE INDEX idx_wira_tasks_delete_at ON public.wira_tasks USING btree ("deleteAt")
+ wira_tasks              | wira_tasks_pkey                          | CREATE UNIQUE INDEX wira_tasks_pkey ON public.wira_tasks USING btree (id)
+ wira_whatsapp           | idx_wiraWhatsapp_createdAt               | CREATE INDEX "idx_wiraWhatsapp_createdAt" ON public.wira_whatsapp USING btree ("createdAt" DESC)
+ wira_whatsapp           | idx_wiraWhatsapp_overallGeminiCost       | CREATE INDEX "idx_wiraWhatsapp_overallGeminiCost" ON public.wira_whatsapp USING btree ("overallGeminiCost")
+ wira_whatsapp           | idx_wiraWhatsapp_overallWhatsappCost     | CREATE INDEX "idx_wiraWhatsapp_overallWhatsappCost" ON public.wira_whatsapp USING btree ("overallWhatsappCost")
+ wira_whatsapp           | idx_wiraWhatsapp_updatedAt               | CREATE INDEX "idx_wiraWhatsapp_updatedAt" ON public.wira_whatsapp USING btree ("updatedAt" DESC)
+ wira_whatsapp           | idx_wiraWhatsapp_webName                 | CREATE INDEX "idx_wiraWhatsapp_webName" ON public.wira_whatsapp USING btree ("webName")
+ wira_whatsapp           | idx_wiraWhatsapp_wiraCandidateId         | CREATE INDEX "idx_wiraWhatsapp_wiraCandidateId" ON public.wira_whatsapp USING btree ("wiraCandidateId")
+ wira_whatsapp           | uq_wiraWhatsapp_candidateId_webName      | CREATE UNIQUE INDEX "uq_wiraWhatsapp_candidateId_webName" ON public.wira_whatsapp USING btree ("wiraCandidateId", "webName")
+ wira_whatsapp           | wira_whatsapp_pkey                       | CREATE UNIQUE INDEX wira_whatsapp_pkey ON public.wira_whatsapp USING btree (id)
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_cancelled            | CREATE INDEX "idx_wiraWhatsappMsg_cancelled" ON public.wira_whatsapp_message USING btree (cancelled) WHERE (cancelled = true)
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_createdAt            | CREATE INDEX "idx_wiraWhatsappMsg_createdAt" ON public.wira_whatsapp_message USING btree ("createdAt" DESC)
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_embedding            | CREATE INDEX "idx_wiraWhatsappMsg_embedding" ON public.wira_whatsapp_message USING ivfflat (embedding vector_cosine_ops) WITH (lists='100')
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_instructionData      | CREATE INDEX "idx_wiraWhatsappMsg_instructionData" ON public.wira_whatsapp_message USING gin ("instructionData" jsonb_path_ops) WHERE ("instructionData" IS NOT NULL)
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_isServer             | CREATE INDEX "idx_wiraWhatsappMsg_isServer" ON public.wira_whatsapp_message USING btree ("isServer") WHERE ("isServer" = true)
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_jobIds               | CREATE INDEX "idx_wiraWhatsappMsg_jobIds" ON public.wira_whatsapp_message USING gin ("jobIds")
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_queueIds             | CREATE INDEX "idx_wiraWhatsappMsg_queueIds" ON public.wira_whatsapp_message USING gin ("queueIds")
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_role                 | CREATE INDEX "idx_wiraWhatsappMsg_role" ON public.wira_whatsapp_message USING btree (role)
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_updatedAt            | CREATE INDEX "idx_wiraWhatsappMsg_updatedAt" ON public.wira_whatsapp_message USING btree ("updatedAt" DESC)
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_whatsappId_createdAt | CREATE INDEX "idx_wiraWhatsappMsg_whatsappId_createdAt" ON public.wira_whatsapp_message USING btree ("wiraWhatsappId", "createdAt" DESC)
+ wira_whatsapp_message   | idx_wiraWhatsappMsg_wiraWhatsappId       | CREATE INDEX "idx_wiraWhatsappMsg_wiraWhatsappId" ON public.wira_whatsapp_message USING btree ("wiraWhatsappId")
+ wira_whatsapp_message   | uq_wiraWhatsappMsg_whatsappMessageId     | CREATE UNIQUE INDEX "uq_wiraWhatsappMsg_whatsappMessageId" ON public.wira_whatsapp_message USING btree ("whatsappMessageId") WHERE ("whatsappMessageId" IS NOT NULL)
+ wira_whatsapp_message   | wira_whatsapp_message_pkey               | CREATE UNIQUE INDEX wira_whatsapp_message_pkey ON public.wira_whatsapp_message USING btree (id)
+
+                    section                    
+-----------------------------------------------
+ ================ 4. TRIGGERS ================
+
+       table_name        |              trigger_name              | timing |         events         |                           calls                           
+-------------------------+----------------------------------------+--------+------------------------+-----------------------------------------------------------
+ intro_audio_template    | trg_intro_audio_template_updated_at    | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_app                | trg_wira_app_changes                   | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_app_changes()
+ wira_app                | trg_wira_app_sync_has_app              | AFTER  | DELETE, INSERT         | EXECUTE FUNCTION sync_wira_candidate_has_app()
+ wira_app                | trg_wira_app_updated_at                | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_app_message        | trg_wira_app_message_changes           | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_app_message_changes()
+ wira_cache_costs        | trg_wira_cache_costs_changes           | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_cache_costs_changes()
+ wira_call               | trg_wira_call_changes                  | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_call_changes()
+ wira_call               | trg_wira_call_sync_has_call            | AFTER  | DELETE, INSERT         | EXECUTE FUNCTION sync_wira_candidate_has_call()
+ wira_call               | trg_wira_call_updated_at               | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_candidate          | trg_wira_candidate_changes             | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_candidate_changes()
+ wira_candidate          | trg_wira_candidate_updated_at          | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_files              | trg_wira_files_changes                 | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_files_changes()
+ wira_files              | trg_wira_files_updated_at              | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_instruction        | trg_wira_instruction_changes           | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_instruction_changes()
+ wira_instruction        | trg_wira_instruction_updated_at        | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_notebook           | trg_wira_notebook_changes              | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_notebook_changes()
+ wira_notebook           | trg_wira_notebook_updated_at           | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_outbound_screening | trg_wira_outbound_screening_changes    | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_outbound_screening_changes()
+ wira_outbound_screening | trg_wira_outbound_screening_updated_at | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_queue              | trg_wira_queue_changes                 | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_queue_changes()
+ wira_queue              | trg_wira_queue_updated_at              | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_task               | trg_wira_task_changes                  | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_task_changes()
+ wira_task               | trg_wira_task_updated_at               | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_whatsapp           | trg_wira_whatsapp_changes              | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_whatsapp_changes()
+ wira_whatsapp           | trg_wira_whatsapp_sync_has_whatsapp    | AFTER  | DELETE, INSERT         | EXECUTE FUNCTION sync_wira_candidate_has_whatsapp()
+ wira_whatsapp           | trg_wira_whatsapp_updated_at           | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+ wira_whatsapp_message   | trg_wira_whatsapp_message_changes      | AFTER  | DELETE, INSERT, UPDATE | EXECUTE FUNCTION notify_wira_whatsapp_message_changes()
+ wira_whatsapp_message   | trg_wira_whatsapp_message_updated_at   | BEFORE | UPDATE                 | EXECUTE FUNCTION set_updated_at()
+
+whiteforce_ats-# 
+
+whiteforce_ats=# ALTER TABLE wira_instruction ADD COLUMN "message" TEXT;
+ALTER TABLE
+whiteforce_ats=# SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'wira_instruction' AND column_name = 'message';
+ column_name | data_type 
+-------------+-----------
+ message     | text
+
+whiteforce_ats=# 

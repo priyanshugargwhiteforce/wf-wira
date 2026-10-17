@@ -7,6 +7,7 @@ const manager = new CallManager();
 const protectedRoutes = [
     "/make-plivo-call",
     "/make-plivo-call-batch",
+    "/check-interview-reminder-eligibility",
 ];
 
 router.use(protectedRoutes, (request, response, next) =>
@@ -39,6 +40,14 @@ router.post("/make-plivo-call-batch", (request, response) =>
 {
     return manager.handleOutboundCall(
         request, 
+        response
+    );
+});
+
+router.post("/check-interview-reminder-eligibility", (request, response) =>
+{
+    return manager.handleCheckEligibility(
+        request,
         response
     );
 });

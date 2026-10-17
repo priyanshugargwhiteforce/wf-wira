@@ -1,10 +1,12 @@
 # 🏗️ WIRA Platform — Complete Project Report
+
 > **Generated**: 2026-09-25 | **Status**: Living Document — Updated by Agent after every change session
 > **Scope**: Full architecture analysis covering all microservices, modules, and subsystems
 
 ---
 
 ## 📋 Table of Contents
+
 1. [Project Overview](#1-project-overview)
 2. [Monorepo Structure](#2-monorepo-structure)
 3. [Microservices & Ports](#3-microservices--ports)
@@ -23,6 +25,7 @@
 ## 1. Project Overview
 
 **WIRA** (White Force Intelligent Recruitment Assistant) is a Node.js monorepo comprising multiple microservices that power:
+
 - **AI-driven outbound phone screening** of job candidates (Hindi/English + 10 Indian languages)
 - **Payroll reminder/overdue call automation** to clients via AI voice
 - **Wira AI Chatbot** — a massive Socket.IO-based assistant used by HR teams
@@ -132,13 +135,14 @@ WIRA/                                  <- Root workspace (npm workspaces)
 
 ## 3. Microservices & Ports
 
-| PM2 Name | Port | Entry Point | Role |
-|----------|------|-------------|------|
-| `Wira_Server` | 5000 | `Wira-Chatbot/index.js` | AI Chatbot, HR management, REST APIs |
-| `Wira_Call_Server` | 5001 | `Wira-Call/index.js` | Call queue orchestration, Plivo webhooks |
-| `Wira_Call_Socket_Server` | 5002 | `Wira-Call-Socket/index.js` | Real-time audio pipeline over WebSocket |
+| PM2 Name                  | Port | Entry Point                 | Role                                     |
+| ------------------------- | ---- | --------------------------- | ---------------------------------------- |
+| `Wira_Server`             | 5000 | `Wira-Chatbot/index.js`     | AI Chatbot, HR management, REST APIs     |
+| `Wira_Call_Server`        | 5001 | `Wira-Call/index.js`        | Call queue orchestration, Plivo webhooks |
+| `Wira_Call_Socket_Server` | 5002 | `Wira-Call-Socket/index.js` | Real-time audio pipeline over WebSocket  |
 
 **Public URL**: `https://wira-ai.com` (Nginx reverse proxy)
+
 - `/call/*` → Port 5001
 - `/call-socket/*` → Port 5002 (WS upgrade)
 - `/*` → Port 5000
@@ -147,32 +151,34 @@ WIRA/                                  <- Root workspace (npm workspaces)
 
 ## 4. Technology Stack
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Runtime | Node.js (CommonJS) | All services |
-| Web Framework | Express v5 | HTTP servers |
-| Real-time | WebSocket (`ws` library) | Audio streaming |
-| Queue | BullMQ v5 | Async job queues (Redis-backed) |
-| Session Store | Redis (ioredis) | Transient call state + cost tracking |
-| Primary DB | PostgreSQL (`pg`) | Persistent records, candidates, calls |
-| LLM | Google Gemini (2.5-flash-lite) | Conversational AI turns |
-| STT | Sarvam AI (WebSocket stream) | Speech-to-Text (12 Indian languages) |
-| TTS | Sarvam AI (WebSocket stream) | Text-to-Speech (various speakers) |
-| VAD | `avr-vad` v5 (Silero model) | Voice Activity Detection + barge-in |
-| Telephony | Plivo | Outbound/Inbound phone calls |
-| Process Mgr | PM2 | Service lifecycle management |
-| AI Extras | Groq, Ollama | Additional LLM providers |
+| Layer         | Technology                     | Purpose                               |
+| ------------- | ------------------------------ | ------------------------------------- |
+| Runtime       | Node.js (CommonJS)             | All services                          |
+| Web Framework | Express v5                     | HTTP servers                          |
+| Real-time     | WebSocket (`ws` library)       | Audio streaming                       |
+| Queue         | BullMQ v5                      | Async job queues (Redis-backed)       |
+| Session Store | Redis (ioredis)                | Transient call state + cost tracking  |
+| Primary DB    | PostgreSQL (`pg`)              | Persistent records, candidates, calls |
+| LLM           | Google Gemini (2.5-flash-lite) | Conversational AI turns               |
+| STT           | Sarvam AI (WebSocket stream)   | Speech-to-Text (12 Indian languages)  |
+| TTS           | Sarvam AI (WebSocket stream)   | Text-to-Speech (various speakers)     |
+| VAD           | `avr-vad` v5 (Silero model)    | Voice Activity Detection + barge-in   |
+| Telephony     | Plivo                          | Outbound/Inbound phone calls          |
+| Process Mgr   | PM2                            | Service lifecycle management          |
+| AI Extras     | Groq, Ollama                   | Additional LLM providers              |
 
 ---
 
 ## 5. Call Screening Module — Deep Dive
 
 ### 5.1 Overview
+
 The Call Screening module makes **AI-powered outbound phone calls** to job candidates to conduct preliminary screening interviews. Supports **11 Indian languages** with dynamic language switching mid-call.
 
 ### 5.2 Call Type
+
 - **Type string**: `outbound-screening`
-- **Plivo Phone Pool**: `["+918031903192", "+918031320770"]`
+- **Plivo Phone Pool**: `["+918031903192", "+918065539995"]`
 - **Max Concurrency per number**: 9 (total 18 simultaneous calls)
 
 ### 5.3 Complete Data Flow
@@ -243,40 +249,44 @@ OutboundScreeningManager.flushCallEnd()
 
 ### 5.4 Key Classes & Responsibilities
 
-| Class | File | Responsibility |
-|-------|------|----------------|
-| `CallManager` | `Wira-Call/CallManager/CallManager.js` | Root dispatcher — routes by call type, handles Plivo webhooks |
-| `OutboundScreeningManager` | `Wira-Call/CallManager/OutboundScreeningManager.js` | Full screening call lifecycle |
-| `QueueManager` | `Wira-Call/CallManager/QueueManager.js` | BullMQ: `screening-questions-queue` + `call-queue` workers |
-| `RedisManager` | `Wira-Call/CallManager/RedisManager.js` | Lua-based number allocation + deduplication + question queue |
-| `ScreeningCallManager` | `Wira-Call-Socket/sockets/outboundScreening.js` | Live call orchestrator (VAD -> STT -> LLM -> TTS) |
-| `GeminiManager` | `Wira-Call-Socket/CallManager/GeminiManager.js` | Gemini turn (streaming, tag parsing, context caching, cost) |
-| `SarvamManager` | `Wira-Call-Socket/CallManager/SarvamManager.js` | Sarvam STT+TTS WebSocket streams + audio conversion |
-| `VoiceActivityManager` | `Wira-Call-Socket/CallManager/VoiceActivityManager.js` | avr-vad v5 barge-in detection, idle timers, max-call timer |
-| `PlivoManager` | `Wira-Call-Socket/CallManager/PlivoManager.js` | Audio send/mark/clear over WS + per-second billing |
-| `RedisManager (Socket)` | `Wira-Call-Socket/CallManager/RedisManager.js` | Session CRUD + cost bucket tracking (per 60s interval) |
+| Class                      | File                                                   | Responsibility                                                |
+| -------------------------- | ------------------------------------------------------ | ------------------------------------------------------------- |
+| `CallManager`              | `Wira-Call/CallManager/CallManager.js`                 | Root dispatcher — routes by call type, handles Plivo webhooks |
+| `OutboundScreeningManager` | `Wira-Call/CallManager/OutboundScreeningManager.js`    | Full screening call lifecycle                                 |
+| `QueueManager`             | `Wira-Call/CallManager/QueueManager.js`                | BullMQ: `screening-questions-queue` + `call-queue` workers    |
+| `RedisManager`             | `Wira-Call/CallManager/RedisManager.js`                | Lua-based number allocation + deduplication + question queue  |
+| `ScreeningCallManager`     | `Wira-Call-Socket/sockets/outboundScreening.js`        | Live call orchestrator (VAD -> STT -> LLM -> TTS)             |
+| `GeminiManager`            | `Wira-Call-Socket/CallManager/GeminiManager.js`        | Gemini turn (streaming, tag parsing, context caching, cost)   |
+| `SarvamManager`            | `Wira-Call-Socket/CallManager/SarvamManager.js`        | Sarvam STT+TTS WebSocket streams + audio conversion           |
+| `VoiceActivityManager`     | `Wira-Call-Socket/CallManager/VoiceActivityManager.js` | avr-vad v5 barge-in detection, idle timers, max-call timer    |
+| `PlivoManager`             | `Wira-Call-Socket/CallManager/PlivoManager.js`         | Audio send/mark/clear over WS + per-second billing            |
+| `RedisManager (Socket)`    | `Wira-Call-Socket/CallManager/RedisManager.js`         | Session CRUD + cost bucket tracking (per 60s interval)        |
 
 ### 5.5 BullMQ Queues
 
-| Queue Name | Concurrency | Rate Limiter | Attempts | Purpose |
-|-----------|------------|-------------|---------|---------|
-| `screening-questions-queue` | 1 | None | 2 | AI question generation (serial, deduped by MD5 jobDesc hash) |
-| `call-queue` | 30 | 2 per 1500ms | 999 (fixed 3s backoff) | Actual Plivo call initiation |
+| Queue Name                  | Concurrency | Rate Limiter | Attempts               | Purpose                                                      |
+| --------------------------- | ----------- | ------------ | ---------------------- | ------------------------------------------------------------ |
+| `screening-questions-queue` | 1           | None         | 2                      | AI question generation (serial, deduped by MD5 jobDesc hash) |
+| `call-queue`                | 30          | 2 per 1500ms | 999 (fixed 3s backoff) | Actual Plivo call initiation                                 |
 
 ### 5.6 Number Allocation (Lua Script — Atomic)
+
 - **Redis Key**: `numbers-config`
 - **Strategy**: Prefer requested number if under capacity; else pick number with fewest active calls (load balancing)
-- **Phone pool**: `["+918031903192", "+918031320770"]`
+- **Phone pool**: `["+918031903192", "+918065539995"]`
 - **Per-number cap**: 9 concurrent calls
 - Atomically updated via Redis `EVAL` — race-condition safe
 
 ### 5.7 Language Support (11 languages)
+
 Hindi, English, Bengali, Gujarati, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu
 
 **Dynamic Language Switching**: Gemini emits `<switch_to_hindi>` etc. tags -> `GeminiManager.#processTag()` -> `SarvamManager.switchLanguage()` opens new STT socket.
 
 ### 5.8 Cost Tracking (INR)
+
 All costs tracked per call in Redis, bucketed every 60 seconds:
+
 - **Sarvam TTS**: Rs.3 per 1000 characters
 - **Sarvam STT**: Rs.30 per 3600 seconds
 - **Plivo**: Rs.0.6 per 60 seconds
@@ -287,19 +297,22 @@ All costs tracked per call in Redis, bucketed every 60 seconds:
 ## 6. Payroll Call Module — Deep Dive
 
 ### 6.1 Overview
+
 The Payroll Call module makes **automated AI voice calls** to clients for:
+
 1. **Payment Reminder** (`outbound-payroll-reminder`): 3 days before due date
 2. **Overdue Notice** (`outbound-payroll-overdue`): After due date — captures commitment date via AI
 
 ### 6.2 Isolation Design (Zero-Regression)
-| Resource | Screening | Payroll | Isolated? |
-|---------|-----------|---------|-----------|
-| Plivo phone | `+918031903192`, `+918031320770` | `+918031703171` | YES |
-| Plivo credentials | `PLIVO_AUTH_ID/TOKEN` | `PLIVO_PAYROLL_AUTH_ID/TOKEN` | YES |
-| BullMQ queue | `call-queue` | `payroll-call-queue` | YES |
-| Redis phone key | `numbers-config` | `payroll-numbers-config` | YES |
-| Question generation | Yes (screening-questions-queue) | No (skipped entirely) | YES |
-| Language | 11 languages | English only (en-IN) | YES |
+
+| Resource            | Screening                        | Payroll                       | Isolated? |
+| ------------------- | -------------------------------- | ----------------------------- | --------- |
+| Plivo phone         | `+918031903192`, `+918065539995` | `+918031703171`               | YES       |
+| Plivo credentials   | `PLIVO_AUTH_ID/TOKEN`            | `PLIVO_PAYROLL_AUTH_ID/TOKEN` | YES       |
+| BullMQ queue        | `call-queue`                     | `payroll-call-queue`          | YES       |
+| Redis phone key     | `numbers-config`                 | `payroll-numbers-config`      | YES       |
+| Question generation | Yes (screening-questions-queue)  | No (skipped entirely)         | YES       |
+| Language            | 11 languages                     | English only (en-IN)          | YES       |
 
 ### 6.3 Call Data Flow
 
@@ -355,11 +368,11 @@ PayrollManager.flushCallEnd()
 
 ### 6.4 Key Classes & Responsibilities
 
-| Class | File | Responsibility |
-|-------|------|----------------|
-| `PayrollManager` | `Wira-Call/CallManager/PayrollManager.js` | Full payroll call lifecycle — validate, audio gen, DB save, queue push, call-end flush |
+| Class                 | File                                           | Responsibility                                                                                   |
+| --------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `PayrollManager`      | `Wira-Call/CallManager/PayrollManager.js`      | Full payroll call lifecycle — validate, audio gen, DB save, queue push, call-end flush           |
 | `PayrollQueueManager` | `Wira-Call/CallManager/PayrollQueueManager.js` | Dedicated BullMQ `payroll-call-queue` worker + Lua number allocation on `payroll-numbers-config` |
-| `PayrollCallManager` | `Wira-Call-Socket/sockets/outboundPayroll.js` | Live payroll call orchestrator (VAD/STT/TTS/Gemini identical stack to screening) |
+| `PayrollCallManager`  | `Wira-Call-Socket/sockets/outboundPayroll.js`  | Live payroll call orchestrator (VAD/STT/TTS/Gemini identical stack to screening)                 |
 
 ### 6.5 Payroll API Request Format
 
@@ -403,35 +416,39 @@ Expected Response:
 
 The largest and most complex module. Powers the HR-facing AI assistant used via web/app.
 
-| File | Size | Purpose |
-|------|------|---------|
-| `WiraManager.js` | 179KB | Master orchestrator — all business logic routing |
-| `WiraDatabase.js` | 73KB | Full PostgreSQL CRUD (all tables) |
-| `WiraRetrieve.js` | 44KB | Data retrieval (candidates, jobs, calls, tenders) |
-| `WiraPerform.js` | 28KB | Action execution (schedule calls, update records) |
-| `WiraPrompts.js` | 57KB | Dynamic LLM prompt construction |
-| `WiraGemini.js` | 12KB | Gemini integration for chatbot context |
-| `WiraQueue.js` | 9KB | Background job management |
-| `WiraSocket.js` | 3.4KB | Socket.IO event handling |
-| `WiraSession.js` | 6.7KB | Session CRUD |
-| `WiraUtility.js` | 13KB | Parsing/formatting utilities |
-| `WiraWhatsapp.js` | 4KB | WhatsApp message dispatch |
-| `WiraNotification.js` | 4.4KB | Push notifications via FCM |
-| `WiraValidation.js` | 2.5KB | Input validators |
+| File                  | Size  | Purpose                                           |
+| --------------------- | ----- | ------------------------------------------------- |
+| `WiraManager.js`      | 179KB | Master orchestrator — all business logic routing  |
+| `WiraDatabase.js`     | 73KB  | Full PostgreSQL CRUD (all tables)                 |
+| `WiraRetrieve.js`     | 44KB  | Data retrieval (candidates, jobs, calls, tenders) |
+| `WiraPerform.js`      | 28KB  | Action execution (schedule calls, update records) |
+| `WiraPrompts.js`      | 57KB  | Dynamic LLM prompt construction                   |
+| `WiraGemini.js`       | 12KB  | Gemini integration for chatbot context            |
+| `WiraQueue.js`        | 9KB   | Background job management                         |
+| `WiraSocket.js`       | 3.4KB | Socket.IO event handling                          |
+| `WiraSession.js`      | 6.7KB | Session CRUD                                      |
+| `WiraUtility.js`      | 13KB  | Parsing/formatting utilities                      |
+| `WiraWhatsapp.js`     | 4KB   | WhatsApp message dispatch                         |
+| `WiraNotification.js` | 4.4KB | Push notifications via FCM                        |
+| `WiraValidation.js`   | 2.5KB | Input validators                                  |
 
 ---
 
 ## 8. Shared Layer (`@wira/shared`)
 
 ### `shared/AI/screening/AI.js` (39KB)
+
 Core AI functions used by both screening and payroll:
+
 - `AI.generateScreeningQuestions(payload)` — Gemini: generate interview Qs from jobDesc
 - `AI.screeningCall2(options)` — Main screening LLM turn (streaming, context caching)
 - `AI.analyzeConversation(transcript, jobDesc)` — Post-call QA analysis
 - `AI.deleteContextCache(cacheId)` — Gemini context cache cleanup
 
 ### `shared/Utility/PlivoHandler.js` (4KB)
+
 Multi-account Plivo manager:
+
 - `client1`, `client2` — Screening credentials
 - `payrollClient` — Payroll credentials (`PLIVO_PAYROLL_AUTH_ID` / `PLIVO_PAYROLL_AUTH_TOKEN`)
 - `getClient(fromNumber)` — auto-routes to correct Plivo account by phone number
@@ -439,11 +456,13 @@ Multi-account Plivo manager:
 - `plivo.hangupCall(callUUID, fromNumber)` — hangup call
 
 ### `shared/Utility/sarvamHandler.js` (9.5KB)
+
 - `sarvam.sarvamSTTStream(options)` — WebSocket streaming STT connection
 - `sarvam.sarvamTTSStream(options)` — WebSocket streaming TTS connection
 - Handles WebSocket lifecycle: connect, send, flush, close, abort
 
 ### `shared/database/WiraDB.js` (209KB)
+
 Monolithic PostgreSQL layer — ALL DB queries across all modules in one file.
 
 ---
@@ -454,16 +473,17 @@ Monolithic PostgreSQL layer — ALL DB queries across all modules in one file.
 
 ### Key Tables (Call System)
 
-| Table | Purpose |
-|-------|---------|
-| `wira_candidates` | Candidate profiles (phone, email, name, data JSON) |
-| `wira_call` | Master call records (callId, status, type, duration, recording) |
-| `wira_outbound_screening` | Screening-specific data (questions, QA, transcript, costs, analysis) |
-| `wira_outbound_screening_cost_buckets` | Per-minute cost breakdown per call |
+| Table                                  | Purpose                                                              |
+| -------------------------------------- | -------------------------------------------------------------------- |
+| `wira_candidates`                      | Candidate profiles (phone, email, name, data JSON)                   |
+| `wira_call`                            | Master call records (callId, status, type, duration, recording)      |
+| `wira_outbound_screening`              | Screening-specific data (questions, QA, transcript, costs, analysis) |
+| `wira_outbound_screening_cost_buckets` | Per-minute cost breakdown per call                                   |
 
 > **Note**: Payroll calls reuse `wira_call` + `wira_outbound_screening` tables. No separate payroll tables exist. Payroll context is stored in `jobTitle` / `jobDescription` fields.
 
 ### Key WiraDatabase Methods
+
 - `candidateFindOrCreate(phone, email, candidateId, name, candidateData)` — upsert candidate
 - `createCallWithScreening(options)` — atomic insert into wira_call + wira_outbound_screening
 - `persistCallEnd(options)` — save transcript, cost summary, duration, analysis result
@@ -474,14 +494,14 @@ Monolithic PostgreSQL layer — ALL DB queries across all modules in one file.
 
 ## 10. Redis State Strategy
 
-| Key Pattern | TTL | Content |
-|-------------|-----|---------|
-| `screening:callId:{wiraCallId}` | 1hr (or 24hr if after 8PM IST) | Full call session JSON |
-| `screening:callId:{plivoCallId}` | 1hr | Same session (after Plivo call initiated) |
-| `cost:callId:{callUUID}` | 24hr | Cost buckets (TTS/STT/Plivo/Gemini) per 60s interval |
-| `screeningQuestions:{YYYY-MM-DD}` | Until 10PM IST | Question dedup queue (keyed by jobDesc MD5 hash) |
-| `numbers-config` | Permanent (no TTL) | Screening phone pool concurrency state |
-| `payroll-numbers-config` | Permanent (no TTL) | Payroll phone pool concurrency state |
+| Key Pattern                       | TTL                            | Content                                              |
+| --------------------------------- | ------------------------------ | ---------------------------------------------------- |
+| `screening:callId:{wiraCallId}`   | 1hr (or 24hr if after 8PM IST) | Full call session JSON                               |
+| `screening:callId:{plivoCallId}`  | 1hr                            | Same session (after Plivo call initiated)            |
+| `cost:callId:{callUUID}`          | 24hr                           | Cost buckets (TTS/STT/Plivo/Gemini) per 60s interval |
+| `screeningQuestions:{YYYY-MM-DD}` | Until 10PM IST                 | Question dedup queue (keyed by jobDesc MD5 hash)     |
+| `numbers-config`                  | Permanent (no TTL)             | Screening phone pool concurrency state               |
+| `payroll-numbers-config`          | Permanent (no TTL)             | Payroll phone pool concurrency state                 |
 
 ---
 
@@ -489,26 +509,26 @@ Monolithic PostgreSQL layer — ALL DB queries across all modules in one file.
 
 ### Wira-Call (Port 5001)
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/health` | None | Health check |
-| POST | `/make-plivo-call` | `x-api-key` | Queue single outbound call |
-| POST | `/make-plivo-call-batch` | `x-api-key` | Queue batch outbound calls |
-| GET | `/plivo-answer` | Plivo webhook | Returns XML for call answer |
-| POST | `/plivo-answer` | Plivo webhook | Call hangup — triggers flush |
-| POST | `/plivo-recording` | Plivo webhook | Stores recording URL |
-| GET | `/conversation-candidates` | `x-api-key` | List candidates with filters |
-| GET | `/conversation-candidates/:id/conversation-calls` | `x-api-key` | Calls for candidate |
-| GET | `/conversation-calls/:callId/full` | `x-api-key` | Full call detail |
-| GET | `/candidates-with-calls` | `x-api-key` | Paginated candidates + call stats |
+| Method | Path                                              | Auth          | Description                       |
+| ------ | ------------------------------------------------- | ------------- | --------------------------------- |
+| GET    | `/health`                                         | None          | Health check                      |
+| POST   | `/make-plivo-call`                                | `x-api-key`   | Queue single outbound call        |
+| POST   | `/make-plivo-call-batch`                          | `x-api-key`   | Queue batch outbound calls        |
+| GET    | `/plivo-answer`                                   | Plivo webhook | Returns XML for call answer       |
+| POST   | `/plivo-answer`                                   | Plivo webhook | Call hangup — triggers flush      |
+| POST   | `/plivo-recording`                                | Plivo webhook | Stores recording URL              |
+| GET    | `/conversation-candidates`                        | `x-api-key`   | List candidates with filters      |
+| GET    | `/conversation-candidates/:id/conversation-calls` | `x-api-key`   | Calls for candidate               |
+| GET    | `/conversation-calls/:callId/full`                | `x-api-key`   | Full call detail                  |
+| GET    | `/candidates-with-calls`                          | `x-api-key`   | Paginated candidates + call stats |
 
 ### Wira-Call-Socket (Port 5002)
 
-| Protocol | Path | Description |
-|----------|------|-------------|
-| WebSocket | `/outbound-screening?CallUUID=x` | Screening call audio pipeline |
+| Protocol  | Path                                    | Description                     |
+| --------- | --------------------------------------- | ------------------------------- |
+| WebSocket | `/outbound-screening?CallUUID=x`        | Screening call audio pipeline   |
 | WebSocket | `/outbound-payroll-reminder?CallUUID=x` | Payroll reminder audio pipeline |
-| WebSocket | `/outbound-payroll-overdue?CallUUID=x` | Payroll overdue audio pipeline |
+| WebSocket | `/outbound-payroll-overdue?CallUUID=x`  | Payroll overdue audio pipeline  |
 
 ---
 
@@ -516,40 +536,40 @@ Monolithic PostgreSQL layer — ALL DB queries across all modules in one file.
 
 ### Wira-Call Module
 
-| File | Size | Key Methods / Notes |
-|------|------|---------------------|
-| `index.js` | 2KB | Express bootstrap, port 5001 |
-| `CallManager/CallManager.js` | 15KB | `handleOutboundCall()`, `handlePlivoAnswerGet()`, `handlePlivoAnswerPost()`, `handlePlivoRecording()`, `fetchCallHandler()` |
-| `CallManager/OutboundScreeningManager.js` | 23KB | `validateOutboundBody()`, `createBodyPayload()`, `handleDatabaseAndRedisSave()`, `flushCallEnd()`, `handleJobDescription()`, `handleIntroAudio()` |
-| `CallManager/PayrollManager.js` | 17KB | `handlePayrollCall()`, `validatePayrollBody()`, `createBodyPayload()`, `handleDatabaseAndRedisSave()`, `flushCallEnd()`, `buildReminderText()` |
-| `CallManager/PayrollQueueManager.js` | 16KB | `initWorker()`, `pushToQueue()`, `deallocateNumber()`, `#allocateNumber()` Lua, `#deallocateNumber()` Lua |
-| `CallManager/QueueManager.js` | 11KB | `initWorker()`, `pushToQuestionsQueue()`, `pushToCallQueue()` — BullMQ workers |
-| `CallManager/RedisManager.js` | 14KB | `allocateNumber()`, `deallocateNumber()`, `processJobScreeningQueue()` — Lua + dedup |
-| `CallManager/InboundManager.js` | 1.9KB | `buildSession()` stub — WIP |
-| `routes/outboundRoute.js` | 1.4KB | POST/GET routes, API key guard |
-| `routes/monitoringRoute.js` | 10.7KB | Monitoring/reporting endpoints |
-| `routes/inboundRoute.js` | 0.6KB | Inbound webhook routes |
-| `database/realTimeCallViewerDB.js` | 12.5KB | DB helpers for monitoring endpoints |
-| `scripts/emptyCallQueue.js` | 0.8KB | Drain BullMQ queues utility |
+| File                                      | Size   | Key Methods / Notes                                                                                                                               |
+| ----------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `index.js`                                | 2KB    | Express bootstrap, port 5001                                                                                                                      |
+| `CallManager/CallManager.js`              | 15KB   | `handleOutboundCall()`, `handlePlivoAnswerGet()`, `handlePlivoAnswerPost()`, `handlePlivoRecording()`, `fetchCallHandler()`                       |
+| `CallManager/OutboundScreeningManager.js` | 23KB   | `validateOutboundBody()`, `createBodyPayload()`, `handleDatabaseAndRedisSave()`, `flushCallEnd()`, `handleJobDescription()`, `handleIntroAudio()` |
+| `CallManager/PayrollManager.js`           | 17KB   | `handlePayrollCall()`, `validatePayrollBody()`, `createBodyPayload()`, `handleDatabaseAndRedisSave()`, `flushCallEnd()`, `buildReminderText()`    |
+| `CallManager/PayrollQueueManager.js`      | 16KB   | `initWorker()`, `pushToQueue()`, `deallocateNumber()`, `#allocateNumber()` Lua, `#deallocateNumber()` Lua                                         |
+| `CallManager/QueueManager.js`             | 11KB   | `initWorker()`, `pushToQuestionsQueue()`, `pushToCallQueue()` — BullMQ workers                                                                    |
+| `CallManager/RedisManager.js`             | 14KB   | `allocateNumber()`, `deallocateNumber()`, `processJobScreeningQueue()` — Lua + dedup                                                              |
+| `CallManager/InboundManager.js`           | 1.9KB  | `buildSession()` stub — WIP                                                                                                                       |
+| `routes/outboundRoute.js`                 | 1.4KB  | POST/GET routes, API key guard                                                                                                                    |
+| `routes/monitoringRoute.js`               | 10.7KB | Monitoring/reporting endpoints                                                                                                                    |
+| `routes/inboundRoute.js`                  | 0.6KB  | Inbound webhook routes                                                                                                                            |
+| `database/realTimeCallViewerDB.js`        | 12.5KB | DB helpers for monitoring endpoints                                                                                                               |
+| `scripts/emptyCallQueue.js`               | 0.8KB  | Drain BullMQ queues utility                                                                                                                       |
 
 ### Wira-Call-Socket Module
 
-| File | Size | Key Methods / Notes |
-|------|------|---------------------|
-| `index.js` | 1.5KB | Express + raw WS server, port 5002 |
-| `sockets/socket.js` | 4KB | WS upgrade router, path matching to handlers |
-| `sockets/outboundScreening.js` | 15KB | `ScreeningCallManager` — live call VAD+STT+LLM+TTS controller |
-| `sockets/outboundPayroll.js` | 16.8KB | `PayrollCallManager` — live payroll call pipeline |
-| `sockets/inboundCall.js` | 1.6KB | Inbound call stub |
-| `CallManager/GeminiManager.js` | 6.2KB | `screeningTurn()`, `abort()`, `deleteCache()`, `destroy()`, cost calculation |
-| `CallManager/PlivoManager.js` | 5.9KB | `sendAudio()`, `sendMark()`, `clearAudio()`, `startBilling()`, `stopBilling()`, `hangupCall()`, `downsampleForPlivo()` |
-| `CallManager/SarvamManager.js` | 22KB | `initSTT()`, `sendAudio()`, `streamTTS()`, `switchLanguage()`, `openTTSStream()`, `sendTTSChunk()`, `flushTTSStream()`, `flushSTTCost()` |
-| `CallManager/VoiceActivityManager.js` | 8KB | `init()`, `process()`, `startIdleTimers()`, `clearIdleTimers()`, `startMaxCallTimer()`, `destroy()` |
-| `CallManager/RedisManager.js` | 9.7KB | `getSession()`, `saveSession()`, `getIntroAudioAndInit()`, `startCostTracking()`, `stopCostTracking()`, `recordSarvamTTS()`, `recordSarvamSTT()`, `recordPlivo()`, `recordGemini()` |
-| `CallManager/DatabaseManager.js` | 8.7KB | DB operations during live call |
-| `routes/upgradeRoute.js` | 1.2KB | WS upgrade helper route |
+| File                                  | Size   | Key Methods / Notes                                                                                                                                                                 |
+| ------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `index.js`                            | 1.5KB  | Express + raw WS server, port 5002                                                                                                                                                  |
+| `sockets/socket.js`                   | 4KB    | WS upgrade router, path matching to handlers                                                                                                                                        |
+| `sockets/outboundScreening.js`        | 15KB   | `ScreeningCallManager` — live call VAD+STT+LLM+TTS controller                                                                                                                       |
+| `sockets/outboundPayroll.js`          | 16.8KB | `PayrollCallManager` — live payroll call pipeline                                                                                                                                   |
+| `sockets/inboundCall.js`              | 1.6KB  | Inbound call stub                                                                                                                                                                   |
+| `CallManager/GeminiManager.js`        | 6.2KB  | `screeningTurn()`, `abort()`, `deleteCache()`, `destroy()`, cost calculation                                                                                                        |
+| `CallManager/PlivoManager.js`         | 5.9KB  | `sendAudio()`, `sendMark()`, `clearAudio()`, `startBilling()`, `stopBilling()`, `hangupCall()`, `downsampleForPlivo()`                                                              |
+| `CallManager/SarvamManager.js`        | 22KB   | `initSTT()`, `sendAudio()`, `streamTTS()`, `switchLanguage()`, `openTTSStream()`, `sendTTSChunk()`, `flushTTSStream()`, `flushSTTCost()`                                            |
+| `CallManager/VoiceActivityManager.js` | 8KB    | `init()`, `process()`, `startIdleTimers()`, `clearIdleTimers()`, `startMaxCallTimer()`, `destroy()`                                                                                 |
+| `CallManager/RedisManager.js`         | 9.7KB  | `getSession()`, `saveSession()`, `getIntroAudioAndInit()`, `startCostTracking()`, `stopCostTracking()`, `recordSarvamTTS()`, `recordSarvamSTT()`, `recordPlivo()`, `recordGemini()` |
+| `CallManager/DatabaseManager.js`      | 8.7KB  | DB operations during live call                                                                                                                                                      |
+| `routes/upgradeRoute.js`              | 1.2KB  | WS upgrade helper route                                                                                                                                                             |
 
 ---
 
-*This report is the ground truth for the WIRA project.*
-*See [CHANGES_REPORT.md](./CHANGES_REPORT.md) for a chronological log of all code changes.*
+_This report is the ground truth for the WIRA project._
+_See [CHANGES_REPORT.md](./CHANGES_REPORT.md) for a chronological log of all code changes._

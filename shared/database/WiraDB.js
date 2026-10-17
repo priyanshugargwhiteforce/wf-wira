@@ -316,7 +316,8 @@ async function insertWiraCandidate(data = {})
     try
     {
         const keys = Object.keys(data);
-        const values = keys.map(k => k === "candidateData" ? JSON.stringify(data[k]) : data[k]);
+        const jsonbFields = ["candidateData", "session"];
+        const values = keys.map(k => jsonbFields.includes(k) ? JSON.stringify(data[k]) : data[k]);
         const columns = keys.map(k => `"${k}"`).join(", ");
         const placeholders = keys.map((_, i) => `$${i + 1}`).join(", ");
 
@@ -353,7 +354,8 @@ async function updateWiraCandidates(data = {}, filters = {})
 
         const setClause = dataKeys.map(key =>
         {
-            values.push(key === "candidateData" ? JSON.stringify(data[key]) : data[key]);
+            const jsonbFields = ["candidateData", "session"];
+            values.push(jsonbFields.includes(key) ? JSON.stringify(data[key]) : data[key]);
             return `"${key}" = $${paramIndex++}`;
         }).join(", ");
 
@@ -6203,6 +6205,764 @@ async function searchCandidatesWithCallsFull(filters = {}, page = 1, limit = 40)
     }
 }
 
+async function checkWiraNotebookExists(filters = {})
+{
+    try
+    {
+        const conditions = [];
+        const values = [];
+        let paramIndex = 1;
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" = $${paramIndex++}`);
+            values.push(filters.label);
+        }
+
+        if(filters.status !== undefined && filters.status !== null)
+        {
+            conditions.push(`"status" = $${paramIndex++}`);
+            values.push(filters.status);
+        }
+
+        if(filters.platform !== undefined && filters.platform !== null)
+        {
+            conditions.push(`"platform" = $${paramIndex++}`);
+            values.push(filters.platform);
+        }
+
+        if(conditions.length === 0) return false;
+
+        const whereClause = `WHERE ${conditions.join(" AND ")}`;
+        const result = await pgDb.query(`SELECT 1 FROM wira_notebooks ${whereClause} LIMIT 1`, values);
+        return result.rows.length > 0;
+    }
+    catch(err)
+    {
+        console.error("❌ checkWiraNotebookExists failed:", err.message);
+        return false;
+    }
+}
+
+async function fetchWiraNotebooks(filters = {}, page = 1, limit = 20)
+{
+    try
+    {
+        const conditions = [];
+        const values = [];
+        let paramIndex = 1;
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" = $${paramIndex++}`);
+            values.push(filters.label);
+        }
+
+        if(filters.status !== undefined && filters.status !== null)
+        {
+            conditions.push(`"status" = $${paramIndex++}`);
+            values.push(filters.status);
+        }
+
+        if(filters.platform !== undefined && filters.platform !== null)
+        {
+            conditions.push(`"platform" = $${paramIndex++}`);
+            values.push(filters.platform);
+        }
+
+        const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+        const offset = (page - 1) * limit;
+        const filterValues = [...values];
+
+        values.push(limit, offset);
+
+        const result = await pgDb.query(
+            `SELECT * FROM wira_notebooks ${whereClause} ORDER BY "createdAt" DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
+            values
+        );
+
+        const countResult = await pgDb.query(
+            `SELECT COUNT(*) AS count FROM wira_notebooks ${whereClause}`,
+            filterValues
+        );
+
+        return {
+            rows: result.rows,
+            total: parseInt(countResult.rows[0].count),
+            page,
+            limit
+        };
+    }
+    catch(err)
+    {
+        console.error("❌ fetchWiraNotebooks failed:", err.message);
+        return null;
+    }
+}
+
+async function searchWiraNotebooks(filters = {}, page = 1, limit = 20)
+{
+    try
+    {
+        const conditions = [];
+        const values = [];
+        let paramIndex = 1;
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" ILIKE $${paramIndex++}`);
+            values.push(`%${filters.label}%`);
+        }
+
+        if(filters.status !== undefined && filters.status !== null)
+        {
+            conditions.push(`"status" = $${paramIndex++}`);
+            values.push(filters.status);
+        }
+
+        if(filters.platform !== undefined && filters.platform !== null)
+        {
+            conditions.push(`"platform" ILIKE $${paramIndex++}`);
+            values.push(`%${filters.platform}%`);
+        }
+
+        if(filters.createdStart !== undefined && filters.createdStart !== null)
+        {
+            conditions.push(`"createdAt" >= $${paramIndex++}`);
+            values.push(filters.createdStart);
+        }
+
+        if(filters.createdEnd !== undefined && filters.createdEnd !== null)
+        {
+            conditions.push(`"createdAt" <= $${paramIndex++}`);
+            values.push(filters.createdEnd);
+        }
+
+        if(filters.updatedStart !== undefined && filters.updatedStart !== null)
+        {
+            conditions.push(`"updatedAt" >= $${paramIndex++}`);
+            values.push(filters.updatedStart);
+        }
+
+        if(filters.updatedEnd !== undefined && filters.updatedEnd !== null)
+        {
+            conditions.push(`"updatedAt" <= $${paramIndex++}`);
+            values.push(filters.updatedEnd);
+        }
+
+        const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+        const offset = (page - 1) * limit;
+        const filterValues = [...values];
+
+        values.push(limit, offset);
+
+        const result = await pgDb.query(
+            `SELECT * FROM wira_notebooks ${whereClause} ORDER BY "createdAt" DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
+            values
+        );
+
+        const countResult = await pgDb.query(
+            `SELECT COUNT(*) AS count FROM wira_notebooks ${whereClause}`,
+            filterValues
+        );
+
+        return {
+            rows: result.rows,
+            total: parseInt(countResult.rows[0].count),
+            page,
+            limit
+        };
+    }
+    catch(err)
+    {
+        console.error("❌ searchWiraNotebooks failed:", err.message);
+        return null;
+    }
+}
+
+async function insertWiraNotebook(data = {})
+{
+    try
+    {
+        const jsonbFields = ["additionalInfo", "data"];
+        const keys = Object.keys(data);
+        const values = keys.map(k => jsonbFields.includes(k) ? JSON.stringify(data[k]) : data[k]);
+        const columns = keys.map(k => `"${k}"`).join(", ");
+        const placeholders = keys.map((_, i) => `$${i + 1}`).join(", ");
+
+        const result = await pgDb.query(
+            `INSERT INTO wira_notebooks (${columns}) VALUES (${placeholders}) RETURNING *`,
+            values
+        );
+
+        return result.rows[0];
+    }
+    catch(err)
+    {
+        console.error("❌ insertWiraNotebook failed:", err.message);
+        return null;
+    }
+}
+
+async function updateWiraNotebooks(data = {}, filters = {})
+{
+    try
+    {
+        const jsonbFields = ["additionalInfo", "data"];
+        const dataKeys = Object.keys(data);
+
+        if(dataKeys.length === 0)
+        {
+            console.error("❌ updateWiraNotebooks blocked: no data provided to update");
+            return null;
+        }
+
+        const values = [];
+        let paramIndex = 1;
+
+        const setClause = dataKeys.map(key =>
+        {
+            values.push(jsonbFields.includes(key) ? JSON.stringify(data[key]) : data[key]);
+            return `"${key}" = $${paramIndex++}`;
+        }).join(", ");
+
+        const conditions = [];
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" = $${paramIndex++}`);
+            values.push(filters.label);
+        }
+
+        if(conditions.length === 0)
+        {
+            console.error("❌ updateWiraNotebooks blocked: no filters provided, refusing to update all rows");
+            return null;
+        }
+
+        const whereClause = `WHERE ${conditions.join(" AND ")}`;
+        const result = await pgDb.query(
+            `UPDATE wira_notebooks SET ${setClause}, "updatedAt" = NOW() ${whereClause} RETURNING *`,
+            values
+        );
+
+        return result.rows;
+    }
+    catch(err)
+    {
+        console.error("❌ updateWiraNotebooks failed:", err.message);
+        return null;
+    }
+}
+
+async function deleteWiraNotebooks(filters = {})
+{
+    try
+    {
+        const conditions = [];
+        const values = [];
+        let paramIndex = 1;
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" = $${paramIndex++}`);
+            values.push(filters.label);
+        }
+
+        if(filters.status !== undefined && filters.status !== null)
+        {
+            conditions.push(`"status" = $${paramIndex++}`);
+            values.push(filters.status);
+        }
+
+        if(conditions.length === 0) return [];
+
+        const whereClause = `WHERE ${conditions.join(" AND ")}`;
+        const result = await pgDb.query(`DELETE FROM wira_notebooks ${whereClause} RETURNING *`, values);
+        return result.rows;
+    }
+    catch(err)
+    {
+        console.error("❌ deleteWiraNotebooks failed:", err.message);
+        return null;
+    }
+}
+
+async function getNotebookById(id)
+{
+    try
+    {
+        const result = await pgDb.query(`SELECT * FROM wira_notebooks WHERE "id" = $1 LIMIT 1`, [id]);
+        return result.rows[0] ?? null;
+    }
+    catch(err)
+    {
+        console.error("❌ getNotebookById failed:", err.message);
+        return null;
+    }
+}
+
+async function getActiveNotebook(wireCandidateId, label)
+{
+    try
+    {
+        const result = await pgDb.query(
+            `SELECT * FROM wira_notebooks WHERE "wireCandidateId" = $1 AND "label" = $2 AND "status" = 'in_progress' ORDER BY "createdAt" DESC LIMIT 1`,
+            [wireCandidateId, label]
+        );
+
+        return result.rows[0] ?? null;
+    }
+    catch(err)
+    {
+        console.error("❌ getActiveNotebook failed:", err.message);
+        return null;
+    }
+}
+
+async function checkWiraTaskExists(filters = {})
+{
+    try
+    {
+        const conditions = [];
+        const values = [];
+        let paramIndex = 1;
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" = $${paramIndex++}`);
+            values.push(filters.label);
+        }
+
+        if(filters.status !== undefined && filters.status !== null)
+        {
+            conditions.push(`"status" = $${paramIndex++}`);
+            values.push(filters.status);
+        }
+
+        if(filters.platform !== undefined && filters.platform !== null)
+        {
+            conditions.push(`"platform" = $${paramIndex++}`);
+            values.push(filters.platform);
+        }
+
+        if(conditions.length === 0) return false;
+
+        const whereClause = `WHERE ${conditions.join(" AND ")}`;
+        const result = await pgDb.query(`SELECT 1 FROM wira_tasks ${whereClause} LIMIT 1`, values);
+        return result.rows.length > 0;
+    }
+    catch(err)
+    {
+        console.error("❌ checkWiraTaskExists failed:", err.message);
+        return false;
+    }
+}
+
+async function fetchWiraTasks(filters = {}, page = 1, limit = 20)
+{
+    try
+    {
+        const conditions = [];
+        const values = [];
+        let paramIndex = 1;
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" = $${paramIndex++}`);
+            values.push(filters.label);
+        }
+
+        if(filters.status !== undefined && filters.status !== null)
+        {
+            conditions.push(`"status" = $${paramIndex++}`);
+            values.push(filters.status);
+        }
+
+        if(filters.platform !== undefined && filters.platform !== null)
+        {
+            conditions.push(`"platform" = $${paramIndex++}`);
+            values.push(filters.platform);
+        }
+
+        const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+        const offset = (page - 1) * limit;
+        const filterValues = [...values];
+
+        values.push(limit, offset);
+
+        const result = await pgDb.query(
+            `SELECT * FROM wira_tasks ${whereClause} ORDER BY "createdAt" DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
+            values
+        );
+
+        const countResult = await pgDb.query(
+            `SELECT COUNT(*) AS count FROM wira_tasks ${whereClause}`,
+            filterValues
+        );
+
+        return {
+            rows: result.rows,
+            total: parseInt(countResult.rows[0].count),
+            page,
+            limit
+        };
+    }
+    catch(err)
+    {
+        console.error("❌ fetchWiraTasks failed:", err.message);
+        return null;
+    }
+}
+
+async function searchWiraTasks(filters = {}, page = 1, limit = 20)
+{
+    try
+    {
+        const conditions = [];
+        const values = [];
+        let paramIndex = 1;
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" ILIKE $${paramIndex++}`);
+            values.push(`%${filters.label}%`);
+        }
+
+        if(filters.description !== undefined && filters.description !== null)
+        {
+            conditions.push(`"description" ILIKE $${paramIndex++}`);
+            values.push(`%${filters.description}%`);
+        }
+
+        if(filters.status !== undefined && filters.status !== null)
+        {
+            conditions.push(`"status" = $${paramIndex++}`);
+            values.push(filters.status);
+        }
+
+        if(filters.platform !== undefined && filters.platform !== null)
+        {
+            conditions.push(`"platform" ILIKE $${paramIndex++}`);
+            values.push(`%${filters.platform}%`);
+        }
+
+        if(filters.createdStart !== undefined && filters.createdStart !== null)
+        {
+            conditions.push(`"createdAt" >= $${paramIndex++}`);
+            values.push(filters.createdStart);
+        }
+
+        if(filters.createdEnd !== undefined && filters.createdEnd !== null)
+        {
+            conditions.push(`"createdAt" <= $${paramIndex++}`);
+            values.push(filters.createdEnd);
+        }
+
+        if(filters.startedAtFrom !== undefined && filters.startedAtFrom !== null)
+        {
+            conditions.push(`"startedAt" >= $${paramIndex++}`);
+            values.push(filters.startedAtFrom);
+        }
+
+        if(filters.startedAtTo !== undefined && filters.startedAtTo !== null)
+        {
+            conditions.push(`"startedAt" <= $${paramIndex++}`);
+            values.push(filters.startedAtTo);
+        }
+
+        if(filters.completedAtFrom !== undefined && filters.completedAtFrom !== null)
+        {
+            conditions.push(`"completedAt" >= $${paramIndex++}`);
+            values.push(filters.completedAtFrom);
+        }
+
+        if(filters.completedAtTo !== undefined && filters.completedAtTo !== null)
+        {
+            conditions.push(`"completedAt" <= $${paramIndex++}`);
+            values.push(filters.completedAtTo);
+        }
+
+        const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+        const offset = (page - 1) * limit;
+        const filterValues = [...values];
+
+        values.push(limit, offset);
+
+        const result = await pgDb.query(
+            `SELECT * FROM wira_tasks ${whereClause} ORDER BY "createdAt" DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
+            values
+        );
+
+        const countResult = await pgDb.query(
+            `SELECT COUNT(*) AS count FROM wira_tasks ${whereClause}`,
+            filterValues
+        );
+
+        return {
+            rows: result.rows,
+            total: parseInt(countResult.rows[0].count),
+            page,
+            limit
+        };
+    }
+    catch(err)
+    {
+        console.error("❌ searchWiraTasks failed:", err.message);
+        return null;
+    }
+}
+
+async function insertWiraTask(data = {})
+{
+    try
+    {
+        const jsonbFields = ["data"];
+        const keys = Object.keys(data);
+        const values = keys.map(k => jsonbFields.includes(k) ? JSON.stringify(data[k]) : data[k]);
+        const columns = keys.map(k => `"${k}"`).join(", ");
+        const placeholders = keys.map((_, i) => `$${i + 1}`).join(", ");
+
+        const result = await pgDb.query(
+            `INSERT INTO wira_tasks (${columns}) VALUES (${placeholders}) RETURNING *`,
+            values
+        );
+
+        return result.rows[0];
+    }
+    catch(err)
+    {
+        console.error("❌ insertWiraTask failed:", err.message);
+        return null;
+    }
+}
+
+async function updateWiraTasks(data = {}, filters = {})
+{
+    try
+    {
+        const jsonbFields = ["data"];
+        const dataKeys = Object.keys(data);
+
+        if(dataKeys.length === 0)
+        {
+            console.error("❌ updateWiraTasks blocked: no data provided to update");
+            return null;
+        }
+
+        const values = [];
+        let paramIndex = 1;
+
+        const setClause = dataKeys.map(key =>
+        {
+            values.push(jsonbFields.includes(key) ? JSON.stringify(data[key]) : data[key]);
+            return `"${key}" = $${paramIndex++}`;
+        }).join(", ");
+
+        const conditions = [];
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" = $${paramIndex++}`);
+            values.push(filters.label);
+        }
+
+        if(conditions.length === 0)
+        {
+            console.error("❌ updateWiraTasks blocked: no filters provided, refusing to update all rows");
+            return null;
+        }
+
+        const whereClause = `WHERE ${conditions.join(" AND ")}`;
+        const result = await pgDb.query(
+            `UPDATE wira_tasks SET ${setClause}, "updatedAt" = NOW() ${whereClause} RETURNING *`,
+            values
+        );
+
+        return result.rows;
+    }
+    catch(err)
+    {
+        console.error("❌ updateWiraTasks failed:", err.message);
+        return null;
+    }
+}
+
+async function deleteWiraTasks(filters = {})
+{
+    try
+    {
+        const conditions = [];
+        const values = [];
+        let paramIndex = 1;
+
+        if(filters.id !== undefined && filters.id !== null)
+        {
+            conditions.push(`"id" = $${paramIndex++}`);
+            values.push(filters.id);
+        }
+
+        if(filters.wireCandidateId !== undefined && filters.wireCandidateId !== null)
+        {
+            conditions.push(`"wireCandidateId" = $${paramIndex++}`);
+            values.push(filters.wireCandidateId);
+        }
+
+        if(filters.label !== undefined && filters.label !== null)
+        {
+            conditions.push(`"label" = $${paramIndex++}`);
+            values.push(filters.label);
+        }
+
+        if(conditions.length === 0) return [];
+
+        const whereClause = `WHERE ${conditions.join(" AND ")}`;
+        const result = await pgDb.query(`DELETE FROM wira_tasks ${whereClause} RETURNING *`, values);
+        return result.rows;
+    }
+    catch(err)
+    {
+        console.error("❌ deleteWiraTasks failed:", err.message);
+        return null;
+    }
+}
+
+async function getTaskById(id)
+{
+    try
+    {
+        const result = await pgDb.query(`SELECT * FROM wira_tasks WHERE "id" = $1 LIMIT 1`, [id]);
+        return result.rows[0] ?? null;
+    }
+    catch(err)
+    {
+        console.error("❌ getTaskById failed:", err.message);
+        return null;
+    }
+}
+
+async function deleteExpiredWiraTasks()
+{
+    try
+    {
+        const result = await pgDb.query(`DELETE FROM wira_tasks WHERE "deleteAt" < NOW() RETURNING *`);
+        return result.rows;
+    }
+    catch(err)
+    {
+        console.error("❌ deleteExpiredWiraTasks failed:", err.message);
+        return null;
+    }
+}
+
 module.exports = {
     checkWiraCandidateExists,
     fetchWiraCandidates,
@@ -6297,5 +7057,21 @@ module.exports = {
     insertWiraFileChunk,
     updateWiraFileChunks,
     deleteWiraFileChunks,
-    searchCandidatesWithCallsFull
+    searchCandidatesWithCallsFull,
+    checkWiraNotebookExists,
+    fetchWiraNotebooks,
+    searchWiraNotebooks,
+    insertWiraNotebook,
+    updateWiraNotebooks,
+    deleteWiraNotebooks,
+    getNotebookById,
+    getActiveNotebook,
+    checkWiraTaskExists,
+    fetchWiraTasks,
+    searchWiraTasks,
+    insertWiraTask,
+    updateWiraTasks,
+    deleteWiraTasks,
+    getTaskById,
+    deleteExpiredWiraTasks,
 };

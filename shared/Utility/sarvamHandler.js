@@ -1,6 +1,6 @@
 const { SarvamAIClient } = require("sarvamai");
 
-async function sarvamTTS({ text, languageCode = "hi-IN", speaker = "shreya", audioCodec = "mulaw", sampleRate = 8000 })
+async function sarvamTTS({ text, languageCode = "hi-IN", speaker = "neha", audioCodec = "mulaw", sampleRate = 8000, pace = 1.15 })
 {
     try
     {
@@ -14,7 +14,8 @@ async function sarvamTTS({ text, languageCode = "hi-IN", speaker = "shreya", aud
             model: "bulbul:v3",
             speaker: speaker,
             output_audio_codec: audioCodec,
-            speech_sample_rate: sampleRate
+            speech_sample_rate: sampleRate,
+            pace: pace
         });
 
         return response;
@@ -47,7 +48,7 @@ async function sarvamSTT({ audioBuffer, languageCode = "hi-IN" })
     }
 }
 
-async function sarvamTTSStream({ text, languageCode = "hi-IN", speaker = "shreya", onAudio, onComplete, onError })
+async function sarvamTTSStream({ text, languageCode = "hi-IN", speaker = "neha", onAudio, onComplete, onError, pace = 1.15, sampleRate = 22050 })
 {
     const client = new SarvamAIClient({
         apiSubscriptionKey: process.env.SARVAM_KEY
@@ -71,11 +72,13 @@ async function sarvamTTSStream({ text, languageCode = "hi-IN", speaker = "shreya
                 {
                     target_language_code: languageCode,
                     speaker: speaker,
-                    output_audio_codec: "mulaw"
+                    output_audio_codec: "mulaw",
+                    pace: pace,
+                    speech_sample_rate: sampleRate
                 }
             );
 
-            console.log(`⚙️ [TTS Socket] configureConnection sent`);
+            console.log(`⚙️ [TTS Socket] configureConnection sent (speaker: ${speaker}, sampleRate: ${sampleRate})`);
         } 
         catch(err) 
         {
@@ -373,6 +376,14 @@ async function sarvamSTTStream({ languageCode = "hi-IN", sampleRate = 8000, onTr
             {
                 onError = newOnError;
             }
+        },
+        getLanguageCode: function()
+        {
+            return languageCode;
+        },
+        getSampleRate: function()
+        {
+            return sampleRate;
         },
     };
 }

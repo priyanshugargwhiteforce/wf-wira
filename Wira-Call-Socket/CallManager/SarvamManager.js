@@ -65,7 +65,7 @@ class SarvamManager
     constructor(sttConfig = {}, ttsConfig = {}, redisManager = null)
     {
         this.sampleRate = sttConfig.sampleRate ?? 16000;
-        this.speaker = VALID_SPEAKERS.includes(ttsConfig.speaker) ? ttsConfig.speaker : "shreya";
+        this.speaker = VALID_SPEAKERS.includes(ttsConfig.speaker) ? ttsConfig.speaker : "neha";
         this.language = ttsConfig.language ?? "hi";
         this.sttStream = null;
         this.ttsSockets = [];
@@ -431,6 +431,8 @@ class SarvamManager
         }
 
         return text
+            .replace(/<[^>]*>/g, "")
+            .replace(/[<>]/g, "")
             .replace(/\[.*?\]:?/g, "")
             .replace(/[\p{Extended_Pictographic}\p{Emoji_Presentation}]/gu, "")
             .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
@@ -462,7 +464,9 @@ class SarvamManager
         {
             ttsSocket = await sarvam.sarvamTTSStream({
                 languageCode: this.getLanguageCode(),
-                speaker: this.speaker ?? "shreya",
+                speaker: this.speaker ?? "neha",
+                sampleRate: 22050,
+                pace: 1.15,
                 onAudio: (response) =>
                 {
                     if(shouldAbort())
@@ -604,7 +608,9 @@ class SarvamManager
             {
                 ttsSocket = await sarvam.sarvamTTSStream({
                     languageCode: this.getLanguageCode(),
-                    speaker: this.speaker ?? "shreya",
+                    speaker: this.speaker ?? "neha",
+                    sampleRate: 22050,
+                    pace: 1.15,
                     onAudio: (response) =>
                     {
                         if(this.ttsGeneration !== myGeneration)
