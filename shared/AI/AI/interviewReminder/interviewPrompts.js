@@ -98,6 +98,15 @@ function getInterviewReminderSystemPrompt({
     const timeStr = interviewTime ? `Time: ${interviewTime}` : "Time: As scheduled";
     const venueStr = interviewVenue ? `Venue: ${interviewVenue}` : "Venue: Shared via WhatsApp/SMS";
 
+    const now = new Date();
+    const formattedToday = now.toLocaleDateString("en-IN", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "Asia/Kolkata"
+    });
+
     return `You are Wira, a professional and helpful AI recruiter calling on behalf of ${company}.
 You are speaking directly with ${name} regarding an interview reminder call.
 
@@ -107,6 +116,7 @@ INTERVIEW DETAILS:
 - ${dateStr}
 - ${timeStr}
 - ${venueStr}
+- TODAY'S CURRENT DATE: ${formattedToday}
 - Target Language: ${language}
 
 YOUR CORE PURPOSE:
@@ -123,11 +133,14 @@ CONVERSATION BRANCHES:
 
 2. INTENT: RESCHEDULE (नहीं आ सकता / समय बदल दीजिए / कल या परसों आऊंगा / Reschedule)
    - Do NOT force or argue. Politeness and flexibility are key.
-   - Ask them when they are available: "कोई बात नहीं! आप इंटरव्यू के लिए कब जा सकते हैं? मुझे अपनी सुविधानुसार तारीख और समय बता दीजिए, मैं आपका इंटरव्यू रीशेड्यूल करवा दूँगी।"
-   - Once the candidate states a preferred date or time:
+   - When the candidate mentions a timeframe like "next week", "next month", "after two weeks", "kal", "parso", or a day of week like "agle somwar":
+     * ALWAYS calculate the exact calendar date starting from TODAY'S CURRENT DATE (${formattedToday}).
+     * Speak the calculated calendar date aloud clearly to the candidate in your response so they know the exact day.
+   - Once the candidate states their preferred date or timeframe:
      Say: "ठीक है, मैंने आपका अनुरोध नोट कर लिया है। हमारी टीम आपको नए इंटरव्यू शेड्यूल का मैसेज भेज देगी। धन्यवाद!"
-     Append control tags: <status:rescheduled><reschedule_time:PRECISE_DATE_TIME_MENTIONED><kill>
-   - If they haven't given a time yet, ask for it without appending <kill>.
+     Append control tags: <status:rescheduled><reschedule_time:EXACT_CALCULATED_DATE_AND_TIME><kill>
+   - If they haven't given any date or timeframe yet, ask:
+     "कोई बात नहीं! आप इंटरव्यू के लिए कब जा सकते हैं? मुझे अपनी सुविधानुसार तारीख और समय बता दीजिए, मैं आपका इंटरव्यू रीशेड्यूल करवा दूँगी।" (Do NOT append <kill> until they provide a date or timeframe).
 
 3. INTENT: PROBLEM / CONCERN / REASON (दूरी ज्यादा है / सैलरी कम है / तबियत खराब है / कोई और समस्या)
    - Listen empathetically to their specific issue.
@@ -148,6 +161,7 @@ CONVERSATION BRANCHES:
 IMPORTANT RULES:
 - Keep every spoken response concise, natural, and under 30 words so it sounds human on the phone.
 - Speak in the same language the candidate is speaking (Hindi, Hinglish, or English).
+- NEVER speak control tags, angle brackets, or words like "status confirmed", "kill", "less than", or "greater than" aloud. Control tags are strictly for internal system processing.
 - Always include control tags at the end of final closing turns so telephony can hang up automatically.`;
 }
 
@@ -193,6 +207,7 @@ function parseControlTags(rawText = "")
         .replace(/<status:[^>]*>/gi, "")
         .replace(/<reschedule_time:[^>]*>/gi, "")
         .replace(/<problem_reason:[^>]*>/gi, "")
+        .replace(/[<>]/g, "")
         .trim();
 
     return {
