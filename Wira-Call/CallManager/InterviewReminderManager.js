@@ -1,4 +1,5 @@
 const validator = require("validator");
+const sarvamHandler = require("@wira/shared/Utility/sarvamHandler");
 const InterviewReminderQueueManager = require("./InterviewReminderQueueManager");
 const {
     evaluateScreeningEligibility,
@@ -35,8 +36,22 @@ class InterviewReminderManager
         this.defaultVad = defaultVad;
         this.availableCallTypes = availableCallTypes;
 
-        const reminderNumber = process.env.PLIVO_REMINDER_PHONE_NUMBER;
-        this.reminderPhonePool = reminderNumber ? [reminderNumber] : [...this.phonePool];
+        // OLD: dedicated env number with fallback to screening pool
+        // const reminderNumber = process.env.PLIVO_REMINDER_PHONE_NUMBER;
+        // this.reminderPhonePool = reminderNumber ? [reminderNumber] : [...this.phonePool];
+
+        // Reminder calls dial from the screening numbers, but slots are tracked
+        // separately in "reminder-active-calls" — screening concurrency is untouched.
+        this.reminderPhonePool = [...this.phonePool];
+
+        // Max live reminder calls at a time, across all numbers
+        this.maxActiveCalls = 10;
+
+        // Session must survive queue wait (call window / busy slots)
+        this.sessionTTLSeconds = 86400;
+
+        // Intro TTS speed — slightly faster than the shared default 1.15
+        this.introPace = 1.25;
 
         this.reminderQueueManager = new InterviewReminderQueueManager(
             this.redis,
@@ -44,6 +59,7 @@ class InterviewReminderManager
         );
         this.reminderQueueManager.phonePool = this.reminderPhonePool;
         this.reminderQueueManager.perNumberConcurrency = this.perNumberConcurrency;
+        this.reminderQueueManager.maxActiveCalls = this.maxActiveCalls;
         this.reminderQueueManager.initWorker();
     }
 
@@ -173,6 +189,65 @@ class InterviewReminderManager
         return this.#verifyCandidateScreeningEligibility(phone, candidateId, jobId);
     }
 
+    /**
+     * Builds reminder intro audio at `introPace` (slightly faster than the shared 1.15).
+     * Intros are personalised (name/date/time), so they are generated directly and not
+     * written to the shared intro_audio_template cache.
+     * Returns the same shape as WiraDatabase.getOrBuildAudioBatch: { cacheMap, preCostChars }.
+     */
+    async #buildIntroAudioBatch(textsWithLanguages, ttsSpeaker)
+    {
+        const cacheMap = new Map();
+        let preCostChars = 0;
+
+        const buildOne = async (entry) =>
+        {
+            for (let attempt = 1; attempt <= 3; attempt++)
+            {
+                try
+                {
+                    const result = await sarvamHandler.sarvamTTS({
+                        text: entry.text,
+                        languageCode: entry.languageCode,
+                        speaker: ttsSpeaker,
+                        pace: this.introPace,
+                    });
+
+                    const audio = result?.audios?.[0] ?? null;
+
+                    if (audio)
+                    {
+                        cacheMap.set(`${entry.languageCode}:${entry.text}`, audio);
+                        preCostChars += entry.text.length;
+                    }
+
+                    return;
+                }
+                catch (error)
+                {
+                    if (attempt === 3)
+                    {
+                        console.error("❌ [Reminder Intro] TTS failed for:", entry.text, error.message);
+                        return;
+                    }
+
+                    await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+                }
+            }
+        };
+
+        // Small batches to stay within Sarvam rate limits
+        for (let i = 0; i < textsWithLanguages.length; i += 3)
+        {
+            await Promise.all(textsWithLanguages.slice(i, i + 3).map(buildOne));
+        }
+
+        return {
+            cacheMap,
+            preCostChars,
+        };
+    }
+
     async handleIntroAudio(data)
     {
         try
@@ -218,7 +293,12 @@ class InterviewReminderManager
                 }
             });
 
-            const audioBatchResult = await this.database.getOrBuildAudioBatch(
+            // OLD: shared cache builder — always generated at default pace 1.15
+            // const audioBatchResult = await this.database.getOrBuildAudioBatch(
+            //     textsWithLanguages,
+            //     ttsSpeaker,
+            // );
+            const audioBatchResult = await this.#buildIntroAudioBatch(
                 textsWithLanguages,
                 ttsSpeaker,
             );
@@ -513,7 +593,8 @@ class InterviewReminderManager
                         `screening:callId:${wiraCall.id}`,
                         JSON.stringify(item),
                         "EX",
-                        3600,
+                        // OLD: 3600
+                        this.sessionTTLSeconds,
                     );
 
                     const queueResult = await this.reminderQueueManager.pushToQueue(
@@ -672,7 +753,13 @@ class InterviewReminderManager
             }
             if (session.problemReason)
             {
-                summaryText += ` Candidate concern: ${session.problemReason}.`;
+                // OLD: summaryText += ` Candidate concern: ${session.problemReason}.`;
+                const reasonLabel = interviewStatus === "declined" ? "Decline reason" : "Candidate concern";
+                summaryText += ` ${reasonLabel}: ${session.problemReason}.`;
+            }
+            if (session.referral)
+            {
+                summaryText += ` Referral: ${session.referral}.`;
             }
 
             const analysisResult = {
@@ -703,8 +790,9 @@ class InterviewReminderManager
             await this.redis.del(`screening:callId:${callUUID}`);
             await this.redis.del(`cost:callId:${callUUID}`);
 
-            await this.reminderQueueManager.deallocateNumber(session.fromPhone);
-            console.log(`✅ [Interview Reminder] Call ${callUUID} successfully flushed and deallocated.`);
+            // OLD: await this.reminderQueueManager.deallocateNumber(session.fromPhone);
+            await this.reminderQueueManager.releaseSlot(session.wiraCallId);
+            console.log(`✅ [Interview Reminder] Call ${callUUID} successfully flushed and slot released.`);
         }
         catch (error)
         {
