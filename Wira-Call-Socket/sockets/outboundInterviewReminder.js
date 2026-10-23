@@ -28,6 +28,65 @@ const INTERRUPT_CHECK_WINDOW_MS = 5000;
 // so a silent call never hangs until the 3-minute limit.
 const IDLE_RESUME_AFTER_SPEECH_MS = 3000;
 
+// ─── Voicemail / call-assistant detection ────────────────────────────────────
+// Phone voicemail, iPhone Live Voicemail / Call Screening, Samsung Bixby call assist and
+// Truecaller assistant pick up the call and talk over the intro. They are detected from
+// the transcript (audio is also heard during the intro for this) and the call is hung up.
+// Only phrases a real candidate would not say are listed — generic words like
+// "उपलब्ध नहीं" / "स्विच ऑफ" / "मैसेज" alone never trigger.
+const VOICEMAIL_DETECT_WINDOW_MS = 60000;
+
+// Transcripts of sound heard during the intro arrive slightly later; within this time
+// they are used only for voicemail detection, never as a conversation turn
+const PRE_GATE_TRANSCRIPT_GRACE_MS = 3000;
+
+const VOICEMAIL_PATTERNS = [
+    // English
+    /voice\s?mail/i,
+    /leave (a |your )?(message|voice)/i,
+    /after the (beep|tone)/i,
+    /record (your|a) (message|name)/i,
+    /reason for (your )?call(ing)?/i,
+    /(not available|unavailable) to take (your|the|this) call/i,
+    /the (number|person|subscriber) you (have )?(dialled|dialed|called|are calling|are trying)/i,
+    /call (screening|assistant)|screening (this|the|your) call|call is being screened/i,
+    /truecaller/i,
+    /bixby/i,
+    /i('?m| am) (an? |the )?([a-z]+'s )?(ai|digital|virtual|personal|automated|call) assistant/i,
+    // Hindi (Devanagari, as returned by STT)
+    /वॉइस\s?मेल|वॉयस\s?मेल|वाइस\s?मेल|वॉइसमेल|वॉयसमेल/,
+    /बीप के बाद|टोन के बाद|बीप की आवाज़/,
+    /(संदेश|मैसेज) (छोड़|रिकॉर्ड)/,
+    /आप जिस (नंबर|व्यक्ति)|जिस (नंबर|व्यक्ति) (पर|को) आप/,
+    /ट्रूकॉलर|ट्रू कॉलर/,
+    /बिक्सबी/,
+    /कॉल (स्क्रीनिंग|स्क्रीन कर)/,
+    /(एआई|डिजिटल|वर्चुअल|पर्सनल|कॉल) असिस्टेंट/,
+    /(की|का) असिस्टेंट (हूँ|हूं|बोल)/,
+    // English greetings written in Devanagari by the hi-IN STT
+    // (seen live on Samsung: "रीच इज इन अवेलेबल", "मैसेज एट द टोन", "व्हेन यू फिनिश टॉकिंग")
+    /(एट|आफ्टर) (द|दि|दा) (टोन|बीप)/,
+    /लीव (अ |ए |योर |यौर )?(मैसेज|वॉइस|वॉयस)/,
+    /(इज|आर) (इन ?अवेलेबल|अनअवेलेबल|नॉट अवेलेबल|नोट अवेलेबल|नॉट रीचेबल)/,
+    /ट्राइंग टू रीच|पर्सन यू आर|यू आर कॉलिंग|यू हैव डायल/,
+    /फिनिश(्ड)? (टॉकिंग|रिकॉर्डिंग)/,
+    /रिकॉर्ड (योर|यौर|अ|ए) (मैसेज|नेम)/,
+];
+
+function matchVoicemail(text)
+{
+    for (const pattern of VOICEMAIL_PATTERNS)
+    {
+        const match = String(text).match(pattern);
+        if (match)
+        {
+            return match[0];
+        }
+    }
+
+    return null;
+}
+
 // Fillers / backchannels that must not interrupt the AI
 const BACKCHANNEL_WORDS = new Set([
     "हाँ", "हां", "हा", "जी", "हम्म", "हम", "हूँ", "हूं", "ओके", "अच्छा", "ठीक", "है", "हैं", "हेलो", "हैलो",
@@ -163,6 +222,13 @@ class InterviewReminderCallManager
 
         this.idleResumeTimer = null;
 
+        // Voicemail detection state
+        this.callStartedAt = null;
+        this.vadReady = null;
+        this.preGateSpeech = false;
+        this.preGateTranscriptUntil = 0;
+        this.voicemailDetected = false;
+
         this.language = session.language || "hi";
         this.idleWarningText = session.idleWarningText || "क्या आप अभी भी लाइन पर हैं?";
         this.idleDisconnectText = session.idleDisconnectText || "कोई जवाब न मिलने के कारण यह कॉल अब समाप्त की जा रही है।";
@@ -217,6 +283,15 @@ class InterviewReminderCallManager
             onSpeechRealStart: () => this.#onSpeechRealStart(),
             onSpeechChunk: (mulawBuffer) => this.#onSpeechChunk(mulawBuffer),
             onSpeechEnd: () => this.#onSpeechEnd(),
+        });
+
+        // VAD now starts at connect (OLD: only after the intro), so a voicemail /
+        // call assistant talking over the intro can be heard. Until the intro ends,
+        // that audio is used ONLY for voicemail detection, never as a conversation turn.
+        this.callStartedAt = Date.now();
+        this.vadReady = this.vam.init().catch((vadErr) =>
+        {
+            console.error(`⚠️ [Reminder VAM Init] Failed to init VAD:`, vadErr.message);
         });
 
         this.#initSTTWithRetry();
@@ -467,12 +542,88 @@ class InterviewReminderCallManager
         // }
     }
 
+    #isDetectingVoicemail()
+    {
+        return !this.voicemailDetected
+            && !this.killPending
+            && !this.hangupRequested
+            && this.callStartedAt !== null
+            && Date.now() - this.callStartedAt <= VOICEMAIL_DETECT_WINDOW_MS;
+    }
+
+    // Returns true when the transcript is a voicemail / call assistant (call is being hung up)
+    #detectVoicemail(text)
+    {
+        if (this.voicemailDetected)
+        {
+            return true;
+        }
+
+        if (!this.#isDetectingVoicemail())
+        {
+            return false;
+        }
+
+        const phrase = matchVoicemail(text);
+        if (!phrase)
+        {
+            return false;
+        }
+
+        this.voicemailDetected = true;
+        console.warn(`📭 [Reminder Voicemail] Detected "${phrase}" in: "${text}" — hanging up`);
+
+        this.#hangupForVoicemail().catch((err) =>
+        {
+            console.error(`❌ [Reminder Voicemail] Hangup failed:`, err.message);
+        });
+
+        return true;
+    }
+
+    async #hangupForVoicemail()
+    {
+        this.#clearBargeIn();
+        this.#clearIdleResume();
+        this.#clearKillFallback();
+        this.vam.clearIdleTimers();
+
+        if (this.#isAISpeaking())
+        {
+            this.#abortAll();
+        }
+
+        const session = await redis.getSession(this.callUUID);
+        if (session)
+        {
+            session.interviewStatus = "voicemail";
+            session.hangupCause = "voicemail_detected";
+            await redis.saveSession(this.callUUID, session);
+        }
+
+        await this.#hangupOnce("voicemail / call assistant detected");
+    }
+
     #onSpeechRealStart()
     {
+        // OLD:
+        // if (!this.vadGateOpen)
+        // {
+        //     return;
+        // }
         if (!this.vadGateOpen)
         {
+            // During the intro: listen only for voicemail detection
+            if (this.#isDetectingVoicemail())
+            {
+                this.preGateSpeech = true;
+            }
+
             return;
         }
+
+        // Real conversation speech → later transcripts are conversation turns
+        this.preGateTranscriptUntil = 0;
 
         // OLD: speech after kill tag → abort + immediate hangup (closing message got cut)
         // if (this.killPending)
@@ -547,6 +698,17 @@ class InterviewReminderCallManager
 
     #onSpeechChunk(mulawBuffer)
     {
+        // Speech that started during the intro → STT for voicemail detection only
+        if (this.preGateSpeech)
+        {
+            if (this.#isDetectingVoicemail())
+            {
+                this.sarvam.sendAudio(this.callUUID, mulawBuffer);
+            }
+
+            return;
+        }
+
         if (!this.vadGateOpen)
         {
             return;
@@ -574,6 +736,21 @@ class InterviewReminderCallManager
 
     #onSpeechEnd()
     {
+        // Speech that started during the intro ended → get its transcript (voicemail check only)
+        if (this.preGateSpeech)
+        {
+            this.preGateSpeech = false;
+
+            if (this.#isDetectingVoicemail())
+            {
+                this.sarvam.pauseSTTTimer();
+                this.sarvam.flushSTT();
+                this.preGateTranscriptUntil = Date.now() + PRE_GATE_TRANSCRIPT_GRACE_MS;
+            }
+
+            return;
+        }
+
         if (!this.vadGateOpen)
         {
             return;
@@ -626,8 +803,30 @@ class InterviewReminderCallManager
     async #onTranscript(transcript)
     {
         const userText = typeof transcript === "string" ? transcript.trim() : (transcript?.text?.trim() || "");
-        if (!this.vadGateOpen || !userText)
+        // OLD: if (!this.vadGateOpen || !userText)
+        if (!userText)
         {
+            return;
+        }
+
+        // Voicemail / call assistant check first — runs during the intro and mid-reply too
+        if (this.#detectVoicemail(userText))
+        {
+            return;
+        }
+
+        if (!this.vadGateOpen)
+        {
+            // Logged so new voicemail / assistant greetings can be added to VOICEMAIL_PATTERNS
+            console.log(`🎧 [Reminder Intro] Heard during intro (not voicemail): "${userText}"`);
+            return;
+        }
+
+        // Sound heard during the intro is not a reply (same as before: ignored)
+        if (Date.now() <= this.preGateTranscriptUntil)
+        {
+            this.preGateTranscriptUntil = 0;
+            console.log(`🔕 [Reminder Intro] Sound during intro ignored: "${userText}"`);
             return;
         }
 
@@ -967,7 +1166,20 @@ class InterviewReminderCallManager
 
     async onMediaPacket(payload)
     {
-        if (!this.vadGateOpen || !this.vam || !this.sarvam)
+        // OLD: if (!this.vadGateOpen || !this.vam || !this.sarvam)
+        // Audio is also processed during the intro, for voicemail detection
+        if (!this.vam || !this.sarvam || this.voicemailDetected)
+        {
+            return;
+        }
+
+        if (!this.vadGateOpen && !this.#isDetectingVoicemail())
+        {
+            return;
+        }
+
+        // VAD model still loading
+        if (!this.vam.vad)
         {
             return;
         }
@@ -997,7 +1209,8 @@ class InterviewReminderCallManager
 
             try
             {
-                await this.vam.init();
+                // OLD: await this.vam.init();  → VAD is now started in init(), just wait for it
+                await this.vadReady;
             }
             catch (vadErr)
             {

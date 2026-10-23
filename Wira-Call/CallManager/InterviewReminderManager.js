@@ -762,16 +762,28 @@ class InterviewReminderManager
                 summaryText += ` Referral: ${session.referral}.`;
             }
 
+            // Voicemail / call assistant answered → candidate was never reached: no interest, score 0
+            const isVoicemail = interviewStatus === "voicemail";
+            if (isVoicemail)
+            {
+                summaryText += " Voicemail / call assistant answered — candidate not reached.";
+            }
+
+            // OLD: voicemail fell into the default "MEDIUM" interest / score 50
+            const interestValue = isVoicemail
+                ? null
+                : (interviewStatus === "confirmed" ? "HIGH" : (interviewStatus === "declined" ? "LOW" : "MEDIUM"));
+
             const analysisResult = {
                 cleanTranscript: session.transcript || [],
                 qna: [],
-                interest: interviewStatus === "confirmed" ? "HIGH" : (interviewStatus === "declined" ? "LOW" : "MEDIUM"),
+                interest: interestValue,
                 hangupCause: session.hangupCause || callStatus,
-                score: interviewStatus === "confirmed" ? 100 : (interviewStatus === "rescheduled" ? 75 : 50),
+                score: isVoicemail ? 0 : (interviewStatus === "confirmed" ? 100 : (interviewStatus === "rescheduled" ? 75 : 50)),
                 scoreReason: summaryText,
                 summary: summaryText,
                 geminiPostCost: 0,
-                jobInterest: interviewStatus === "confirmed" ? "HIGH" : (interviewStatus === "declined" ? "LOW" : "MEDIUM")
+                jobInterest: interestValue
             };
 
             await this.database.persistCallEnd({
